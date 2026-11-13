@@ -1,0 +1,1557 @@
+<!doctype html>
+<html lang="id" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RosseStudio — Portfolio CMS</title>
+    <meta
+      name="description"
+      content="RosseStudio — Portofolio multi-talenta dinamis yang menghadirkan harmoni teknologi dan estetika."
+    />
+    <meta property="og:title" content="RosseStudio — Portfolio CMS" />
+    <meta
+      property="og:description"
+      content="RosseStudio — Portofolio multi-talenta dinamis yang menghadirkan harmoni teknologi dan estetika."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Playfair Display"', 'Georgia', 'serif'],
+              sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg-canvas: #0a0a0a;
+        --bg-ambient: #110505;
+        --bg-surface: rgba(18, 8, 10, 0.72);
+        --bg-surface-solid: #13090b;
+        --bg-surface-alt: rgba(28, 10, 12, 0.85);
+        --bg-glass: rgba(10, 10, 10, 0.72);
+        --text-primary: #f8f4f4;
+        --text-muted: #b8a6a8;
+        --accent-primary: #dc2626;
+        --accent-deep: #8b0000;
+        --accent-bright: #ff3333;
+        --accent-hover: #ef4444;
+        --accent-soft: #fca5a5;
+        --accent-contrast: #ffffff;
+        --glow-crimson: rgba(220, 38, 38, 0.48);
+        --border-hairline: rgba(255, 255, 255, 0.1);
+        --border-crimson: rgba(220, 38, 38, 0.35);
+        --logo-color: #f8f4f4;
+        --footer-bg: #070304;
+        --footer-text: #f8f4f4;
+      }
+
+      body {
+        background-color: var(--bg-canvas);
+        color: var(--text-primary);
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        letter-spacing: 0.01em;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      .ambient-backdrop {
+        background-color: var(--bg-canvas);
+        background-image:
+          radial-gradient(ellipse 75% 48% at 85% 6%, rgba(139, 0, 0, 0.28), transparent 70%),
+          radial-gradient(ellipse 65% 42% at 12% 38%, rgba(139, 0, 0, 0.14), transparent 70%),
+          radial-gradient(ellipse 70% 50% at 80% 88%, rgba(127, 29, 29, 0.18), transparent 72%);
+      }
+
+      .glass-panel {
+        background-color: var(--bg-surface);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-hairline);
+      }
+
+      .bento-card {
+        background: linear-gradient(155deg, rgba(22, 10, 12, 0.78), rgba(10, 6, 7, 0.88));
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--border-hairline);
+        transition:
+          transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .bento-card:hover {
+        border-color: var(--border-crimson);
+        box-shadow: 0 0 22px var(--glow-crimson);
+        transform: translateY(-2px);
+      }
+
+      .portrait-halo {
+        box-shadow:
+          0 0 65px rgba(220, 38, 38, 0.42),
+          0 0 22px rgba(255, 51, 51, 0.28),
+          inset 0 0 24px rgba(139, 0, 0, 0.35);
+      }
+
+      .btn-crimson {
+        background: linear-gradient(135deg, var(--accent-deep), var(--accent-primary));
+        color: var(--accent-contrast);
+        border: 1px solid rgba(255, 100, 100, 0.28);
+        transition:
+          transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 180ms ease;
+      }
+
+      .btn-crimson:hover {
+        box-shadow: 0 0 20px var(--glow-crimson);
+        transform: translateY(-1px);
+      }
+
+      .modal-surface {
+        animation: modalScaleIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes modalScaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.96) translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .tabular-nums {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .headline-balance {
+        text-wrap: balance;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        [data-aos] {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+        .bento-card:hover,
+        .btn-crimson:hover {
+          transform: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="ambient-backdrop min-h-screen flex flex-col selection:bg-red-700 selection:text-white">
+    <!-- Floating Dark-Glass Navbar (Strict 3-Zone Contract) -->
+    <header
+      id="site-header"
+      class="sticky top-0 z-40 px-4 sm:px-6 pt-3 pb-2 transition-all duration-200"
+    >
+      <div
+        class="mx-auto max-w-6xl rounded-2xl px-4 sm:px-6 py-2.5 flex items-center justify-between gap-8"
+        style="background-color: var(--bg-glass); backdrop-filter: blur(18px); border: 1px solid var(--border-hairline);"
+      >
+        <!-- Zone 1: Brand Wordmark -->
+        <a
+          href="#top"
+          class="flex items-center shrink-0 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded-lg"
+          aria-label="RosseStudio Beranda"
+        >
+          <img
+            src="/assets/logo-rossestudio.png"
+            alt="RosseStudio"
+            class="h-8 sm:h-9 w-auto object-contain brightness-0 invert"
+            referrerpolicy="no-referrer"
+          />
+        </a>
+
+        <!-- Zone 2: Concise Single-Line Navigation -->
+        <nav
+          id="desktop-nav"
+          aria-label="Navigasi Utama"
+          class="hidden md:flex items-center gap-6 text-sm font-medium"
+          style="color: var(--text-muted);"
+        ></nav>
+
+        <!-- Zone 3: Single Primary Action + Mobile Trigger -->
+        <div class="flex items-center gap-3 shrink-0">
+          <a
+            href="admin.html"
+            class="btn-crimson px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+          >
+            RosseAdmin
+          </a>
+          <button
+            id="btn-mobile-menu"
+            type="button"
+            aria-label="Buka menu navigasi"
+            aria-expanded="false"
+            class="md:hidden min-w-[44px] min-h-[44px] inline-flex items-center justify-center rounded-xl border border-white/10 text-neutral-200 hover:border-red-500/40 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div
+        id="mobile-drawer"
+        class="hidden md:hidden mx-auto max-w-6xl mt-2 rounded-2xl p-4 glass-panel"
+      >
+        <nav id="mobile-nav" aria-label="Navigasi Seluler" class="flex flex-col gap-1"></nav>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Canvas -->
+    <main id="top" class="flex-1">
+      <!-- Initial Loading Shimmer (Cleared immediately once snapshot arrives) -->
+      <div id="loading-state" class="mx-auto max-w-6xl px-6 py-20 space-y-8" aria-busy="true">
+        <div class="bento-card rounded-3xl p-8 sm:p-12 animate-pulse">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-7 space-y-4">
+              <div class="h-10 w-3/4 rounded-lg bg-white/10"></div>
+              <div class="h-5 w-full rounded-lg bg-white/5"></div>
+              <div class="h-5 w-5/6 rounded-lg bg-white/5"></div>
+              <div class="pt-4 flex gap-3">
+                <div class="h-10 w-36 rounded-xl bg-red-900/40"></div>
+                <div class="h-10 w-32 rounded-xl bg-white/10"></div>
+              </div>
+            </div>
+            <div class="lg:col-span-5 flex justify-center">
+              <div class="w-60 h-60 rounded-full bg-white/5 border border-red-900/30"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 100% Dynamic Empty State (Rendered when database has 0 content) -->
+      <section
+        id="empty-state"
+        class="hidden mx-auto max-w-4xl px-6 py-20 sm:py-28"
+        aria-label="Status Portofolio Kosong"
+      >
+        <div class="bento-card rounded-3xl p-8 sm:p-14 text-center space-y-6">
+          <div class="flex justify-center">
+            <img
+              src="/assets/logo-rossestudio.png"
+              alt="RosseStudio"
+              class="h-14 w-auto object-contain brightness-0 invert opacity-90"
+              referrerpolicy="no-referrer"
+            />
+          </div>
+          <h1 class="font-display text-3xl sm:text-4xl font-semibold headline-balance text-white">
+            Ruang Portofolio Belum Diterbitkan
+          </h1>
+          <p class="max-w-xl mx-auto text-sm sm:text-base leading-relaxed" style="color: var(--text-muted);">
+            Seluruh profil, linimasa pengalaman, keahlian, dan katalog karya RosseStudio dikelola secara dinamis melalui panel RosseAdmin.
+          </p>
+          <div class="pt-2 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="admin.html"
+              class="btn-crimson px-6 py-3 rounded-xl text-sm font-semibold whitespace-nowrap shrink-0"
+            >
+              Kelola di RosseAdmin
+            </a>
+            <button
+              id="btn-empty-contact"
+              type="button"
+              class="px-6 py-3 rounded-xl text-sm font-semibold border border-white/15 text-neutral-100 hover:border-red-500/50 hover:bg-red-950/20 transition-colors whitespace-nowrap shrink-0"
+            >
+              Kirim Pesan
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamic Sections Container -->
+      <div id="dynamic-sections" class="hidden space-y-20 sm:space-y-24 pb-20">
+        <!-- 1. Hero Section -->
+        <section id="hero" class="hidden mx-auto max-w-6xl px-6 pt-10 sm:pt-14"></section>
+
+        <!-- 2. About & Education Bento Grid -->
+        <section id="tentang" class="hidden mx-auto max-w-6xl px-6"></section>
+
+        <!-- 3. Experiences (Alternating Vertical Timeline) & Achievements -->
+        <section id="pengalaman" class="hidden mx-auto max-w-6xl px-6"></section>
+
+        <!-- 4. Skills Bento Grid -->
+        <section id="skills" class="hidden mx-auto max-w-6xl px-6"></section>
+
+        <!-- 5. Expertise Categories (Pop-up Modal Trigger) -->
+        <section id="keahlian" class="hidden mx-auto max-w-6xl px-6"></section>
+
+        <!-- 6. Certificates & Testimonials -->
+        <section id="sertifikat" class="hidden mx-auto max-w-6xl px-6"></section>
+
+        <!-- 7. FAQ Accordion -->
+        <section id="faq" class="hidden mx-auto max-w-4xl px-6"></section>
+
+        <!-- 8. Contact Info, Contact Form & Maps -->
+        <section id="kontak" class="hidden mx-auto max-w-6xl px-6"></section>
+      </div>
+    </main>
+
+    <!-- Dynamic Footer Bar (Shown only when footer copyright/data exists) -->
+    <footer
+      id="site-footer"
+      class="hidden border-t border-white/10 py-8 px-6 text-center text-xs sm:text-sm"
+      style="background-color: var(--footer-bg); color: var(--text-muted);"
+    ></footer>
+
+    <!-- Floating WhatsApp Button (Dynamic if footer.wa exists) -->
+    <a
+      id="floating-wa"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat via WhatsApp"
+      class="hidden fixed bottom-5 right-5 z-30 min-w-[48px] min-h-[48px] px-4 py-2.5 rounded-full btn-crimson items-center gap-2 text-xs font-semibold shadow-2xl"
+    >
+      <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+      <span class="whitespace-nowrap">WhatsApp</span>
+    </a>
+
+    <!-- MODAL 1: Expertise Category Portfolio Explorer -->
+    <div
+      id="modal-portfolio"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-portfolio-title"
+    >
+      <div class="modal-surface glass-panel w-full max-w-5xl max-h-[90vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-red-500/25">
+        <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between gap-4">
+          <div class="min-w-0">
+            <h2 id="modal-portfolio-title" class="font-display text-xl sm:text-2xl font-semibold text-white truncate"></h2>
+            <p id="modal-portfolio-subtitle" class="text-xs sm:text-sm truncate mt-0.5" style="color: var(--text-muted);"></p>
+          </div>
+          <button
+            type="button"
+            data-close-modal="modal-portfolio"
+            aria-label="Tutup galeri portofolio"
+            class="min-w-[40px] min-h-[40px] rounded-xl border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-colors shrink-0"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="modal-portfolio-tabs" class="px-6 py-3 border-b border-white/10 flex flex-wrap gap-2 bg-black/30"></div>
+
+        <div id="modal-portfolio-grid" class="p-6 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </div>
+    </div>
+
+    <!-- MODAL 2: Single Portfolio Item Detail with Prev/Next Navigation -->
+    <div
+      id="modal-portfolio-detail"
+      class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="detail-title"
+    >
+      <div class="modal-surface glass-panel w-full max-w-3xl max-h-[90vh] rounded-3xl overflow-y-auto border border-red-500/30 shadow-2xl">
+        <div class="relative">
+          <div id="detail-media" class="w-full h-64 sm:h-80 bg-black/60 overflow-hidden"></div>
+          <button
+            type="button"
+            data-close-modal="modal-portfolio-detail"
+            aria-label="Tutup detail karya"
+            class="absolute top-4 right-4 min-w-[40px] min-h-[40px] rounded-full bg-black/75 border border-white/15 flex items-center justify-center text-white hover:border-red-500 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="p-6 sm:p-8 space-y-5">
+          <div class="flex flex-wrap items-baseline justify-between gap-3">
+            <h3 id="detail-title" class="font-display text-2xl sm:text-3xl font-semibold text-white headline-balance"></h3>
+            <span id="detail-meta" class="text-xs sm:text-sm font-medium text-red-300"></span>
+          </div>
+          <p id="detail-desc" class="text-sm sm:text-base leading-relaxed whitespace-pre-line" style="color: var(--text-muted);"></p>
+          <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+              <button
+                id="btn-detail-prev"
+                type="button"
+                aria-label="Karya sebelumnya"
+                class="min-h-[40px] px-3.5 py-2 rounded-xl border border-white/15 text-xs font-medium text-neutral-200 hover:border-red-500/50 transition-colors inline-flex items-center gap-1.5"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span>Sebelumnya</span>
+              </button>
+              <button
+                id="btn-detail-next"
+                type="button"
+                aria-label="Karya berikutnya"
+                class="min-h-[40px] px-3.5 py-2 rounded-xl border border-white/15 text-xs font-medium text-neutral-200 hover:border-red-500/50 transition-colors inline-flex items-center gap-1.5"
+              >
+                <span>Berikutnya</span>
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+            <a
+              id="detail-link"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hidden btn-crimson px-5 py-2.5 rounded-xl text-xs font-semibold items-center gap-2"
+            >
+              <span>Kunjungi Tautan</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 3: Certificate Lightbox with Prev/Next -->
+    <div
+      id="modal-lightbox"
+      class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lightbox-title"
+    >
+      <div class="modal-surface glass-panel w-full max-w-4xl rounded-3xl overflow-hidden border border-red-500/30 shadow-2xl">
+        <div class="px-6 py-4 border-b border-white/10 flex items-center justify-between gap-4">
+          <div class="min-w-0">
+            <h3 id="lightbox-title" class="font-display text-lg sm:text-xl font-semibold text-white truncate"></h3>
+            <p id="lightbox-meta" class="text-xs mt-0.5 truncate" style="color: var(--text-muted);"></p>
+          </div>
+          <button
+            type="button"
+            data-close-modal="modal-lightbox"
+            aria-label="Tutup pratinjau sertifikat"
+            class="min-w-[40px] min-h-[40px] rounded-xl border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-colors shrink-0"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div id="lightbox-media" class="p-4 sm:p-6 bg-black/50 flex items-center justify-center max-h-[70vh] overflow-hidden"></div>
+        <div class="px-6 py-3 border-t border-white/10 flex items-center justify-between">
+          <button
+            id="btn-cert-prev"
+            type="button"
+            class="min-h-[40px] px-4 py-2 rounded-xl border border-white/10 text-xs font-medium text-neutral-200 hover:border-red-500/40 transition-colors"
+          >
+            Sebelumnya
+          </button>
+          <span id="lightbox-counter" class="text-xs tabular-nums" style="color: var(--text-muted);"></span>
+          <button
+            id="btn-cert-next"
+            type="button"
+            class="min-h-[40px] px-4 py-2 rounded-xl border border-white/10 text-xs font-medium text-neutral-200 hover:border-red-500/40 transition-colors"
+          >
+            Berikutnya
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 4: Pop-up Contact Form (Accessible even when main page is in Empty State) -->
+    <div
+      id="modal-contact"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-contact-title"
+    >
+      <div class="modal-surface glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-8 border border-red-500/25 shadow-2xl space-y-5">
+        <div class="flex items-center justify-between gap-4">
+          <h2 id="modal-contact-title" class="font-display text-2xl font-semibold text-white">Kirim Pesan</h2>
+          <button
+            type="button"
+            data-close-modal="modal-contact"
+            aria-label="Tutup formulir pesan"
+            class="min-w-[40px] min-h-[40px] rounded-xl border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form id="popup-contact-form" class="space-y-4">
+          <div>
+            <label for="popup-c-nama" class="block text-xs font-medium mb-1.5 text-neutral-300">Nama Lengkap</label>
+            <input id="popup-c-nama" name="nama" type="text" required maxlength="150" placeholder="Nama Anda" class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label for="popup-c-email" class="block text-xs font-medium mb-1.5 text-neutral-300">Alamat Email</label>
+            <input id="popup-c-email" name="email" type="email" required maxlength="254" placeholder="nama@domain.com" class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label for="popup-c-subjek" class="block text-xs font-medium mb-1.5 text-neutral-300">Subjek</label>
+            <input id="popup-c-subjek" name="subjek" type="text" required maxlength="250" placeholder="Kolaborasi Proyek / Booking Layanan" class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label for="popup-c-pesan" class="block text-xs font-medium mb-1.5 text-neutral-300">Pesan</label>
+            <textarea id="popup-c-pesan" name="pesan" rows="4" required maxlength="4000" placeholder="Ceritakan kebutuhan atau jadwal Anda..." class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500"></textarea>
+          </div>
+          <div id="popup-contact-status" class="hidden text-xs rounded-xl px-3.5 py-2.5"></div>
+          <button type="submit" class="btn-crimson w-full py-3 rounded-xl text-sm font-semibold">Kirim Pesan</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script type="module">
+      import {
+        db,
+        testFirestoreConnection,
+        applyThemePalette,
+        escapeHtml,
+        extractGoogleMapsEmbedUrl,
+        normalizeExternalUrl,
+        formatWhatsAppUrl,
+        formatInstagramUrl,
+        parseTriviaItems,
+        validateContactMessageInput,
+        hasHeroData,
+        hasAboutData,
+        hasFooterData,
+        isPortfolioStateEmpty,
+        sortByNewest,
+        filterExperiencesByCategory,
+        collection,
+        addDoc,
+        onSnapshot,
+        serverTimestamp,
+      } from './firebase-config.js';
+
+      // Initialize AOS immediately
+      if (window.AOS) {
+        window.AOS.init({
+          duration: 750,
+          easing: 'ease-out-cubic',
+          once: true,
+          offset: 48,
+          disable: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        });
+      }
+
+      const state = {
+        loadedCollections: new Set(),
+        hero: null,
+        about: null,
+        educations: [],
+        experiences: [],
+        achievements: [],
+        certificates: [],
+        skills: [],
+        categories: [],
+        portfolios: [],
+        testimonials: [],
+        faqs: [],
+        footer: null,
+        activeTheme: 'obsidian-crimson',
+        activeExpTab: 'Profesional',
+        activeCategoryModalId: null,
+        activePortfolioList: [],
+        activePortfolioIndex: 0,
+        activeCertIndex: 0,
+        activeTestimonialIndex: 0,
+      };
+
+      const TOTAL_STREAMS = 13;
+
+      const loadingEl = document.getElementById('loading-state');
+      const emptyEl = document.getElementById('empty-state');
+      const sectionsWrapperEl = document.getElementById('dynamic-sections');
+      const footerBarEl = document.getElementById('site-footer');
+      const floatingWaEl = document.getElementById('floating-wa');
+
+      const markLoaded = (key) => {
+        state.loadedCollections.add(key);
+        if (state.loadedCollections.size >= 3) {
+          loadingEl.classList.add('hidden');
+          loadingEl.setAttribute('aria-busy', 'false');
+        }
+        renderAll();
+      };
+
+      // Timeout safeguard so page never lingers on shimmer if network blocks Firestore
+      setTimeout(() => {
+        if (!loadingEl.classList.contains('hidden')) {
+          loadingEl.classList.add('hidden');
+          loadingEl.setAttribute('aria-busy', 'false');
+          renderAll();
+        }
+      }, 2500);
+
+      // Mobile drawer toggle
+      const mobileMenuBtn = document.getElementById('btn-mobile-menu');
+      const mobileDrawer = document.getElementById('mobile-drawer');
+      mobileMenuBtn.addEventListener('click', () => {
+        const isHidden = mobileDrawer.classList.toggle('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', String(!isHidden));
+      });
+
+      // Modal open/close helpers
+      function openModal(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('hidden');
+        const anyOpen = ['modal-portfolio', 'modal-portfolio-detail', 'modal-lightbox', 'modal-contact'].some(
+          (mid) => !document.getElementById(mid).classList.contains('hidden')
+        );
+        if (!anyOpen) document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('[data-close-modal]').forEach((btn) => {
+        btn.addEventListener('click', () => closeModal(btn.dataset.closeModal));
+      });
+
+      ['modal-portfolio', 'modal-portfolio-detail', 'modal-lightbox', 'modal-contact'].forEach((id) => {
+        const backdrop = document.getElementById(id);
+        backdrop.addEventListener('click', (e) => {
+          if (e.target === backdrop) closeModal(id);
+        });
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (!document.getElementById('modal-portfolio-detail').classList.contains('hidden')) {
+            closeModal('modal-portfolio-detail');
+          } else if (!document.getElementById('modal-lightbox').classList.contains('hidden')) {
+            closeModal('modal-lightbox');
+          } else if (!document.getElementById('modal-portfolio').classList.contains('hidden')) {
+            closeModal('modal-portfolio');
+          } else if (!document.getElementById('modal-contact').classList.contains('hidden')) {
+            closeModal('modal-contact');
+          }
+        } else if (e.key === 'ArrowLeft') {
+          if (!document.getElementById('modal-portfolio-detail').classList.contains('hidden')) {
+            stepPortfolioDetail(-1);
+          } else if (!document.getElementById('modal-lightbox').classList.contains('hidden')) {
+            stepLightbox(-1);
+          }
+        } else if (e.key === 'ArrowRight') {
+          if (!document.getElementById('modal-portfolio-detail').classList.contains('hidden')) {
+            stepPortfolioDetail(1);
+          } else if (!document.getElementById('modal-lightbox').classList.contains('hidden')) {
+            stepLightbox(1);
+          }
+        }
+      });
+
+      document.getElementById('btn-empty-contact').addEventListener('click', () => openModal('modal-contact'));
+
+      // Shared Contact Form Submission Handler
+      async function handleContactSubmit(formEl, statusEl) {
+        const formData = new FormData(formEl);
+        const check = validateContactMessageInput({
+          nama: formData.get('nama'),
+          email: formData.get('email'),
+          subjek: formData.get('subjek'),
+          pesan: formData.get('pesan'),
+        });
+        statusEl.classList.remove('hidden', 'bg-red-950/70', 'border', 'border-red-500/40', 'text-red-200', 'bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-200');
+        if (!check.valid) {
+          statusEl.className = 'text-xs rounded-xl px-3.5 py-2.5 bg-red-950/70 border border-red-500/40 text-red-200';
+          statusEl.textContent = check.error;
+          return;
+        }
+        const submitBtn = formEl.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Mengirim...';
+        try {
+          await addDoc(collection(db, 'contact_messages'), {
+            ...check.payload,
+            createdAt: serverTimestamp(),
+          });
+          formEl.reset();
+          statusEl.className = 'text-xs rounded-xl px-3.5 py-2.5 bg-emerald-950/60 border border-emerald-500/40 text-emerald-200';
+          statusEl.textContent = 'Pesan berhasil terkirim. Terima kasih telah menghubungi RosseStudio.';
+        } catch (err) {
+          console.error('Contact form write failed:', err);
+          statusEl.className = 'text-xs rounded-xl px-3.5 py-2.5 bg-red-950/70 border border-red-500/40 text-red-200';
+          statusEl.textContent = 'Pesan gagal dikirim saat ini. Silakan coba lagi atau hubungi lewat WhatsApp/Email.';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+
+      document.getElementById('popup-contact-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        handleContactSubmit(e.currentTarget, document.getElementById('popup-contact-status'));
+      });
+
+      // Render Navigation Links dynamically
+      function renderNavigation() {
+        const items = [];
+        if (hasHeroData(state.hero)) items.push({ href: '#hero', label: 'Beranda' });
+        if (hasAboutData(state.about) || state.educations.length > 0) items.push({ href: '#tentang', label: 'Tentang' });
+        if (state.experiences.length > 0 || state.achievements.length > 0) items.push({ href: '#pengalaman', label: 'Pengalaman' });
+        if (state.skills.length > 0 || state.categories.length > 0) items.push({ href: '#keahlian', label: 'Portofolio' });
+        if (hasFooterData(state.footer)) items.push({ href: '#kontak', label: 'Kontak' });
+
+        const desktopNav = document.getElementById('desktop-nav');
+        const mobileNav = document.getElementById('mobile-nav');
+        desktopNav.innerHTML = items
+          .map(
+            (i) =>
+              `<a href="${i.href}" class="hover:text-white transition-colors whitespace-nowrap shrink-0 relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[1.5px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-200">${escapeHtml(i.label)}</a>`
+          )
+          .join('');
+        mobileNav.innerHTML = items
+          .map(
+            (i) =>
+              `<a href="${i.href}" class="mobile-nav-link px-3 py-2.5 rounded-xl text-sm font-medium text-neutral-200 hover:bg-white/5 hover:text-white transition-colors">${escapeHtml(i.label)}</a>`
+          )
+          .join('');
+
+        mobileNav.querySelectorAll('.mobile-nav-link').forEach((link) => {
+          link.addEventListener('click', () => {
+            mobileDrawer.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // 1. Render Hero
+      function renderHero() {
+        const sec = document.getElementById('hero');
+        if (!hasHeroData(state.hero)) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+        const h = state.hero;
+        const f = state.footer || {};
+        const waUrl = formatWhatsAppUrl(f.wa);
+        const igUrl = formatInstagramUrl(f.ig);
+        const liUrl = normalizeExternalUrl(f.linkedin);
+        const hasPhoto = Boolean(h.foto_profil && h.foto_profil.trim());
+
+        const socialLinks = [
+          waUrl ? `<a href="${escapeHtml(waUrl)}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></a>` : '',
+          igUrl ? `<a href="${escapeHtml(igUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>` : '',
+          liUrl ? `<a href="${escapeHtml(liUrl)}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>` : '',
+          f.email ? `<a href="mailto:${escapeHtml(f.email)}" aria-label="Email" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></a>` : '',
+        ].filter(Boolean).join('');
+
+        sec.innerHTML = `
+          <div class="bento-card rounded-3xl p-8 sm:p-12 lg:p-14">
+            <div class="grid grid-cols-1 ${hasPhoto ? 'lg:grid-cols-12' : ''} gap-10 lg:gap-12 items-center">
+              <div class="${hasPhoto ? 'lg:col-span-7' : 'max-w-3xl'} space-y-6">
+                ${h.headline ? `<h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.12] headline-balance text-white">${escapeHtml(h.headline)}</h1>` : ''}
+                ${h.sub_headline ? `<p class="text-base sm:text-lg leading-relaxed max-w-2xl" style="color: var(--text-muted);">${escapeHtml(h.sub_headline)}</p>` : ''}
+                <div class="pt-2 flex flex-wrap items-center gap-3.5">
+                  ${state.categories.length > 0 ? `<a href="#keahlian" class="btn-crimson px-6 py-3 rounded-xl text-sm font-semibold whitespace-nowrap shrink-0">Jelajahi Karya</a>` : ''}
+                  ${f.cv_file ? `<a href="${escapeHtml(f.cv_file)}" download="CV-RosseStudio.pdf" class="px-5 py-3 rounded-xl text-sm font-semibold border border-white/15 text-white hover:border-red-500/50 hover:bg-red-950/25 transition-colors whitespace-nowrap shrink-0">Unduh CV</a>` : `<button type="button" id="hero-open-contact" class="px-5 py-3 rounded-xl text-sm font-semibold border border-white/15 text-white hover:border-red-500/50 hover:bg-red-950/25 transition-colors whitespace-nowrap shrink-0">Hubungi Saya</button>`}
+                </div>
+                ${socialLinks ? `<div class="pt-2 flex items-center gap-3">${socialLinks}</div>` : ''}
+              </div>
+              ${hasPhoto ? `
+                <div class="lg:col-span-5 flex justify-center lg:justify-end">
+                  <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full p-1.5 border border-red-500/45 portrait-halo bg-black/40">
+                    <img
+                      src="${escapeHtml(h.foto_profil)}"
+                      alt="${escapeHtml(h.headline || 'Foto Profil')}"
+                      class="w-full h-full object-cover rounded-full"
+                      referrerpolicy="no-referrer"
+                    />
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        const heroContactBtn = document.getElementById('hero-open-contact');
+        if (heroContactBtn) {
+          heroContactBtn.addEventListener('click', () => openModal('modal-contact'));
+        }
+      }
+
+      // 2. Render About & Education Bento Grid
+      function renderAboutAndEducations() {
+        const sec = document.getElementById('tentang');
+        const showAbout = hasAboutData(state.about);
+        const showEdu = state.educations.length > 0;
+        if (!showAbout && !showEdu) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+        const trivia = showAbout ? parseTriviaItems(state.about.trivia_unik) : [];
+        const gridCols = showAbout && showEdu ? 'lg:grid-cols-12' : 'lg:grid-cols-1';
+
+        sec.innerHTML = `
+          <div class="mb-10" data-aos="fade-up">
+            <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Profil &amp; Latar Akademik</h2>
+          </div>
+          <div class="grid grid-cols-1 ${gridCols} gap-6 items-stretch">
+            ${showAbout ? `
+              <div class="${showEdu ? 'lg:col-span-7' : ''} bento-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between space-y-8" data-aos="fade-right">
+                <div class="space-y-4">
+                  <h3 class="font-display text-xl font-semibold text-red-300">Tentang Saya</h3>
+                  <p class="text-sm sm:text-base leading-relaxed whitespace-pre-line" style="color: var(--text-muted);">${escapeHtml(state.about.bio || '')}</p>
+                </div>
+                ${trivia.length > 0 ? `
+                  <div class="pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    ${trivia.map((t) => `
+                      <div class="rounded-2xl bg-black/40 border border-white/10 px-4 py-3.5">
+                        <div class="text-xs font-medium text-red-300/90">${escapeHtml(t.label)}</div>
+                        <div class="text-sm font-semibold text-white mt-0.5">${escapeHtml(t.value)}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                ` : ''}
+              </div>
+            ` : ''}
+            ${showEdu ? `
+              <div class="${showAbout ? 'lg:col-span-5' : ''} bento-card rounded-3xl p-7 sm:p-9 space-y-6" data-aos="fade-left">
+                <h3 class="font-display text-xl font-semibold text-red-300">Riwayat Pendidikan</h3>
+                <div class="relative pl-6 space-y-7 before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[1.5px] before:bg-gradient-to-b before:from-red-500 before:via-red-900/60 before:to-transparent">
+                  ${state.educations.map((ed) => `
+                    <div class="relative">
+                      <span class="absolute -left-6 top-1.5 w-3.5 h-3.5 rounded-full bg-red-600 border-2 border-black shadow-[0_0_12px_rgba(220,38,38,0.85)]"></span>
+                      <div class="text-xs tabular-nums font-medium text-red-300">${escapeHtml(ed.tahun_masuk)} — ${escapeHtml(ed.tahun_lulus)}</div>
+                      <h4 class="text-base font-semibold text-white mt-1">${escapeHtml(ed.institusi)}</h4>
+                      <div class="text-sm text-neutral-300">${escapeHtml(ed.jurusan)}</div>
+                      ${ed.deskripsi ? `<p class="text-xs leading-relaxed mt-2" style="color: var(--text-muted);">${escapeHtml(ed.deskripsi)}</p>` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // 3. Render Experiences (Alternating Vertical Timeline) & Achievements
+      function renderExperiencesAndAchievements() {
+        const sec = document.getElementById('pengalaman');
+        const hasExp = state.experiences.length > 0;
+        const hasAch = state.achievements.length > 0;
+        if (!hasExp && !hasAch) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+
+        // Auto-select tab if current active tab has 0 items while the other has items
+        const proItems = filterExperiencesByCategory(state.experiences, 'Profesional');
+        const orgItems = filterExperiencesByCategory(state.experiences, 'Organisasi');
+        if (state.activeExpTab === 'Profesional' && proItems.length === 0 && orgItems.length > 0) {
+          state.activeExpTab = 'Organisasi';
+        }
+        const activeList = state.activeExpTab === 'Profesional' ? proItems : orgItems;
+
+        sec.innerHTML = `
+          ${hasExp ? `
+            <div class="space-y-10">
+              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4" data-aos="fade-up">
+                <div class="space-y-1.5">
+                  <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Jejak Pengalaman</h2>
+                  <p class="text-sm" style="color: var(--text-muted);">Perjalanan karir profesional dan kontribusi kepemimpinan.</p>
+                </div>
+                <div role="tablist" aria-label="Kategori Pengalaman" class="inline-flex items-center gap-1 p-1 rounded-xl bg-black/50 border border-white/10 self-start">
+                  <button
+                    type="button"
+                    role="tab"
+                    data-exp-tab="Profesional"
+                    aria-selected="${state.activeExpTab === 'Profesional'}"
+                    class="px-4 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${state.activeExpTab === 'Profesional' ? 'btn-crimson' : 'text-neutral-400 hover:text-white'}"
+                  >
+                    Profesional (${proItems.length})
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    data-exp-tab="Organisasi"
+                    aria-selected="${state.activeExpTab === 'Organisasi'}"
+                    class="px-4 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${state.activeExpTab === 'Organisasi' ? 'btn-crimson' : 'text-neutral-400 hover:text-white'}"
+                  >
+                    Organisasi (${orgItems.length})
+                  </button>
+                </div>
+              </div>
+
+              ${activeList.length > 0 ? `
+                <div class="relative space-y-8 md:space-y-10 before:content-[''] before:absolute before:left-4 md:before:left-1/2 before:-translate-x-1/2 before:top-2 before:bottom-2 before:w-[2px] before:bg-gradient-to-b before:from-red-500 before:via-red-900/50 before:to-transparent">
+                  ${activeList.map((exp, idx) => {
+                    const isLeft = idx % 2 === 0;
+                    return `
+                      <div class="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center" data-aos="fade-up" data-aos-delay="${Math.min(idx * 60, 240)}">
+                        <span class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-[#140507] border border-red-500/60 items-center justify-center text-red-300 shadow-[0_0_18px_rgba(220,38,38,0.55)] z-10">
+                          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </span>
+                        <span class="md:hidden absolute left-4 -translate-x-1/2 top-6 w-3.5 h-3.5 rounded-full bg-red-600 border-2 border-black shadow-[0_0_12px_rgba(220,38,38,0.85)]"></span>
+                        <div class="pl-10 md:pl-0 ${isLeft ? 'md:col-start-1 md:text-right' : 'md:col-start-2'}">
+                          <div class="bento-card rounded-2xl p-6 space-y-2.5 text-left">
+                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-red-300 font-medium">
+                              <span>${escapeHtml(exp.institusi_tempat)}</span>
+                              <span class="tabular-nums">${escapeHtml(exp.durasi)}</span>
+                            </div>
+                            <h3 class="font-display text-xl font-semibold text-white">${escapeHtml(exp.posisi)}</h3>
+                            ${exp.deskripsi ? `<p class="text-xs sm:text-sm leading-relaxed" style="color: var(--text-muted);">${escapeHtml(exp.deskripsi)}</p>` : ''}
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              ` : `
+                <div class="bento-card rounded-2xl p-8 text-center text-sm" style="color: var(--text-muted);">
+                  Belum ada catatan pada kategori ${escapeHtml(state.activeExpTab)}.
+                </div>
+              `}
+            </div>
+          ` : ''}
+
+          ${hasAch ? `
+            <div class="${hasExp ? 'mt-20' : ''} space-y-8">
+              <div data-aos="fade-up">
+                <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Penghargaan &amp; Prestasi</h2>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                ${state.achievements.map((ach, i) => `
+                  <article class="bento-card rounded-2xl p-6 space-y-2.5" data-aos="zoom-in" data-aos-delay="${Math.min(i * 60, 240)}">
+                    <div class="text-xs font-medium text-red-300 tabular-nums">${escapeHtml(ach.penyelenggara)} · ${escapeHtml(ach.tahun)}</div>
+                    <h3 class="font-display text-lg font-semibold text-white">${escapeHtml(ach.judul_prestasi)}</h3>
+                    ${ach.deskripsi ? `<p class="text-xs sm:text-sm leading-relaxed" style="color: var(--text-muted);">${escapeHtml(ach.deskripsi)}</p>` : ''}
+                  </article>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        `;
+
+        sec.querySelectorAll('[data-exp-tab]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.activeExpTab = btn.dataset.expTab;
+            renderExperiencesAndAchievements();
+            if (window.AOS) window.AOS.refreshHard();
+          });
+        });
+      }
+
+      // 4. Render Skills Bento Grid
+      function renderSkills() {
+        const sec = document.getElementById('skills');
+        if (state.skills.length === 0) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+        sec.innerHTML = `
+          <div class="space-y-8">
+            <div data-aos="fade-up">
+              <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Keahlian &amp; Perangkat</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              ${state.skills.map((sk, idx) => `
+                <div class="bento-card rounded-2xl p-4 flex items-center gap-3.5" data-aos="fade-up" data-aos-delay="${Math.min(idx * 40, 240)}">
+                  ${sk.logo_icon ? `
+                    <img src="${escapeHtml(sk.logo_icon)}" alt="${escapeHtml(sk.nama_skill)}" class="w-9 h-9 rounded-lg object-contain bg-black/40 p-1 shrink-0" referrerpolicy="no-referrer" />
+                  ` : `
+                    <div class="w-9 h-9 rounded-lg bg-red-950/60 border border-red-500/30 flex items-center justify-center text-xs font-bold text-red-200 shrink-0">${escapeHtml(sk.nama_skill.slice(0, 2).toUpperCase())}</div>
+                  `}
+                  <span class="text-sm font-medium text-neutral-100 truncate">${escapeHtml(sk.nama_skill)}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // 5. Render Expertise Categories & Pop-up Portfolio Modal
+      function renderExpertiseCategories() {
+        const sec = document.getElementById('keahlian');
+        if (state.categories.length === 0) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+        sec.innerHTML = `
+          <div class="space-y-8">
+            <div class="space-y-2" data-aos="fade-up">
+              <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Bidang Keahlian &amp; Portofolio</h2>
+              <p class="text-sm" style="color: var(--text-muted);">Pilih kategori untuk melihat galeri karya lengkap dalam jendela pop-up.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              ${state.categories.map((cat, idx) => {
+                const count = state.portfolios.filter((p) => p.category_id === cat.id).length;
+                return `
+                  <button
+                    type="button"
+                    data-open-cat="${escapeHtml(cat.id)}"
+                    class="bento-card group text-left rounded-3xl overflow-hidden flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                    data-aos="fade-up"
+                    data-aos-delay="${Math.min(idx * 80, 240)}"
+                  >
+                    <div class="relative w-full h-56 sm:h-64 bg-black/50 overflow-hidden">
+                      ${cat.cover_image ? `
+                        <img src="${escapeHtml(cat.cover_image)}" alt="${escapeHtml(cat.title)}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" referrerpolicy="no-referrer" />
+                      ` : `
+                        <div class="w-full h-full bg-gradient-to-br from-red-950/60 via-black to-black flex items-center justify-center">
+                          <span class="font-display text-3xl text-red-300/60">${escapeHtml(cat.title.slice(0, 2))}</span>
+                        </div>
+                      `}
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+                      <div class="absolute bottom-5 left-6 right-6 space-y-1">
+                        <div class="text-xs font-medium text-red-300 tabular-nums">${count} Karya · Buka Galeri</div>
+                        <h3 class="font-display text-2xl font-semibold text-white">${escapeHtml(cat.title)}</h3>
+                      </div>
+                    </div>
+                    <div class="p-6 flex items-center justify-between gap-4">
+                      <p class="text-sm line-clamp-2" style="color: var(--text-muted);">${escapeHtml(cat.tagline)}</p>
+                      <span class="w-10 h-10 rounded-xl border border-white/15 flex items-center justify-center text-neutral-300 group-hover:text-white group-hover:border-red-500/50 transition-colors shrink-0">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </span>
+                    </div>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+
+        sec.querySelectorAll('[data-open-cat]').forEach((btn) => {
+          btn.addEventListener('click', () => openCategoryModal(btn.dataset.openCat));
+        });
+      }
+
+      function openCategoryModal(categoryId) {
+        state.activeCategoryModalId = categoryId;
+        const cat = state.categories.find((c) => c.id === categoryId) || state.categories[0];
+        if (!cat) return;
+
+        document.getElementById('modal-portfolio-title').textContent = cat.title;
+        document.getElementById('modal-portfolio-subtitle').textContent = cat.tagline || '';
+
+        const tabsEl = document.getElementById('modal-portfolio-tabs');
+        tabsEl.innerHTML = state.categories
+          .map(
+            (c) => `
+              <button
+                type="button"
+                data-switch-cat="${escapeHtml(c.id)}"
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${c.id === cat.id ? 'btn-crimson' : 'text-neutral-300 hover:text-white border border-white/10'}"
+              >
+                ${escapeHtml(c.title)}
+              </button>
+            `
+          )
+          .join('');
+
+        tabsEl.querySelectorAll('[data-switch-cat]').forEach((btn) => {
+          btn.addEventListener('click', () => openCategoryModal(btn.dataset.switchCat));
+        });
+
+        const items = state.portfolios.filter((p) => p.category_id === cat.id);
+        state.activePortfolioList = items;
+
+        const gridEl = document.getElementById('modal-portfolio-grid');
+        if (items.length === 0) {
+          gridEl.innerHTML = `
+            <div class="col-span-full py-12 text-center text-sm" style="color: var(--text-muted);">
+              Belum ada karya yang ditambahkan ke kategori ini.
+            </div>
+          `;
+        } else {
+          gridEl.innerHTML = items
+            .map(
+              (item, idx) => `
+                <button
+                  type="button"
+                  data-open-detail="${idx}"
+                  class="bento-card text-left rounded-2xl overflow-hidden flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                >
+                  <div class="w-full h-44 bg-black/60 overflow-hidden">
+                    ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover" referrerpolicy="no-referrer" />` : `<div class="w-full h-full bg-gradient-to-br from-red-950/50 to-black"></div>`}
+                  </div>
+                  <div class="p-4 space-y-1.5 flex-1">
+                    ${item.price_or_tech ? `<div class="text-xs font-medium text-red-300 truncate">${escapeHtml(item.price_or_tech)}</div>` : ''}
+                    <h3 class="font-display text-lg font-semibold text-white line-clamp-1">${escapeHtml(item.title)}</h3>
+                    <p class="text-xs line-clamp-2" style="color: var(--text-muted);">${escapeHtml(item.description)}</p>
+                  </div>
+                </button>
+              `
+            )
+            .join('');
+          gridEl.querySelectorAll('[data-open-detail]').forEach((btn) => {
+            btn.addEventListener('click', () => openPortfolioDetail(Number(btn.dataset.openDetail)));
+          });
+        }
+        openModal('modal-portfolio');
+      }
+
+      function openPortfolioDetail(index) {
+        if (!state.activePortfolioList.length) return;
+        const len = state.activePortfolioList.length;
+        state.activePortfolioIndex = ((index % len) + len) % len;
+        const item = state.activePortfolioList[state.activePortfolioIndex];
+
+        const mediaEl = document.getElementById('detail-media');
+        mediaEl.innerHTML = item.image
+          ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover" referrerpolicy="no-referrer" />`
+          : `<div class="w-full h-full bg-gradient-to-br from-red-950/60 to-black flex items-center justify-center text-red-300/60 font-display text-2xl">${escapeHtml(item.title)}</div>`;
+
+        document.getElementById('detail-title').textContent = item.title || '';
+        document.getElementById('detail-meta').textContent = item.price_or_tech || '';
+        document.getElementById('detail-desc').textContent = item.description || '';
+
+        const linkEl = document.getElementById('detail-link');
+        const ext = normalizeExternalUrl(item.link_url);
+        if (ext) {
+          linkEl.href = ext;
+          linkEl.classList.remove('hidden');
+          linkEl.classList.add('inline-flex');
+        } else {
+          linkEl.classList.add('hidden');
+          linkEl.classList.remove('inline-flex');
+        }
+
+        document.getElementById('btn-detail-prev').disabled = len <= 1;
+        document.getElementById('btn-detail-next').disabled = len <= 1;
+        openModal('modal-portfolio-detail');
+      }
+
+      function stepPortfolioDetail(delta) {
+        if (state.activePortfolioList.length <= 1) return;
+        openPortfolioDetail(state.activePortfolioIndex + delta);
+      }
+
+      document.getElementById('btn-detail-prev').addEventListener('click', () => stepPortfolioDetail(-1));
+      document.getElementById('btn-detail-next').addEventListener('click', () => stepPortfolioDetail(1));
+
+      // 6. Render Certificates & Testimonials
+      function renderCertificatesAndTestimonials() {
+        const sec = document.getElementById('sertifikat');
+        const hasCerts = state.certificates.length > 0;
+        const hasTesti = state.testimonials.length > 0;
+        if (!hasCerts && !hasTesti) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+        if (state.activeTestimonialIndex >= state.testimonials.length) {
+          state.activeTestimonialIndex = 0;
+        }
+        const activeTesti = state.testimonials[state.activeTestimonialIndex];
+
+        sec.innerHTML = `
+          ${hasCerts ? `
+            <div class="space-y-8">
+              <div data-aos="fade-up">
+                <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Sertifikasi &amp; Lisensi</h2>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                ${state.certificates.map((cert, idx) => `
+                  <button
+                    type="button"
+                    data-open-cert="${idx}"
+                    class="bento-card text-left rounded-2xl overflow-hidden flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                    data-aos="fade-up"
+                    data-aos-delay="${Math.min(idx * 60, 240)}"
+                  >
+                    <div class="w-full h-44 bg-black/60 overflow-hidden">
+                      ${cert.gambar_sertifikat ? `<img src="${escapeHtml(cert.gambar_sertifikat)}" alt="${escapeHtml(cert.judul)}" class="w-full h-full object-cover" referrerpolicy="no-referrer" />` : `<div class="w-full h-full bg-gradient-to-br from-red-950/50 to-black flex items-center justify-center text-red-300/60 font-display text-xl">Sertifikat</div>`}
+                    </div>
+                    <div class="p-5 space-y-1">
+                      <div class="text-xs font-medium text-red-300 tabular-nums">${escapeHtml(cert.penerbit)} · ${escapeHtml(cert.tahun)}</div>
+                      <h3 class="font-display text-lg font-semibold text-white line-clamp-2">${escapeHtml(cert.judul)}</h3>
+                    </div>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          ${hasTesti ? `
+            <div class="${hasCerts ? 'mt-20' : ''} space-y-8">
+              <div class="flex items-end justify-between gap-4" data-aos="fade-up">
+                <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Suara Klien</h2>
+                ${state.testimonials.length > 1 ? `
+                  <div class="flex items-center gap-2">
+                    <button id="btn-testi-prev" type="button" aria-label="Testimoni sebelumnya" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-colors">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button id="btn-testi-next" type="button" aria-label="Testimoni berikutnya" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-colors">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+              <div class="bento-card rounded-3xl p-7 sm:p-10 space-y-6" data-aos="fade-up">
+                <blockquote class="font-display italic text-lg sm:text-2xl leading-relaxed text-white">
+                  “${escapeHtml(activeTesti.isi_review)}”
+                </blockquote>
+                <div class="flex items-center gap-4 pt-2 border-t border-white/10">
+                  ${activeTesti.foto_profil_opsional ? `<img src="${escapeHtml(activeTesti.foto_profil_opsional)}" alt="${escapeHtml(activeTesti.nama_klien)}" class="w-12 h-12 rounded-full object-cover border border-red-500/40" referrerpolicy="no-referrer" />` : `<div class="w-12 h-12 rounded-full bg-red-950/60 border border-red-500/30 flex items-center justify-center text-sm font-bold text-red-200">${escapeHtml(activeTesti.nama_klien.slice(0, 2).toUpperCase())}</div>`}
+                  <div>
+                    <div class="font-semibold text-white text-sm">${escapeHtml(activeTesti.nama_klien)}</div>
+                    <div class="text-xs text-red-300">${escapeHtml(activeTesti.peran)}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+        `;
+
+        sec.querySelectorAll('[data-open-cert]').forEach((btn) => {
+          btn.addEventListener('click', () => openLightbox(Number(btn.dataset.openCert)));
+        });
+
+        const prevTesti = document.getElementById('btn-testi-prev');
+        const nextTesti = document.getElementById('btn-testi-next');
+        if (prevTesti && nextTesti) {
+          prevTesti.addEventListener('click', () => {
+            const len = state.testimonials.length;
+            state.activeTestimonialIndex = (state.activeTestimonialIndex - 1 + len) % len;
+            renderCertificatesAndTestimonials();
+          });
+          nextTesti.addEventListener('click', () => {
+            const len = state.testimonials.length;
+            state.activeTestimonialIndex = (state.activeTestimonialIndex + 1) % len;
+            renderCertificatesAndTestimonials();
+          });
+        }
+      }
+
+      function openLightbox(index) {
+        if (!state.certificates.length) return;
+        const len = state.certificates.length;
+        state.activeCertIndex = ((index % len) + len) % len;
+        const cert = state.certificates[state.activeCertIndex];
+        document.getElementById('lightbox-title').textContent = cert.judul;
+        document.getElementById('lightbox-meta').textContent = `${cert.penerbit} · ${cert.tahun}`;
+        document.getElementById('lightbox-counter').textContent = `${state.activeCertIndex + 1} / ${len}`;
+        document.getElementById('lightbox-media').innerHTML = cert.gambar_sertifikat
+          ? `<img src="${escapeHtml(cert.gambar_sertifikat)}" alt="${escapeHtml(cert.judul)}" class="max-h-[62vh] w-auto object-contain rounded-xl" referrerpolicy="no-referrer" />`
+          : `<div class="py-16 text-sm" style="color: var(--text-muted);">Pratinjau gambar sertifikat tidak dilampirkan.</div>`;
+        openModal('modal-lightbox');
+      }
+
+      function stepLightbox(delta) {
+        if (state.certificates.length <= 1) return;
+        openLightbox(state.activeCertIndex + delta);
+      }
+
+      document.getElementById('btn-cert-prev').addEventListener('click', () => stepLightbox(-1));
+      document.getElementById('btn-cert-next').addEventListener('click', () => stepLightbox(1));
+
+      // 7. Render FAQ Accordion
+      function renderFaqs() {
+        const sec = document.getElementById('faq');
+        if (state.faqs.length === 0) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+        sec.innerHTML = `
+          <div class="space-y-8">
+            <div class="text-center space-y-2" data-aos="fade-up">
+              <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Pertanyaan Umum</h2>
+            </div>
+            <div class="space-y-3">
+              ${state.faqs.map((faq, idx) => `
+                <div class="bento-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="${Math.min(idx * 50, 200)}">
+                  <button
+                    type="button"
+                    aria-expanded="false"
+                    class="faq-trigger w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-medium text-sm sm:text-base text-white"
+                  >
+                    <span>${escapeHtml(faq.pertanyaan)}</span>
+                    <svg class="faq-chevron w-4 h-4 shrink-0 text-red-300 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div class="faq-answer hidden px-6 pb-5 text-xs sm:text-sm leading-relaxed border-t border-white/10 pt-3.5" style="color: var(--text-muted);">
+                    ${escapeHtml(faq.jawaban)}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+
+        sec.querySelectorAll('.faq-trigger').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!expanded));
+            btn.querySelector('.faq-chevron').classList.toggle('rotate-180', !expanded);
+            btn.nextElementSibling.classList.toggle('hidden', expanded);
+          });
+        });
+      }
+
+      // 8. Render Footer Contact, Contact Form & Maps
+      function renderContactAndFooter() {
+        const sec = document.getElementById('kontak');
+        const f = state.footer;
+        if (!hasFooterData(f)) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          footerBarEl.classList.add('hidden');
+          footerBarEl.innerHTML = '';
+          floatingWaEl.classList.add('hidden');
+          floatingWaEl.classList.remove('inline-flex');
+          return;
+        }
+        sec.classList.remove('hidden');
+
+        const mapUrl = extractGoogleMapsEmbedUrl(f.maps_embed_iframe_link);
+        const waUrl = formatWhatsAppUrl(f.wa);
+        const igUrl = formatInstagramUrl(f.ig);
+        const liUrl = normalizeExternalUrl(f.linkedin);
+
+        sec.innerHTML = `
+          <div class="space-y-8">
+            <div data-aos="fade-up">
+              <h2 class="font-display text-3xl sm:text-4xl font-semibold text-white headline-balance">Mari Berkolaborasi</h2>
+              <p class="text-sm mt-1.5" style="color: var(--text-muted);">Sampaikan kebutuhan proyek atau jadwal Anda melalui formulir berikut.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              <div class="lg:col-span-5 bento-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6" data-aos="fade-right">
+                <div class="space-y-4">
+                  ${f.alamat_teks ? `
+                    <div>
+                      <div class="text-xs font-medium text-red-300">Lokasi</div>
+                      <div class="text-sm text-white mt-0.5">${escapeHtml(f.alamat_teks)}</div>
+                    </div>
+                  ` : ''}
+                  ${f.email ? `
+                    <div>
+                      <div class="text-xs font-medium text-red-300">Email</div>
+                      <a href="mailto:${escapeHtml(f.email)}" class="text-sm text-white hover:text-red-300 transition-colors mt-0.5 inline-block">${escapeHtml(f.email)}</a>
+                    </div>
+                  ` : ''}
+                  ${waUrl ? `
+                    <div>
+                      <div class="text-xs font-medium text-red-300">WhatsApp</div>
+                      <a href="${escapeHtml(waUrl)}" target="_blank" rel="noopener noreferrer" class="text-sm text-white hover:text-red-300 transition-colors mt-0.5 inline-block tabular-nums">${escapeHtml(f.wa)}</a>
+                    </div>
+                  ` : ''}
+                  <div class="flex flex-wrap gap-3 pt-2">
+                    ${igUrl ? `<a href="${escapeHtml(igUrl)}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl border border-white/10 text-xs font-medium text-neutral-200 hover:border-red-500/50 transition-colors">Instagram</a>` : ''}
+                    ${liUrl ? `<a href="${escapeHtml(liUrl)}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl border border-white/10 text-xs font-medium text-neutral-200 hover:border-red-500/50 transition-colors">LinkedIn</a>` : ''}
+                    ${f.cv_file ? `<a href="${escapeHtml(f.cv_file)}" download="CV-RosseStudio.pdf" class="px-3.5 py-2 rounded-xl border border-red-500/35 text-xs font-medium text-red-200 hover:bg-red-950/30 transition-colors">Unduh CV</a>` : ''}
+                  </div>
+                </div>
+                ${mapUrl ? `
+                  <div class="w-full h-52 rounded-2xl overflow-hidden border border-white/10">
+                    <iframe
+                      src="${escapeHtml(mapUrl)}"
+                      title="Peta Lokasi RosseStudio"
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                      class="w-full h-full border-0 grayscale contrast-125 opacity-90"
+                    ></iframe>
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="lg:col-span-7 bento-card rounded-3xl p-6 sm:p-8" data-aos="fade-left">
+                <form id="inline-contact-form" class="space-y-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label for="inline-c-nama" class="block text-xs font-medium mb-1.5 text-neutral-300">Nama Lengkap</label>
+                      <input id="inline-c-nama" name="nama" type="text" required maxlength="150" placeholder="Nama Anda" class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500" />
+                    </div>
+                    <div>
+                      <label for="inline-c-email" class="block text-xs font-medium mb-1.5 text-neutral-300">Alamat Email</label>
+                      <input id="inline-c-email" name="email" type="email" required maxlength="254" placeholder="nama@domain.com" class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500" />
+                    </div>
+                  </div>
+                  <div>
+                    <label for="inline-c-subjek" class="block text-xs font-medium mb-1.5 text-neutral-300">Subjek</label>
+                    <input id="inline-c-subjek" name="subjek" type="text" required maxlength="250" placeholder="Kolaborasi Proyek / Booking Layanan" class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500" />
+                  </div>
+                  <div>
+                    <label for="inline-c-pesan" class="block text-xs font-medium mb-1.5 text-neutral-300">Pesan</label>
+                    <textarea id="inline-c-pesan" name="pesan" rows="4" required maxlength="4000" placeholder="Ceritakan kebutuhan atau jadwal Anda..." class="w-full rounded-xl bg-black/50 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500"></textarea>
+                  </div>
+                  <div id="inline-contact-status" class="hidden text-xs rounded-xl px-3.5 py-2.5"></div>
+                  <div class="pt-1 flex flex-wrap items-center gap-3">
+                    <button type="submit" class="btn-crimson px-6 py-3 rounded-xl text-sm font-semibold">Kirim Pesan</button>
+                    ${waUrl ? `<a href="${escapeHtml(waUrl)}" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-xl border border-white/15 text-xs font-semibold text-neutral-200 hover:border-red-500/50 transition-colors">Chat WhatsApp</a>` : ''}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('inline-contact-form').addEventListener('submit', (e) => {
+          e.preventDefault();
+          handleContactSubmit(e.currentTarget, document.getElementById('inline-contact-status'));
+        });
+
+        if (f.teks_copyright_dinamis) {
+          footerBarEl.classList.remove('hidden');
+          footerBarEl.textContent = f.teks_copyright_dinamis;
+        } else {
+          footerBarEl.classList.add('hidden');
+        }
+
+        if (waUrl) {
+          floatingWaEl.href = waUrl;
+          floatingWaEl.classList.remove('hidden');
+          floatingWaEl.classList.add('inline-flex');
+        } else {
+          floatingWaEl.classList.add('hidden');
+          floatingWaEl.classList.remove('inline-flex');
+        }
+      }
+
+      function renderAll() {
+        applyThemePalette(state.activeTheme || 'obsidian-crimson');
+        renderNavigation();
+
+        if (!loadingEl.classList.contains('hidden')) {
+          return;
+        }
+
+        if (isPortfolioStateEmpty(state)) {
+          emptyEl.classList.remove('hidden');
+          sectionsWrapperEl.classList.add('hidden');
+          footerBarEl.classList.add('hidden');
+          floatingWaEl.classList.add('hidden');
+          floatingWaEl.classList.remove('inline-flex');
+          return;
+        }
+
+        emptyEl.classList.add('hidden');
+        sectionsWrapperEl.classList.remove('hidden');
+
+        renderHero();
+        renderAboutAndEducations();
+        renderExperiencesAndAchievements();
+        renderSkills();
+        renderExpertiseCategories();
+        renderCertificatesAndTestimonials();
+        renderFaqs();
+        renderContactAndFooter();
+
+        if (window.AOS) {
+          requestAnimationFrame(() => window.AOS.refreshHard());
+        }
+      }
+
+      // Real-time Firestore Subscriptions
+      testFirestoreConnection();
+
+      onSnapshot(collection(db, 'site_themes'), (snap) => {
+        const docData = snap.docs[0]?.data();
+        state.activeTheme = docData?.active_theme_name || 'obsidian-crimson';
+        markLoaded('site_themes');
+      }, () => markLoaded('site_themes'));
+
+      onSnapshot(collection(db, 'hero_settings'), (snap) => {
+        state.hero = snap.docs[0] ? { id: snap.docs[0].id, ...snap.docs[0].data() } : null;
+        markLoaded('hero_settings');
+      }, () => markLoaded('hero_settings'));
+
+      onSnapshot(collection(db, 'about_settings'), (snap) => {
+        state.about = snap.docs[0] ? { id: snap.docs[0].id, ...snap.docs[0].data() } : null;
+        markLoaded('about_settings');
+      }, () => markLoaded('about_settings'));
+
+      onSnapshot(collection(db, 'educations'), (snap) => {
+        state.educations = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('educations');
+      }, () => markLoaded('educations'));
+
+      onSnapshot(collection(db, 'experiences'), (snap) => {
+        state.experiences = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('experiences');
+      }, () => markLoaded('experiences'));
+
+      onSnapshot(collection(db, 'achievements'), (snap) => {
+        state.achievements = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('achievements');
+      }, () => markLoaded('achievements'));
+
+      onSnapshot(collection(db, 'certificates'), (snap) => {
+        state.certificates = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('certificates');
+      }, () => markLoaded('certificates'));
+
+      onSnapshot(collection(db, 'skills'), (snap) => {
+        state.skills = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('skills');
+      }, () => markLoaded('skills'));
+
+      onSnapshot(collection(db, 'expertise_categories'), (snap) => {
+        state.categories = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('expertise_categories');
+      }, () => markLoaded('expertise_categories'));
+
+      onSnapshot(collection(db, 'portfolio_items'), (snap) => {
+        state.portfolios = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('portfolio_items');
+      }, () => markLoaded('portfolio_items'));
+
+      onSnapshot(collection(db, 'testimonials'), (snap) => {
+        state.testimonials = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('testimonials');
+      }, () => markLoaded('testimonials'));
+
+      onSnapshot(collection(db, 'faqs'), (snap) => {
+        state.faqs = sortByNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        markLoaded('faqs');
+      }, () => markLoaded('faqs'));
+
+      onSnapshot(collection(db, 'footer_contacts'), (snap) => {
+        state.footer = snap.docs[0] ? { id: snap.docs[0].id, ...snap.docs[0].data() } : null;
+        markLoaded('footer_contacts');
+      }, () => markLoaded('footer_contacts'));
+    </script>
+  </body>
+</html>

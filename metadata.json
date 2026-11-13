@@ -1,0 +1,6 @@
+{
+  "name": "RosseStudio",
+  "description": "Dynamic serverless multi-talent portfolio CMS built with HTML5, Tailwind CSS CDN, Vanilla ES6 Modules, and Firebase Firestore.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

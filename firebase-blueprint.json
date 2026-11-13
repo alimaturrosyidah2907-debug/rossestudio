@@ -1,0 +1,284 @@
+{
+  "entities": {
+    "AdminMarker": {
+      "title": "AdminMarker",
+      "description": "Authorized admin UID registry document.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 254 },
+        "role": { "type": "string", "enum": ["admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role", "createdAt"]
+    },
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Private RosseAdmin account profile.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 120 },
+        "email": { "type": "string", "maxLength": 254 },
+        "role": { "type": "string", "enum": ["admin"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "role", "updatedAt"]
+    },
+    "HeroSetting": {
+      "title": "HeroSetting",
+      "description": "Dynamic Hero headline, sub-headline, and profile portrait.",
+      "type": "object",
+      "properties": {
+        "headline": { "type": "string", "maxLength": 300 },
+        "sub_headline": { "type": "string", "maxLength": 2000 },
+        "foto_profil": { "type": "string", "maxLength": 900000 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["updatedAt"]
+    },
+    "AboutSetting": {
+      "title": "AboutSetting",
+      "description": "Dynamic biography and unique trivia facts.",
+      "type": "object",
+      "properties": {
+        "bio": { "type": "string", "maxLength": 8000 },
+        "trivia_unik": { "type": "string", "maxLength": 4000 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["updatedAt"]
+    },
+    "Education": {
+      "title": "Education",
+      "description": "Academic history entry.",
+      "type": "object",
+      "properties": {
+        "institusi": { "type": "string", "maxLength": 200 },
+        "jurusan": { "type": "string", "maxLength": 200 },
+        "tahun_masuk": { "type": "string", "maxLength": 30 },
+        "tahun_lulus": { "type": "string", "maxLength": 30 },
+        "deskripsi": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["institusi", "jurusan", "tahun_masuk", "tahun_lulus", "createdAt", "updatedAt"]
+    },
+    "Experience": {
+      "title": "Experience",
+      "description": "Organizational or professional career experience.",
+      "type": "object",
+      "properties": {
+        "kategori_pengalaman": { "type": "string", "enum": ["Organisasi", "Profesional"] },
+        "posisi": { "type": "string", "maxLength": 200 },
+        "institusi_tempat": { "type": "string", "maxLength": 200 },
+        "durasi": { "type": "string", "maxLength": 80 },
+        "deskripsi": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["kategori_pengalaman", "posisi", "institusi_tempat", "durasi", "createdAt", "updatedAt"]
+    },
+    "Achievement": {
+      "title": "Achievement",
+      "description": "Award or competition achievement.",
+      "type": "object",
+      "properties": {
+        "judul_prestasi": { "type": "string", "maxLength": 250 },
+        "penyelenggara": { "type": "string", "maxLength": 200 },
+        "tahun": { "type": "string", "maxLength": 30 },
+        "deskripsi": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["judul_prestasi", "penyelenggara", "tahun", "createdAt", "updatedAt"]
+    },
+    "Certificate": {
+      "title": "Certificate",
+      "description": "Professional credential or training certificate.",
+      "type": "object",
+      "properties": {
+        "judul": { "type": "string", "maxLength": 250 },
+        "penerbit": { "type": "string", "maxLength": 200 },
+        "tahun": { "type": "string", "maxLength": 30 },
+        "gambar_sertifikat": { "type": "string", "maxLength": 900000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["judul", "penerbit", "tahun", "createdAt", "updatedAt"]
+    },
+    "Skill": {
+      "title": "Skill",
+      "description": "Technology stack or MUA tool skill.",
+      "type": "object",
+      "properties": {
+        "nama_skill": { "type": "string", "maxLength": 120 },
+        "logo_icon": { "type": "string", "maxLength": 900000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nama_skill", "createdAt", "updatedAt"]
+    },
+    "ExpertiseCategory": {
+      "title": "ExpertiseCategory",
+      "description": "Primary expertise gateway category (e.g., Web Developer, MUA).",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 150 },
+        "tagline": { "type": "string", "maxLength": 300 },
+        "cover_image": { "type": "string", "maxLength": 900000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "tagline", "createdAt", "updatedAt"]
+    },
+    "PortfolioItem": {
+      "title": "PortfolioItem",
+      "description": "Portfolio project or MUA look linked to an ExpertiseCategory.",
+      "type": "object",
+      "properties": {
+        "category_id": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "image": { "type": "string", "maxLength": 900000 },
+        "price_or_tech": { "type": "string", "maxLength": 200 },
+        "link_url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["category_id", "title", "description", "createdAt", "updatedAt"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Client review and endorsement.",
+      "type": "object",
+      "properties": {
+        "nama_klien": { "type": "string", "maxLength": 150 },
+        "peran": { "type": "string", "maxLength": 150 },
+        "isi_review": { "type": "string", "maxLength": 2000 },
+        "foto_profil_opsional": { "type": "string", "maxLength": 900000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nama_klien", "peran", "isi_review", "createdAt", "updatedAt"]
+    },
+    "Faq": {
+      "title": "Faq",
+      "description": "Frequently asked question and answer.",
+      "type": "object",
+      "properties": {
+        "pertanyaan": { "type": "string", "maxLength": 400 },
+        "jawaban": { "type": "string", "maxLength": 4000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["pertanyaan", "jawaban", "createdAt", "updatedAt"]
+    },
+    "FooterContact": {
+      "title": "FooterContact",
+      "description": "Footer details, social links, CV PDF, Google Maps embed, and dynamic copyright.",
+      "type": "object",
+      "properties": {
+        "alamat_teks": { "type": "string", "maxLength": 500 },
+        "email": { "type": "string", "maxLength": 254 },
+        "wa": { "type": "string", "maxLength": 60 },
+        "ig": { "type": "string", "maxLength": 250 },
+        "linkedin": { "type": "string", "maxLength": 300 },
+        "cv_file": { "type": "string", "maxLength": 900000 },
+        "maps_embed_iframe_link": { "type": "string", "maxLength": 2000 },
+        "teks_copyright_dinamis": { "type": "string", "maxLength": 300 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["updatedAt"]
+    },
+    "SiteTheme": {
+      "title": "SiteTheme",
+      "description": "Active color palette theme across the public site.",
+      "type": "object",
+      "properties": {
+        "active_theme_name": {
+          "type": "string",
+          "enum": ["midnight-navy", "burgundy-wine", "espresso-taupe", "eucalyptus-porcelain", "dusty-mauve"]
+        },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["active_theme_name", "updatedAt"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "Visitor inquiry submitted from the landing page contact form.",
+      "type": "object",
+      "properties": {
+        "nama": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 254 },
+        "subjek": { "type": "string", "maxLength": 250 },
+        "pesan": { "type": "string", "maxLength": 4000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nama", "email", "subjek", "pesan", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminMarker" },
+      "description": "Trusted admin UID registry."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserAccount" },
+      "description": "Private RosseAdmin account metadata."
+    },
+    "/hero_settings/{docId}": {
+      "schema": { "$ref": "#/entities/HeroSetting" },
+      "description": "Singleton hero settings document (main)."
+    },
+    "/about_settings/{docId}": {
+      "schema": { "$ref": "#/entities/AboutSetting" },
+      "description": "Singleton about settings document (main)."
+    },
+    "/educations/{eduId}": {
+      "schema": { "$ref": "#/entities/Education" },
+      "description": "Academic history collection."
+    },
+    "/experiences/{expId}": {
+      "schema": { "$ref": "#/entities/Experience" },
+      "description": "Organizational and professional experience collection."
+    },
+    "/achievements/{achId}": {
+      "schema": { "$ref": "#/entities/Achievement" },
+      "description": "Achievements collection."
+    },
+    "/certificates/{certId}": {
+      "schema": { "$ref": "#/entities/Certificate" },
+      "description": "Certificates collection."
+    },
+    "/skills/{skillId}": {
+      "schema": { "$ref": "#/entities/Skill" },
+      "description": "Skills and tools collection."
+    },
+    "/expertise_categories/{catId}": {
+      "schema": { "$ref": "#/entities/ExpertiseCategory" },
+      "description": "Expertise gateway categories collection."
+    },
+    "/portfolio_items/{itemId}": {
+      "schema": { "$ref": "#/entities/PortfolioItem" },
+      "description": "Portfolio works linked by category_id to expertise_categories."
+    },
+    "/testimonials/{testiId}": {
+      "schema": { "$ref": "#/entities/Testimonial" },
+      "description": "Client testimonials collection."
+    },
+    "/faqs/{faqId}": {
+      "schema": { "$ref": "#/entities/Faq" },
+      "description": "Frequently asked questions collection."
+    },
+    "/footer_contacts/{docId}": {
+      "schema": { "$ref": "#/entities/FooterContact" },
+      "description": "Singleton footer contact and maps configuration (main)."
+    },
+    "/site_themes/{docId}": {
+      "schema": { "$ref": "#/entities/SiteTheme" },
+      "description": "Singleton active theme configuration (main)."
+    },
+    "/contact_messages/{msgId}": {
+      "schema": { "$ref": "#/entities/ContactMessage" },
+      "description": "Visitor contact form submissions readable strictly by admins."
+    }
+  }
+}
