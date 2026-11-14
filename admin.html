@@ -29,14 +29,16 @@
       :root {
         --bg-canvas: #0a0a0a;
         --bg-ambient: #110505;
-        --bg-surface: rgba(18, 8, 10, 0.76);
+        --bg-surface: rgba(18, 8, 10, 0.78);
         --text-primary: #f8f4f4;
         --text-muted: #b8a6a8;
         --accent-primary: #dc2626;
         --accent-deep: #8b0000;
+        --accent-bright: #ff3333;
         --glow-crimson: rgba(220, 38, 38, 0.45);
         --border-hairline: rgba(255, 255, 255, 0.1);
-        --border-crimson: rgba(220, 38, 38, 0.35);
+        --border-crimson: rgba(220, 38, 38, 0.36);
+        --morph-ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       body {
@@ -45,6 +47,7 @@
         font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
         letter-spacing: 0.01em;
         -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
 
       .ambient-backdrop {
@@ -54,34 +57,105 @@
           radial-gradient(ellipse 65% 45% at 10% 90%, rgba(127, 29, 29, 0.16), transparent 72%);
       }
 
+      /* Organic Ambient Liquid Morph Orbs */
+      .ambient-orbs-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .ambient-orb {
+        position: absolute;
+        filter: blur(74px);
+        opacity: 0.36;
+        will-change: transform, border-radius;
+      }
+
+      .ambient-orb-1 {
+        top: -10%;
+        right: -6%;
+        width: 420px;
+        height: 420px;
+        background: radial-gradient(circle at 35% 35%, rgba(220, 38, 38, 0.42), rgba(139, 0, 0, 0.18) 65%, transparent 100%);
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        animation: adminMorphOrbA 18s ease-in-out infinite alternate;
+      }
+
+      .ambient-orb-2 {
+        bottom: -12%;
+        left: -8%;
+        width: 390px;
+        height: 390px;
+        background: radial-gradient(circle at 60% 40%, rgba(185, 28, 28, 0.32), rgba(85, 4, 8, 0.14) 70%, transparent 100%);
+        border-radius: 42% 58% 66% 34% / 44% 55% 45% 56%;
+        animation: adminMorphOrbB 22s ease-in-out infinite alternate;
+      }
+
+      @keyframes adminMorphOrbA {
+        0% {
+          border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          border-radius: 44% 56% 58% 42% / 38% 62% 38% 62%;
+          transform: translate3d(-22px, 24px, 0) scale(1.06);
+        }
+        100% {
+          border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+          transform: translate3d(16px, -14px, 0) scale(0.95);
+        }
+      }
+
+      @keyframes adminMorphOrbB {
+        0% {
+          border-radius: 42% 58% 66% 34% / 44% 55% 45% 56%;
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          border-radius: 66% 34% 45% 55% / 58% 42% 58% 42%;
+          transform: translate3d(28px, -18px, 0) scale(1.07);
+        }
+        100% {
+          border-radius: 35% 65% 52% 48% / 40% 60% 40% 60%;
+          transform: translate3d(-14px, 20px, 0) scale(0.96);
+        }
+      }
+
       .glass-panel {
         background-color: var(--bg-surface);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
         border: 1px solid var(--border-hairline);
       }
 
       .bento-card {
-        background: linear-gradient(155deg, rgba(22, 10, 12, 0.8), rgba(10, 6, 7, 0.9));
+        background: linear-gradient(155deg, rgba(22, 10, 12, 0.82), rgba(10, 6, 7, 0.92));
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
         border: 1px solid var(--border-hairline);
         transition:
-          transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
-          border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
-          box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
+          transform 320ms var(--morph-ease),
+          border-color 320ms var(--morph-ease),
+          box-shadow 320ms var(--morph-ease),
+          border-radius 320ms var(--morph-ease);
       }
 
       .bento-card:hover {
         border-color: var(--border-crimson);
-        box-shadow: 0 0 18px var(--glow-crimson);
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.34);
       }
 
       .btn-crimson {
         background: linear-gradient(135deg, var(--accent-deep), var(--accent-primary));
         color: #ffffff;
         border: 1px solid rgba(255, 110, 110, 0.28);
-        transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+        transition:
+          transform 280ms var(--morph-ease),
+          box-shadow 280ms var(--morph-ease),
+          border-radius 280ms var(--morph-ease),
+          opacity 220ms ease;
       }
 
       .btn-crimson:hover {
@@ -90,26 +164,47 @@
       }
 
       .modal-surface {
-        animation: modalScaleIn 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: modalMorphIn 460ms var(--morph-ease) forwards;
       }
 
-      @keyframes modalScaleIn {
+      @keyframes modalMorphIn {
         from {
           opacity: 0;
-          transform: scale(0.96) translateY(8px);
+          transform: scale(0.94) translateY(14px);
+          border-radius: 1.15rem;
         }
         to {
           opacity: 1;
           transform: scale(1) translateY(0);
+          border-radius: 1.5rem;
         }
       }
 
       .tabular-nums {
         font-variant-numeric: tabular-nums;
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ambient-orb {
+          animation: none !important;
+        }
+        .modal-surface {
+          animation: none !important;
+        }
+        .bento-card,
+        .btn-crimson {
+          transition-duration: 120ms !important;
+        }
+      }
     </style>
   </head>
-  <body class="ambient-backdrop min-h-screen flex flex-col selection:bg-red-700 selection:text-white">
+  <body class="ambient-backdrop min-h-screen flex flex-col selection:bg-red-700 selection:text-white relative">
+    <!-- Ambient Organic Morphing Orbs -->
+    <div class="ambient-orbs-layer" aria-hidden="true">
+      <div class="ambient-orb ambient-orb-1"></div>
+      <div class="ambient-orb ambient-orb-2"></div>
+    </div>
+
     <!-- Toast Feedback Banner -->
     <div
       id="toast-banner"
@@ -119,7 +214,7 @@
     ></div>
 
     <!-- SCREEN 1: 2-Step Login Gate (Step 1: PIN -> Step 2: Google Auth for alimaturrosyidah2907@gmail.com) -->
-    <main id="auth-screen" class="flex-1 flex items-center justify-center p-6">
+    <main id="auth-screen" class="relative z-10 flex-1 flex items-center justify-center p-6">
       <div class="bento-card w-full max-w-md rounded-3xl p-8 sm:p-10 space-y-6 border border-red-500/20 shadow-2xl">
         <div class="text-center space-y-3">
           <div class="flex justify-center">
@@ -221,10 +316,10 @@
     </main>
 
     <!-- SCREEN 2: Authenticated Admin Workspace -->
-    <div id="admin-screen" class="hidden flex-1 flex flex-col lg:flex-row">
+    <div id="admin-screen" class="hidden relative z-10 flex-1 flex flex-col lg:flex-row">
       <!-- Desktop Sidebar -->
-      <aside class="hidden lg:flex lg:w-72 lg:flex-col border-r border-white/10 bg-black/55 backdrop-blur-xl p-5 justify-between shrink-0">
-        <div class="space-y-6">
+      <aside class="hidden lg:flex lg:w-72 lg:flex-col border-r border-white/10 bg-black/55 backdrop-blur-xl p-5 justify-between shrink-0 max-h-screen sticky top-0">
+        <div class="space-y-5 overflow-y-auto pr-1 flex-1">
           <div class="flex items-center justify-between px-2">
             <a href="index.html" class="flex items-center gap-2 focus:outline-none">
               <img src="./assets/logo-rossestudio.png" alt="RosseAdmin" class="h-8 w-auto object-contain brightness-0 invert" referrerpolicy="no-referrer" onerror="this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden');" />
@@ -232,10 +327,10 @@
             </a>
             <span class="text-xs font-medium text-red-300">Admin</span>
           </div>
-          <nav id="sidebar-nav" aria-label="Menu Admin" class="space-y-1"></nav>
+          <nav id="sidebar-nav" aria-label="Menu Admin" class="space-y-4"></nav>
         </div>
 
-        <div class="pt-4 border-t border-white/10 space-y-2.5">
+        <div class="pt-4 mt-3 border-t border-white/10 space-y-2.5 shrink-0">
           <div class="px-2">
             <div id="admin-user-email" class="text-xs text-neutral-300 truncate"></div>
           </div>
@@ -376,8 +471,10 @@
         escapeHtml,
         verifyAdminPin,
         isAuthorizedAdminUser,
-        compressImageToBase64,
-        readPdfAsDataUrl,
+        processUniversalFileUpload,
+        classifyMediaPreview,
+        detectSocialPlatform,
+        parseTagList,
         sortByNewest,
         signInWithPopup,
         sendEmailVerification,
@@ -396,28 +493,57 @@
         writeBatch,
       } from './firebase-config.js';
 
-      const NAV_ITEMS = [
-        { id: 'overview', label: 'Ringkasan' },
-        { id: 'hero', label: 'Hero & Profil' },
-        { id: 'about', label: 'Tentang & Trivia' },
-        { id: 'educations', label: 'Pendidikan' },
-        { id: 'experiences', label: 'Pengalaman' },
-        { id: 'achievements', label: 'Prestasi' },
-        { id: 'certificates', label: 'Sertifikat' },
-        { id: 'skills', label: 'Skills' },
-        { id: 'categories', label: 'Kategori Keahlian' },
-        { id: 'portfolios', label: 'Portofolio' },
-        { id: 'testimonials', label: 'Testimoni' },
-        { id: 'faqs', label: 'FAQ' },
-        { id: 'footer', label: 'Kontak & Maps' },
-        { id: 'messages', label: 'Kotak Masuk' },
-        { id: 'themes', label: 'Tema Warna' },
+      const NAV_GROUPS = [
+        {
+          label: 'Identitas & Profil',
+          items: [
+            { id: 'overview', label: 'Ringkasan' },
+            { id: 'hero', label: 'Hero & Profil' },
+            { id: 'hero_socials', label: 'Tautan Sosial Hero' },
+            { id: 'about', label: 'Tentang & Trivia' },
+          ],
+        },
+        {
+          label: 'Showcase & Karya',
+          items: [
+            { id: 'app_projects', label: 'Proyek Aplikasi & Web' },
+            { id: 'designs', label: 'Karya Desain & Visual' },
+            { id: 'tutorials', label: 'Video Tutorial' },
+            { id: 'books', label: 'Buku & Publikasi' },
+            { id: 'journals', label: 'Karya Ilmiah & Jurnal' },
+          ],
+        },
+        {
+          label: 'Latar & Keahlian',
+          items: [
+            { id: 'categories', label: 'Kategori Keahlian' },
+            { id: 'portfolios', label: 'Portofolio' },
+            { id: 'certificates', label: 'Sertifikat' },
+            { id: 'skills', label: 'Skills' },
+            { id: 'educations', label: 'Pendidikan' },
+            { id: 'experiences', label: 'Pengalaman' },
+            { id: 'achievements', label: 'Prestasi' },
+          ],
+        },
+        {
+          label: 'Relasi & Pengaturan',
+          items: [
+            { id: 'testimonials', label: 'Testimoni' },
+            { id: 'faqs', label: 'FAQ' },
+            { id: 'footer', label: 'Kontak, Maps & CV' },
+            { id: 'messages', label: 'Kotak Masuk' },
+            { id: 'themes', label: 'Tema Warna' },
+          ],
+        },
       ];
+
+      const NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 
       const adminState = {
         user: null,
         activeSection: 'overview',
         hero: null,
+        heroSocials: [],
         about: null,
         educations: [],
         experiences: [],
@@ -426,6 +552,11 @@
         skills: [],
         categories: [],
         portfolios: [],
+        appProjects: [],
+        designs: [],
+        tutorials: [],
+        books: [],
+        journals: [],
         testimonials: [],
         faqs: [],
         footer: null,
@@ -447,7 +578,7 @@
             : 'bg-[#120b0c]/95 border-red-500/35 text-white'
         }`;
         toastEl.classList.remove('hidden');
-        toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 4200);
+        toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 5200);
       }
 
       // 2-Step Auth Handlers (Step 1: PIN -> Step 2: Google Auth for alimaturrosyidah2907@gmail.com)
@@ -692,6 +823,7 @@
         };
 
         watchSingleton('hero_settings', 'hero');
+        watchList('hero_socials', 'heroSocials');
         watchSingleton('about_settings', 'about');
         watchSingleton('footer_contacts', 'footer');
         watchList('educations', 'educations');
@@ -701,6 +833,11 @@
         watchList('skills', 'skills');
         watchList('expertise_categories', 'categories');
         watchList('portfolio_items', 'portfolios');
+        watchList('app_projects', 'appProjects');
+        watchList('designs', 'designs');
+        watchList('tutorials', 'tutorials');
+        watchList('books', 'books');
+        watchList('journals', 'journals');
         watchList('testimonials', 'testimonials');
         watchList('faqs', 'faqs');
         watchList('contact_messages', 'messages');
@@ -722,6 +859,12 @@
 
       function renderSidebar() {
         const badges = {
+          hero_socials: adminState.heroSocials.length,
+          app_projects: adminState.appProjects.length,
+          designs: adminState.designs.length,
+          tutorials: adminState.tutorials.length,
+          books: adminState.books.length,
+          journals: adminState.journals.length,
           educations: adminState.educations.length,
           experiences: adminState.experiences.length,
           achievements: adminState.achievements.length,
@@ -734,14 +877,14 @@
           messages: adminState.messages.length,
         };
 
-        const buildBtn = (item, isMobile = false) => {
+        const buildBtn = (item) => {
           const active = adminState.activeSection === item.id;
           const count = badges[item.id];
           return `
             <button
               type="button"
               data-nav-section="${item.id}"
-              class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left ${
+              class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all text-left ${
                 active ? 'btn-crimson' : 'text-neutral-300 hover:bg-white/5 hover:text-white'
               }"
             >
@@ -751,8 +894,16 @@
           `;
         };
 
-        document.getElementById('sidebar-nav').innerHTML = NAV_ITEMS.map((i) => buildBtn(i, false)).join('');
-        document.getElementById('mobile-sidebar-nav').innerHTML = NAV_ITEMS.map((i) => buildBtn(i, true)).join('');
+        document.getElementById('sidebar-nav').innerHTML = NAV_GROUPS.map(
+          (g) => `
+            <div class="space-y-1">
+              <div class="px-3 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">${escapeHtml(g.label)}</div>
+              ${g.items.map(buildBtn).join('')}
+            </div>
+          `
+        ).join('');
+
+        document.getElementById('mobile-sidebar-nav').innerHTML = NAV_ITEMS.map(buildBtn).join('');
 
         document.querySelectorAll('[data-nav-section]').forEach((btn) => {
           btn.addEventListener('click', () => {
@@ -811,13 +962,45 @@
           await deleteDoc(doc(db, colName, docId));
           showToast('Data berhasil dihapus.');
           closeDeleteModal();
-        } catch (err) {
+        } catch {
           showToast('Gagal menghapus data. Pastikan email admin terverifikasi.', true);
         }
       });
 
-      // Helper for rendering image/PDF upload input inside Pop-up Modal
-      function fieldInputHtml(field, currentVal = '') {
+      function renderUniversalPreviewHtml(dataUrl = '', fileName = '') {
+        const preview = classifyMediaPreview(dataUrl, fileName, '');
+        if (!preview.hasFile) {
+          return '<span class="text-xs text-neutral-500">Belum ada file dipilih. Format apa pun diterima (gambar otomatis dikompres, file lain maks. 750 KB).</span>';
+        }
+        if (preview.kind === 'image') {
+          return `
+            <div class="flex items-center gap-3">
+              <img src="${escapeHtml(preview.src)}" alt="Pratinjau" class="h-20 w-20 rounded-xl object-cover border border-white/15 shrink-0" referrerpolicy="no-referrer" />
+              <div class="min-w-0 text-xs text-neutral-300">
+                <div class="font-medium text-white truncate">${escapeHtml(fileName || 'Gambar siap disimpan')}</div>
+                <div class="text-neutral-500">Teroptimasi untuk Firestore</div>
+              </div>
+            </div>
+          `;
+        }
+        if (preview.kind === 'video') {
+          return `
+            <div class="space-y-1.5">
+              <video src="${escapeHtml(preview.src)}" controls class="max-h-36 rounded-xl border border-white/15 bg-black"></video>
+              <div class="text-xs text-neutral-300 truncate">${escapeHtml(fileName || 'Video siap disimpan')}</div>
+            </div>
+          `;
+        }
+        return `
+          <div class="inline-flex items-center gap-2.5 rounded-xl border border-red-500/30 bg-red-950/25 px-3 py-2 text-xs text-neutral-200 max-w-full">
+            <span class="px-2 py-0.5 rounded-md bg-red-500/20 border border-red-500/35 text-red-300 font-semibold shrink-0">${escapeHtml(preview.extLabel || 'FILE')}</span>
+            <span class="truncate">${escapeHtml(fileName || preview.downloadName || 'File tersimpan & siap dibuka pengunjung')}</span>
+          </div>
+        `;
+      }
+
+      // Helper for rendering input + Universal File Uploader inside Pop-up Modal
+      function fieldInputHtml(field, currentVal = '', existingDoc = null) {
         const val = escapeHtml(currentVal || '');
         const req = field.required ? 'required' : '';
         if (field.type === 'textarea') {
@@ -838,38 +1021,27 @@
             </div>
           `;
         }
-        if (field.type === 'image') {
+        if (field.type === 'universal_file') {
+          const nameField = field.fileNameField || '';
+          const currentFileName = nameField && existingDoc ? existingDoc[nameField] || '' : '';
           return `
-            <div class="space-y-2">
-              <label class="block text-xs font-medium text-neutral-300">${escapeHtml(field.label)}</label>
-              <input type="hidden" id="f-${field.name}" name="${field.name}" value="${val}" />
-              <div class="flex flex-wrap items-center gap-3">
-                <label class="px-4 py-2 rounded-xl border border-white/15 bg-black/50 hover:border-red-500/50 text-xs font-medium text-neutral-200 cursor-pointer">
-                  Pilih Gambar
-                  <input type="file" accept="image/*" data-img-target="f-${field.name}" class="hidden" />
-                </label>
-                <button type="button" data-clear-target="f-${field.name}" class="px-3 py-2 rounded-xl border border-white/10 text-xs text-neutral-400 hover:text-white">Hapus Gambar</button>
+            <div class="rounded-2xl border border-white/10 bg-black/35 p-4 space-y-2.5">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <label class="block text-xs font-medium text-neutral-200">${escapeHtml(field.label)}</label>
+                <span class="text-[11px] text-neutral-400">Semua jenis file (*/*) · Maks 750 KB</span>
               </div>
+              <input type="hidden" id="f-${field.name}" name="${field.name}" value="${val}" />
+              ${nameField ? `<input type="hidden" id="f-${nameField}" name="${nameField}" value="${escapeHtml(currentFileName)}" />` : ''}
+              <div class="flex flex-wrap items-center gap-2.5">
+                <label class="px-4 py-2 rounded-xl border border-white/15 bg-black/60 hover:border-red-500/50 text-xs font-medium text-neutral-100 cursor-pointer transition-colors">
+                  Pilih File Apa Pun
+                  <input type="file" accept="*/*" data-universal-target="f-${field.name}" data-name-target="${nameField ? `f-${nameField}` : ''}" class="hidden" />
+                </label>
+                <button type="button" data-clear-universal="f-${field.name}" data-name-target="${nameField ? `f-${nameField}` : ''}" class="px-3 py-2 rounded-xl border border-white/10 text-xs text-neutral-400 hover:text-white transition-colors">Hapus File</button>
+              </div>
+              <div id="warn-f-${field.name}" class="hidden rounded-xl border border-amber-500/40 bg-amber-950/50 px-3 py-2 text-xs text-amber-200"></div>
               <div id="preview-f-${field.name}" class="pt-1">
-                ${currentVal ? `<img src="${val}" alt="Pratinjau" class="h-24 w-auto rounded-xl object-cover border border-white/15" referrerpolicy="no-referrer" />` : `<span class="text-xs text-neutral-500">Belum ada gambar dipilih.</span>`}
-              </div>
-            </div>
-          `;
-        }
-        if (field.type === 'pdf') {
-          return `
-            <div class="space-y-2">
-              <label class="block text-xs font-medium text-neutral-300">${escapeHtml(field.label)}</label>
-              <input type="hidden" id="f-${field.name}" name="${field.name}" value="${val}" />
-              <div class="flex flex-wrap items-center gap-3">
-                <label class="px-4 py-2 rounded-xl border border-white/15 bg-black/50 hover:border-red-500/50 text-xs font-medium text-neutral-200 cursor-pointer">
-                  Unggah PDF (Maks 600KB)
-                  <input type="file" accept="application/pdf" data-pdf-target="f-${field.name}" class="hidden" />
-                </label>
-                <button type="button" data-clear-pdf="f-${field.name}" class="px-3 py-2 rounded-xl border border-white/10 text-xs text-neutral-400 hover:text-white">Hapus CV</button>
-              </div>
-              <div id="preview-f-${field.name}" class="text-xs text-neutral-400">
-                ${currentVal ? 'File PDF tersimpan dan siap diunduh pengunjung.' : 'Belum ada file CV diunggah.'}
+                ${renderUniversalPreviewHtml(currentVal, currentFileName)}
               </div>
             </div>
           `;
@@ -887,9 +1059,17 @@
           title: 'Pengaturan Hero',
           singletonId: 'main',
           fields: [
-            { name: 'headline', label: 'Headline Utama', placeholder: 'Contoh: RosseStudio — Software Engineer & Makeup Artist' },
+            { name: 'headline', label: 'Headline Utama', placeholder: 'Contoh: Alimatur Rosyidah' },
             { name: 'sub_headline', label: 'Sub-Headline / Ringkasan', type: 'textarea', rows: 3, placeholder: 'Deskripsi singkat identitas profesional Anda' },
-            { name: 'foto_profil', label: 'Foto Profil (Tampil dengan Glow Merah Melingkar)', type: 'image' },
+            { name: 'foto_profil', fileNameField: 'foto_profil_nama', label: 'Foto / Media Profil (Tampil dengan Glow Merah Melingkar)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://...' },
+          ],
+        },
+        hero_socials: {
+          title: 'Tautan Sosial Hero',
+          fields: [
+            { name: 'platform', label: 'Nama Platform', required: true, placeholder: 'Contoh: GitHub, LinkedIn, Instagram, YouTube, TikTok, WhatsApp, Email' },
+            { name: 'url', label: 'Tautan / Nomor WA / Alamat Email', required: true, placeholder: 'https://github.com/username atau 08123456789 atau nama@gmail.com' },
           ],
         },
         about_settings: {
@@ -900,13 +1080,82 @@
             { name: 'trivia_unik', label: 'Trivia / Fakta Singkat (Satu baris per item, format Label: Nilai)', type: 'textarea', rows: 4, placeholder: 'Domisili: Jawa Timur\nFokus: Full-Stack & Bridal MUA' },
           ],
         },
+        app_projects: {
+          title: 'Proyek Aplikasi & Website',
+          fields: [
+            { name: 'kategori_badge', label: 'Badge Kategori', required: true, placeholder: 'Contoh: Aplikasi & Website / Mobile App / Web System' },
+            { name: 'judul', label: 'Judul Proyek', required: true, placeholder: 'Nama aplikasi atau platform' },
+            { name: 'subjudul', label: 'Sub-judul Singkat (Opsional)', placeholder: 'Sistem Manajemen Berbasis Cloud' },
+            { name: 'deskripsi', label: 'Deskripsi Proyek', type: 'textarea', rows: 4, required: true },
+            { name: 'tags', label: 'Tags / Tech Stack (Pisahkan dengan koma)', placeholder: 'React, Tailwind CSS, Firebase, Node.js' },
+            { name: 'media_visual', fileNameField: 'media_visual_nama', label: 'Media Visual / Preview Utama (Gambar, Video, PDF, atau File)', type: 'universal_file' },
+            { name: 'video_link', label: 'Link Video Demo YouTube / Google Drive (Opsional)', placeholder: 'https://youtu.be/... atau https://drive.google.com/file/d/...' },
+            { name: 'file_lampiran', fileNameField: 'file_lampiran_nama', label: 'File Lampiran Proyek (APK, ZIP, PDF Dokumentasi - Opsional)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://demo-atau-repo-github.com' },
+          ],
+        },
+        designs: {
+          title: 'Karya Desain & Visual',
+          fields: [
+            { name: 'kategori_bebas', label: 'Kategori Karya (Ketik Bebas Sesuai Kebutuhan)', required: true, placeholder: 'Ketik bebas: Desain UI/UX, Branding, Poster, Editorial Look, dll.' },
+            { name: 'badge_label', label: 'Badge Tambahan (Opsional)', placeholder: 'Contoh: KARYA 1 / 2026 / Concept' },
+            { name: 'judul', label: 'Judul Karya Desain', required: true },
+            { name: 'deskripsi', label: 'Deskripsi Karya (Opsional)', type: 'textarea', rows: 3 },
+            { name: 'file_preview', fileNameField: 'file_preview_nama', label: 'File Karya / Preview (Gambar, PDF, Figma Export, Video, ZIP, dll)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://figma.com/... atau Google Drive' },
+          ],
+        },
+        tutorials: {
+          title: 'Video Tutorial',
+          fields: [
+            { name: 'kategori_badge', label: 'Badge Kategori', required: true, placeholder: 'Contoh: TUTORIAL / Live Demo / Kelas Video' },
+            { name: 'judul', label: 'Judul Tutorial', required: true },
+            { name: 'deskripsi', label: 'Deskripsi Materi (Opsional)', type: 'textarea', rows: 3 },
+            { name: 'thumbnail_media', fileNameField: 'thumbnail_media_nama', label: 'Thumbnail Video atau File Video/Materi (Gambar, MP4, PDF)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL Video (Opsional - YouTube / Google Drive)', placeholder: 'https://www.youtube.com/watch?v=... atau https://drive.google.com/...' },
+          ],
+        },
+        books: {
+          title: 'Buku & Publikasi',
+          fields: [
+            { name: 'badge_nomor', label: 'Nomor / Label Buku', required: true, placeholder: 'Contoh: BUKU 1 / E-BOOK / MODUL' },
+            { name: 'judul', label: 'Judul Buku', required: true },
+            { name: 'deskripsi', label: 'Sinopsis / Deskripsi Buku (Opsional)', type: 'textarea', rows: 3 },
+            { name: 'tema', label: 'Tema / Topik (Opsional)', placeholder: 'Contoh: Sistem Informasi & Rekayasa Web' },
+            { name: 'lokasi', label: 'Lokasi / Penerbit (Opsional)', placeholder: 'Contoh: Tuban / Penerbit Mandiri' },
+            { name: 'jenis', label: 'Jenis Publikasi (Opsional)', placeholder: 'Contoh: Buku Ajar / Referensi / Panduan' },
+            { name: 'cover_file', fileNameField: 'cover_file_nama', label: 'File Cover atau Naskah Buku (Gambar, PDF, DOCX, EPUB, dll)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://drive.google.com/... atau tautan baca' },
+          ],
+        },
+        journals: {
+          title: 'Karya Ilmiah & Jurnal',
+          fields: [
+            { name: 'label', label: 'Label / Urutan', required: true, placeholder: 'Contoh: JURNAL 1 / PROSIDING / ARTIKEL' },
+            { name: 'judul', label: 'Judul Karya Ilmiah', required: true },
+            { name: 'subjudul_instansi', label: 'Nama Jurnal / Konferensi / Instansi (Opsional)', placeholder: 'Contoh: Jurnal Sistem Informasi Indonesia (Vol. 4)' },
+            {
+              name: 'status',
+              label: 'Status Publikasi',
+              type: 'select',
+              required: true,
+              options: [
+                { value: 'Dalam Proses', label: 'Dalam Proses' },
+                { value: 'Terpublikasi', label: 'Terpublikasi' },
+              ],
+            },
+            { name: 'deskripsi', label: 'Abstrak Singkat / Catatan (Opsional)', type: 'textarea', rows: 3 },
+            { name: 'file_dokumen', fileNameField: 'file_dokumen_nama', label: 'File Dokumen Jurnal (PDF, DOCX, dll)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / DOI / URL (Opsional)', placeholder: 'https://doi.org/... atau Google Drive' },
+          ],
+        },
         educations: {
           title: 'Pendidikan',
           fields: [
             { name: 'institusi', label: 'Institusi / Universitas', required: true },
             { name: 'jurusan', label: 'Jurusan / Program Studi', required: true },
-            { name: 'tahun_masuk', label: 'Tahun Masuk', required: true, placeholder: '2021' },
-            { name: 'tahun_lulus', label: 'Tahun Lulus', required: true, placeholder: '2025 / Sekarang' },
+            { name: 'tahun_masuk', label: 'Tahun Masuk', required: true, placeholder: '2024' },
+            { name: 'tahun_lulus', label: 'Tahun Lulus', required: true, placeholder: 'Sekarang' },
             { name: 'deskripsi', label: 'Catatan Akademik (Opsional)', type: 'textarea', rows: 3 },
           ],
         },
@@ -944,14 +1193,16 @@
             { name: 'judul', label: 'Judul Sertifikat', required: true },
             { name: 'penerbit', label: 'Lembaga Penerbit', required: true },
             { name: 'tahun', label: 'Tahun Terbit', required: true, placeholder: '2025' },
-            { name: 'gambar_sertifikat', label: 'Gambar Sertifikat', type: 'image' },
+            { name: 'gambar_sertifikat', fileNameField: 'gambar_sertifikat_nama', label: 'File / Gambar Sertifikat (Gambar, PDF, dll)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL Verifikasi (Opsional)', placeholder: 'https://...' },
           ],
         },
         skills: {
           title: 'Skill / Perangkat',
           fields: [
             { name: 'nama_skill', label: 'Nama Skill', required: true, placeholder: 'TypeScript / Bridal Airbrush' },
-            { name: 'logo_icon', label: 'Ikon / Logo (Opsional)', type: 'image' },
+            { name: 'logo_icon', fileNameField: 'logo_icon_nama', label: 'Ikon / Logo / Dokumen Skill (Opsional)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://...' },
           ],
         },
         expertise_categories: {
@@ -959,7 +1210,8 @@
           fields: [
             { name: 'title', label: 'Nama Kategori', required: true, placeholder: 'Web Developer' },
             { name: 'tagline', label: 'Tagline Singkat', required: true, placeholder: 'Aplikasi web modern dan berkecepatan tinggi' },
-            { name: 'cover_image', label: 'Gambar Sampul Kategori', type: 'image' },
+            { name: 'cover_image', fileNameField: 'cover_image_nama', label: 'File Sampul Kategori (Gambar, PDF, dll)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://...' },
           ],
         },
         portfolio_items: {
@@ -969,8 +1221,8 @@
             { name: 'title', label: 'Judul Karya', required: true },
             { name: 'price_or_tech', label: 'Tech Stack / Paket Layanan', placeholder: 'React, Firebase / Paket Bridal' },
             { name: 'description', label: 'Deskripsi Karya', type: 'textarea', rows: 4, required: true },
-            { name: 'link_url', label: 'Tautan Eksternal (Opsional)', placeholder: 'https://...' },
-            { name: 'image', label: 'Gambar Karya', type: 'image' },
+            { name: 'image', fileNameField: 'image_nama', label: 'File / Gambar Karya (Gambar, PDF, Video, dll)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://...' },
           ],
         },
         testimonials: {
@@ -979,7 +1231,8 @@
             { name: 'nama_klien', label: 'Nama Klien', required: true },
             { name: 'peran', label: 'Peran / Perusahaan / Acara', required: true },
             { name: 'isi_review', label: 'Isi Ulasan', type: 'textarea', rows: 4, required: true },
-            { name: 'foto_profil_opsional', label: 'Foto Klien (Opsional)', type: 'image' },
+            { name: 'foto_profil_opsional', fileNameField: 'foto_profil_nama', label: 'Foto / Lampiran Klien (Opsional)', type: 'universal_file' },
+            { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://...' },
           ],
         },
         faqs: {
@@ -999,7 +1252,8 @@
             { name: 'ig', label: 'Username / Link Instagram' },
             { name: 'linkedin', label: 'URL LinkedIn' },
             { name: 'maps_embed_iframe_link', label: 'Google Maps (Tempel <iframe> Embed atau tautan https://maps.app.goo.gl/...)', type: 'textarea', rows: 3, placeholder: 'Jika memakai maps.app.goo.gl, pastikan kolom Alamat Studio di atas juga diisi agar peta tampil otomatis.' },
-            { name: 'cv_file', label: 'File CV (PDF)', type: 'pdf' },
+            { name: 'cv_file', fileNameField: 'cv_file_nama', label: 'File CV / Resume (PDF, DOCX, Gambar, dll - Maks 750 KB)', type: 'universal_file' },
+            { name: 'cv_link_url', label: 'Link Eksternal / URL CV (Opsional - Google Drive / Canva)', placeholder: 'https://drive.google.com/...' },
             { name: 'teks_copyright_dinamis', label: 'Teks Hak Cipta Footer', placeholder: '© 2026 RosseStudio. Seluruh hak cipta dilindungi.' },
           ],
         },
@@ -1023,55 +1277,56 @@
                   options: adminState.categories.map((c) => ({ value: c.id, label: c.title })),
                 }
               : f;
-            return fieldInputHtml(hydratedField, existingDoc?.[f.name] || '');
+            return fieldInputHtml(hydratedField, existingDoc?.[f.name] || '', existingDoc);
           })
           .join('');
         crudFieldsEl.innerHTML = fieldsHtml;
 
-        // Bind image compression uploaders
-        crudFieldsEl.querySelectorAll('[data-img-target]').forEach((input) => {
+        // Bind Universal File Uploaders (accept="*/*")
+        crudFieldsEl.querySelectorAll('[data-universal-target]').forEach((input) => {
           input.addEventListener('change', async (e) => {
             const file = e.target.files?.[0];
             if (!file) return;
-            const targetId = input.dataset.imgTarget;
+            const targetId = input.dataset.universalTarget;
+            const nameTargetId = input.dataset.nameTarget;
+            const warnEl = document.getElementById(`warn-${targetId}`);
+            if (warnEl) {
+              warnEl.classList.add('hidden');
+              warnEl.textContent = '';
+            }
             try {
-              const base64 = await compressImageToBase64(file);
-              document.getElementById(targetId).value = base64;
-              document.getElementById(`preview-${targetId}`).innerHTML = `<img src="${escapeHtml(base64)}" alt="Pratinjau" class="h-24 w-auto rounded-xl object-cover border border-white/15" />`;
+              const res = await processUniversalFileUpload(file);
+              document.getElementById(targetId).value = res.dataUrl;
+              if (nameTargetId && document.getElementById(nameTargetId)) {
+                document.getElementById(nameTargetId).value = res.fileName;
+              }
+              document.getElementById(`preview-${targetId}`).innerHTML = renderUniversalPreviewHtml(res.dataUrl, res.fileName);
             } catch (err) {
-              showToast(err.message || 'Gagal memproses gambar.', true);
+              const msg = err.message || 'Gagal memproses file.';
+              if (warnEl) {
+                warnEl.textContent = msg;
+                warnEl.classList.remove('hidden');
+              }
+              showToast(msg, true);
+              input.value = '';
             }
           });
         });
 
-        crudFieldsEl.querySelectorAll('[data-clear-target]').forEach((btn) => {
+        crudFieldsEl.querySelectorAll('[data-clear-universal]').forEach((btn) => {
           btn.addEventListener('click', () => {
-            const targetId = btn.dataset.clearTarget;
+            const targetId = btn.dataset.clearUniversal;
+            const nameTargetId = btn.dataset.nameTarget;
             document.getElementById(targetId).value = '';
-            document.getElementById(`preview-${targetId}`).innerHTML = '<span class="text-xs text-neutral-500">Gambar dihapus.</span>';
-          });
-        });
-
-        crudFieldsEl.querySelectorAll('[data-pdf-target]').forEach((input) => {
-          input.addEventListener('change', async (e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            const targetId = input.dataset.pdfTarget;
-            try {
-              const dataUrl = await readPdfAsDataUrl(file);
-              document.getElementById(targetId).value = dataUrl;
-              document.getElementById(`preview-${targetId}`).textContent = `File "${file.name}" siap disimpan.`;
-            } catch (err) {
-              showToast(err.message || 'Gagal membaca PDF.', true);
+            if (nameTargetId && document.getElementById(nameTargetId)) {
+              document.getElementById(nameTargetId).value = '';
             }
-          });
-        });
-
-        crudFieldsEl.querySelectorAll('[data-clear-pdf]').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const targetId = btn.dataset.clearPdf;
-            document.getElementById(targetId).value = '';
-            document.getElementById(`preview-${targetId}`).textContent = 'File CV dihapus.';
+            const warnEl = document.getElementById(`warn-${targetId}`);
+            if (warnEl) {
+              warnEl.classList.add('hidden');
+              warnEl.textContent = '';
+            }
+            document.getElementById(`preview-${targetId}`).innerHTML = '<span class="text-xs text-neutral-500">File dihapus.</span>';
           });
         });
 
@@ -1092,14 +1347,28 @@
           const formData = new FormData(crudForm);
           schema.fields.forEach((f) => {
             const val = String(formData.get(f.name) ?? '').trim();
-            if (val || !schema.singletonId) {
-              if (val) data[f.name] = val;
-            }
-            // Allow clearing optional strings cleanly on update
-            if ((val === '' && existingDoc && !f.required) || schema.singletonId) {
+            if (val) {
               data[f.name] = val;
+            } else if ((existingDoc && !f.required) || schema.singletonId) {
+              data[f.name] = '';
+            }
+
+            if (f.fileNameField) {
+              const fnVal = val ? String(formData.get(f.fileNameField) ?? '').trim() : '';
+              if (fnVal) {
+                data[f.fileNameField] = fnVal;
+              } else if (existingDoc || schema.singletonId) {
+                data[f.fileNameField] = '';
+              }
             }
           });
+
+          const payloadBytes = new Blob([JSON.stringify(data)]).size;
+          if (payloadBytes > 995000) {
+            throw new Error(
+              'Total ukuran lampiran melebihi batas dokumen Firestore (1 MB). Hapus salah satu file besar dan gunakan Link Eksternal / URL (Google Drive).'
+            );
+          }
 
           if (schema.singletonId) {
             await setDoc(doc(db, colName, schema.singletonId), {
@@ -1123,12 +1392,33 @@
           closeCrudModal();
         } catch (err) {
           console.error(err);
-          showToast('Gagal menyimpan ke Firestore. Periksa verifikasi email dan aturan keamanan.', true);
+          showToast(err?.message || 'Gagal menyimpan ke Firestore. Periksa verifikasi email dan aturan keamanan.', true);
         } finally {
           saveBtn.disabled = false;
           saveBtn.textContent = 'Simpan Perubahan';
         }
       });
+
+      function renderCardThumb(fileVal, fileName = '', extUrl = '') {
+        const preview = classifyMediaPreview(fileVal, fileName, extUrl);
+        if (!preview.hasFile && preview.kind !== 'video-embed') return '';
+        if (preview.kind === 'image') {
+          return `<img src="${escapeHtml(preview.src)}" alt="" class="w-16 h-16 rounded-xl object-cover border border-white/15 shrink-0" referrerpolicy="no-referrer" />`;
+        }
+        if (preview.kind === 'video' || preview.kind === 'video-embed') {
+          return `
+            <div class="w-16 h-16 rounded-xl border border-red-500/35 bg-red-950/35 flex flex-col items-center justify-center shrink-0 text-red-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <span class="text-[10px] font-semibold mt-0.5">VIDEO</span>
+            </div>
+          `;
+        }
+        return `
+          <div class="w-16 h-16 rounded-xl border border-red-500/30 bg-red-950/30 flex flex-col items-center justify-center shrink-0 text-red-200 px-1 text-center">
+            <span class="text-xs font-bold tracking-wider truncate max-w-full">${escapeHtml(preview.extLabel || 'FILE')}</span>
+          </div>
+        `;
+      }
 
       // Render Active Section
       function renderActiveSection() {
@@ -1137,11 +1427,17 @@
 
         if (s === 'overview') {
           const cards = [
+            { id: 'app_projects', label: 'Proyek Aplikasi & Web', count: adminState.appProjects.length },
+            { id: 'designs', label: 'Karya Desain & Visual', count: adminState.designs.length },
+            { id: 'tutorials', label: 'Video Tutorial', count: adminState.tutorials.length },
+            { id: 'books', label: 'Buku & Publikasi', count: adminState.books.length },
+            { id: 'journals', label: 'Karya Ilmiah & Jurnal', count: adminState.journals.length },
+            { id: 'certificates', label: 'Sertifikat', count: adminState.certificates.length },
             { id: 'categories', label: 'Kategori Keahlian', count: adminState.categories.length },
             { id: 'portfolios', label: 'Item Portofolio', count: adminState.portfolios.length },
+            { id: 'hero_socials', label: 'Tautan Sosial Hero', count: adminState.heroSocials.length },
             { id: 'experiences', label: 'Pengalaman', count: adminState.experiences.length },
             { id: 'skills', label: 'Skills', count: adminState.skills.length },
-            { id: 'certificates', label: 'Sertifikat', count: adminState.certificates.length },
             { id: 'messages', label: 'Pesan Masuk', count: adminState.messages.length },
           ];
           root.innerHTML = `
@@ -1149,21 +1445,25 @@
               <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h1 class="font-display text-3xl font-semibold text-white">Ringkasan RosseAdmin</h1>
-                  <p class="text-sm mt-1" style="color: var(--text-muted);">Semua formulir penambahan dan penyuntingan terbuka melalui pop-up modal.</p>
+                  <p class="text-sm mt-1" style="color: var(--text-muted);">Semua formulir penambahan, upload file universal, dan penyuntingan terbuka melalui pop-up modal.</p>
                 </div>
-                <button type="button" id="btn-quick-hero" class="btn-crimson px-5 py-2.5 rounded-xl text-xs font-semibold">Edit Pengaturan Hero</button>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" id="btn-quick-hero" class="btn-crimson px-4 py-2.5 rounded-xl text-xs font-semibold">Edit Pengaturan Hero</button>
+                  <button type="button" id="btn-quick-footer" class="px-4 py-2.5 rounded-xl border border-white/15 text-xs font-medium text-neutral-200 hover:border-red-500/50 transition-colors">Edit Kontak &amp; Maps</button>
+                </div>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 ${cards.map((c) => `
-                  <button type="button" data-jump="${c.id}" class="bento-card rounded-2xl p-6 text-left space-y-2">
-                    <div class="text-xs font-medium text-red-300">${escapeHtml(c.label)}</div>
-                    <div class="font-display text-4xl font-semibold text-white tabular-nums">${c.count}</div>
+                  <button type="button" data-jump="${c.id}" class="bento-card rounded-2xl p-5 text-left space-y-2">
+                    <div class="text-xs font-medium text-red-300 truncate">${escapeHtml(c.label)}</div>
+                    <div class="font-display text-3xl font-semibold text-white tabular-nums">${c.count}</div>
                   </button>
                 `).join('')}
               </div>
             </div>
           `;
           document.getElementById('btn-quick-hero').addEventListener('click', () => openCrudModal('hero_settings', adminState.hero));
+          document.getElementById('btn-quick-footer').addEventListener('click', () => openCrudModal('footer_contacts', adminState.footer));
           root.querySelectorAll('[data-jump]').forEach((b) => {
             b.addEventListener('click', () => {
               adminState.activeSection = b.dataset.jump;
@@ -1176,14 +1476,24 @@
 
         if (s === 'hero') {
           const h = adminState.hero || {};
+          const heroMedia = classifyMediaPreview(h.foto_profil, h.foto_profil_nama, h.link_url);
           root.innerHTML = `
             <div class="space-y-6">
               <div class="flex flex-wrap items-center justify-between gap-4">
                 <h1 class="font-display text-3xl font-semibold text-white">Hero &amp; Foto Profil</h1>
-                <button type="button" id="btn-edit-singleton" class="btn-crimson px-5 py-2.5 rounded-xl text-xs font-semibold">Edit Pengaturan Hero</button>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" id="btn-jump-socials" class="px-4 py-2.5 rounded-xl border border-white/15 text-xs font-medium text-neutral-200 hover:border-red-500/50 transition-colors">
+                    Kelola Tautan Sosial (${adminState.heroSocials.length})
+                  </button>
+                  <button type="button" id="btn-edit-singleton" class="btn-crimson px-5 py-2.5 rounded-xl text-xs font-semibold">Edit Pengaturan Hero</button>
+                </div>
               </div>
               <div class="bento-card rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
-                ${h.foto_profil ? `<img src="${escapeHtml(h.foto_profil)}" alt="Profil" class="w-28 h-28 rounded-full object-cover border-2 border-red-500/50 shrink-0" />` : `<div class="w-28 h-28 rounded-full border border-white/15 bg-black/40 flex items-center justify-center text-xs text-neutral-500 shrink-0">Belum Ada Foto</div>`}
+                ${
+                  heroMedia.kind === 'image'
+                    ? `<img src="${escapeHtml(heroMedia.src)}" alt="Profil" class="w-28 h-28 rounded-full object-cover border-2 border-red-500/50 shrink-0" referrerpolicy="no-referrer" />`
+                    : `<div class="w-28 h-28 rounded-full border border-white/15 bg-black/40 flex items-center justify-center text-xs text-neutral-500 shrink-0">${heroMedia.hasFile ? escapeHtml(heroMedia.extLabel) : 'Belum Ada Foto'}</div>`
+                }
                 <div class="space-y-2 text-center sm:text-left">
                   <h2 class="font-display text-2xl font-semibold text-white">${escapeHtml(h.headline || 'Headline Hero belum diisi')}</h2>
                   <p class="text-sm" style="color: var(--text-muted);">${escapeHtml(h.sub_headline || 'Klik "Edit Pengaturan Hero" untuk membuka form pop-up.')}</p>
@@ -1192,6 +1502,11 @@
             </div>
           `;
           document.getElementById('btn-edit-singleton').addEventListener('click', () => openCrudModal('hero_settings', adminState.hero));
+          document.getElementById('btn-jump-socials').addEventListener('click', () => {
+            adminState.activeSection = 'hero_socials';
+            renderSidebar();
+            renderActiveSection();
+          });
           return;
         }
 
@@ -1232,6 +1547,8 @@
                 <div><span class="text-xs text-red-300 block">WhatsApp</span>${escapeHtml(f.wa || '—')}</div>
                 <div><span class="text-xs text-red-300 block">Instagram</span>${escapeHtml(f.ig || '—')}</div>
                 <div><span class="text-xs text-red-300 block">LinkedIn</span>${escapeHtml(f.linkedin || '—')}</div>
+                <div><span class="text-xs text-red-300 block">Lampiran CV</span>${escapeHtml(f.cv_file_nama || (f.cv_file ? 'File CV tersimpan' : '—'))}</div>
+                <div><span class="text-xs text-red-300 block">Link Eksternal CV</span>${escapeHtml(f.cv_link_url || '—')}</div>
                 <div class="sm:col-span-2"><span class="text-xs text-red-300 block">Alamat</span>${escapeHtml(f.alamat_teks || '—')}</div>
                 <div class="sm:col-span-2"><span class="text-xs text-red-300 block">Copyright Footer</span>${escapeHtml(f.teks_copyright_dinamis || '—')}</div>
               </div>
@@ -1319,14 +1636,123 @@
           return;
         }
 
-        // Generic Collection List Views (Educations, Experiences, Achievements, Certificates, Skills, Categories, Portfolios, Testimonials, FAQs)
+        // Generic Collection List Views
         const listConfigs = {
-          educations: { col: 'educations', items: adminState.educations, title: 'Riwayat Pendidikan', head: (x) => x.institusi, sub: (x) => `${x.jurusan} · ${x.tahun_masuk} – ${x.tahun_lulus}`, body: (x) => x.deskripsi },
-          experiences: { col: 'experiences', items: adminState.experiences, title: 'Pengalaman', head: (x) => x.posisi, sub: (x) => `${x.kategori_pengalaman} · ${x.institusi_tempat} · ${x.durasi}`, body: (x) => x.deskripsi },
-          achievements: { col: 'achievements', items: adminState.achievements, title: 'Prestasi', head: (x) => x.judul_prestasi, sub: (x) => `${x.penyelenggara} · ${x.tahun}`, body: (x) => x.deskripsi },
-          certificates: { col: 'certificates', items: adminState.certificates, title: 'Sertifikat', head: (x) => x.judul, sub: (x) => `${x.penerbit} · ${x.tahun}`, img: (x) => x.gambar_sertifikat },
-          skills: { col: 'skills', items: adminState.skills, title: 'Skills & Perangkat', head: (x) => x.nama_skill, sub: () => 'Skill Aktif', img: (x) => x.logo_icon },
-          categories: { col: 'expertise_categories', items: adminState.categories, title: 'Kategori Keahlian', head: (x) => x.title, sub: (x) => x.tagline, img: (x) => x.cover_image },
+          hero_socials: {
+            col: 'hero_socials',
+            items: adminState.heroSocials,
+            title: 'Tautan Sosial Hero',
+            subtitleDesc: 'Ikon platform dideteksi otomatis dan tampil tepat di bawah tombol "Unduh CV" pada Hero.',
+            head: (x) => detectSocialPlatform(x.platform, x.url).label,
+            sub: () => 'Tautan Sosial Aktif',
+            body: (x) => x.url,
+            customIcon: (x) => {
+              const meta = detectSocialPlatform(x.platform, x.url);
+              return `<div class="w-12 h-12 rounded-xl border border-red-500/30 bg-black/50 flex items-center justify-center text-red-300 shrink-0">${meta.svg}</div>`;
+            },
+          },
+          app_projects: {
+            col: 'app_projects',
+            items: adminState.appProjects,
+            title: 'Proyek Aplikasi & Website',
+            subtitleDesc: 'Selalu tampil sebagai Showcase Utama pada halaman depan.',
+            head: (x) => x.judul,
+            sub: (x) => `${x.kategori_badge}${x.subjudul ? ' · ' + x.subjudul : ''}`,
+            body: (x) => x.deskripsi,
+            fileThumb: (x) => ({ val: x.media_visual || x.file_lampiran, name: x.media_visual_nama || x.file_lampiran_nama, ext: x.video_link || x.link_url }),
+            extraPills: (x) => parseTagList(x.tags).slice(0, 4).map((t) => ({ text: t, cls: 'border-white/15 text-neutral-300 bg-white/5' })),
+          },
+          designs: {
+            col: 'designs',
+            items: adminState.designs,
+            title: 'Karya Desain & Visual',
+            subtitleDesc: 'Kategori ketik bebas (UI/UX, Grafis, Poster, MUA Look, dll).',
+            head: (x) => x.judul,
+            sub: (x) => `${x.kategori_bebas}${x.badge_label ? ' · ' + x.badge_label : ''}`,
+            body: (x) => x.deskripsi,
+            fileThumb: (x) => ({ val: x.file_preview, name: x.file_preview_nama, ext: x.link_url }),
+          },
+          tutorials: {
+            col: 'tutorials',
+            items: adminState.tutorials,
+            title: 'Video Tutorial',
+            head: (x) => x.judul,
+            sub: (x) => x.kategori_badge,
+            body: (x) => x.deskripsi,
+            fileThumb: (x) => ({ val: x.thumbnail_media, name: x.thumbnail_media_nama, ext: x.link_url }),
+          },
+          books: {
+            col: 'books',
+            items: adminState.books,
+            title: 'Buku & Publikasi',
+            head: (x) => x.judul,
+            sub: (x) => [x.badge_nomor, x.tema, x.jenis].filter(Boolean).join(' · '),
+            body: (x) => x.deskripsi,
+            fileThumb: (x) => ({ val: x.cover_file, name: x.cover_file_nama, ext: x.link_url }),
+          },
+          journals: {
+            col: 'journals',
+            items: adminState.journals,
+            title: 'Karya Ilmiah & Jurnal',
+            head: (x) => x.judul,
+            sub: (x) => `${x.label}${x.subjudul_instansi ? ' · ' + x.subjudul_instansi : ''}`,
+            body: (x) => x.deskripsi,
+            fileThumb: (x) => ({ val: x.file_dokumen, name: x.file_dokumen_nama, ext: x.link_url }),
+            extraPills: (x) => [
+              x.status === 'Terpublikasi'
+                ? { text: 'Terpublikasi', cls: 'border-emerald-500/40 bg-emerald-950/50 text-emerald-300' }
+                : { text: x.status || 'Dalam Proses', cls: 'border-amber-500/40 bg-amber-950/50 text-amber-200' },
+            ],
+          },
+          educations: {
+            col: 'educations',
+            items: adminState.educations,
+            title: 'Riwayat Pendidikan',
+            head: (x) => x.institusi,
+            sub: (x) => `${x.jurusan} · ${x.tahun_masuk} – ${x.tahun_lulus}`,
+            body: (x) => x.deskripsi,
+          },
+          experiences: {
+            col: 'experiences',
+            items: adminState.experiences,
+            title: 'Pengalaman',
+            head: (x) => x.posisi,
+            sub: (x) => `${x.kategori_pengalaman} · ${x.institusi_tempat} · ${x.durasi}`,
+            body: (x) => x.deskripsi,
+          },
+          achievements: {
+            col: 'achievements',
+            items: adminState.achievements,
+            title: 'Prestasi',
+            head: (x) => x.judul_prestasi,
+            sub: (x) => `${x.penyelenggara} · ${x.tahun}`,
+            body: (x) => x.deskripsi,
+          },
+          certificates: {
+            col: 'certificates',
+            items: adminState.certificates,
+            title: 'Sertifikat & Lisensi',
+            subtitleDesc: 'Selalu tampil sebagai Showcase Utama pada halaman depan.',
+            head: (x) => x.judul,
+            sub: (x) => `${x.penerbit} · ${x.tahun}`,
+            fileThumb: (x) => ({ val: x.gambar_sertifikat, name: x.gambar_sertifikat_nama, ext: x.link_url }),
+          },
+          skills: {
+            col: 'skills',
+            items: adminState.skills,
+            title: 'Skills & Perangkat',
+            head: (x) => x.nama_skill,
+            sub: () => 'Skill Aktif',
+            fileThumb: (x) => ({ val: x.logo_icon, name: x.logo_icon_nama, ext: x.link_url }),
+          },
+          categories: {
+            col: 'expertise_categories',
+            items: adminState.categories,
+            title: 'Kategori Keahlian',
+            head: (x) => x.title,
+            sub: (x) => x.tagline,
+            fileThumb: (x) => ({ val: x.cover_image, name: x.cover_image_nama, ext: x.link_url }),
+          },
           portfolios: {
             col: 'portfolio_items',
             items: adminState.portfolios,
@@ -1337,10 +1763,25 @@
               return `${cat?.title || 'Kategori'} ${x.price_or_tech ? '· ' + x.price_or_tech : ''}`;
             },
             body: (x) => x.description,
-            img: (x) => x.image,
+            fileThumb: (x) => ({ val: x.image, name: x.image_nama, ext: x.link_url }),
           },
-          testimonials: { col: 'testimonials', items: adminState.testimonials, title: 'Testimoni Klien', head: (x) => x.nama_klien, sub: (x) => x.peran, body: (x) => x.isi_review, img: (x) => x.foto_profil_opsional },
-          faqs: { col: 'faqs', items: adminState.faqs, title: 'Pertanyaan Umum (FAQ)', head: (x) => x.pertanyaan, sub: () => 'Pertanyaan & Jawaban', body: (x) => x.jawaban },
+          testimonials: {
+            col: 'testimonials',
+            items: adminState.testimonials,
+            title: 'Testimoni Klien',
+            head: (x) => x.nama_klien,
+            sub: (x) => x.peran,
+            body: (x) => x.isi_review,
+            fileThumb: (x) => ({ val: x.foto_profil_opsional, name: x.foto_profil_nama, ext: x.link_url }),
+          },
+          faqs: {
+            col: 'faqs',
+            items: adminState.faqs,
+            title: 'Pertanyaan Umum (FAQ)',
+            head: (x) => x.pertanyaan,
+            sub: () => 'Pertanyaan & Jawaban',
+            body: (x) => x.jawaban,
+          },
         };
 
         const cfg = listConfigs[s];
@@ -1351,7 +1792,9 @@
             <div class="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h1 class="font-display text-3xl font-semibold text-white">${escapeHtml(cfg.title)}</h1>
-                <p class="text-sm mt-1 tabular-nums" style="color: var(--text-muted);">${cfg.items.length} data tersimpan di Firestore.</p>
+                <p class="text-sm mt-1 tabular-nums" style="color: var(--text-muted);">
+                  ${cfg.items.length} data tersimpan${cfg.subtitleDesc ? ' · ' + escapeHtml(cfg.subtitleDesc) : ''}.
+                </p>
               </div>
               <button type="button" id="btn-add-item" class="btn-crimson px-5 py-2.5 rounded-xl text-xs font-semibold">Tambah ${escapeHtml(cfg.title)}</button>
             </div>
@@ -1363,16 +1806,31 @@
             ` : `
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 ${cfg.items.map((item) => {
-                  const thumb = cfg.img ? cfg.img(item) : '';
+                  const thumbHtml = cfg.customIcon
+                    ? cfg.customIcon(item)
+                    : cfg.fileThumb
+                    ? (() => {
+                        const info = cfg.fileThumb(item);
+                        return renderCardThumb(info.val, info.name, info.ext);
+                      })()
+                    : '';
                   const bodyText = cfg.body ? cfg.body(item) : '';
+                  const pills = cfg.extraPills ? cfg.extraPills(item) : [];
                   return `
                     <article class="bento-card rounded-2xl p-5 flex flex-col justify-between gap-4">
                       <div class="flex items-start gap-4">
-                        ${thumb ? `<img src="${escapeHtml(thumb)}" alt="" class="w-16 h-16 rounded-xl object-cover border border-white/15 shrink-0" referrerpolicy="no-referrer" />` : ''}
-                        <div class="min-w-0 flex-1 space-y-1">
+                        ${thumbHtml}
+                        <div class="min-w-0 flex-1 space-y-1.5">
                           <div class="text-xs font-medium text-red-300 truncate">${escapeHtml(cfg.sub(item) || '')}</div>
                           <h2 class="font-display text-lg font-semibold text-white line-clamp-1">${escapeHtml(cfg.head(item) || '')}</h2>
                           ${bodyText ? `<p class="text-xs line-clamp-2" style="color: var(--text-muted);">${escapeHtml(bodyText)}</p>` : ''}
+                          ${
+                            pills.length > 0
+                              ? `<div class="flex flex-wrap gap-1.5 pt-1">${pills
+                                  .map((p) => `<span class="px-2 py-0.5 rounded-md border text-[11px] font-medium ${p.cls}">${escapeHtml(p.text)}</span>`)
+                                  .join('')}</div>`
+                              : ''
+                          }
                         </div>
                       </div>
                       <div class="pt-3 border-t border-white/10 flex items-center justify-end gap-2">
@@ -1432,6 +1890,7 @@
           const orderedCols = [
             'site_themes',
             'hero_settings',
+            'hero_socials',
             'about_settings',
             'footer_contacts',
             'educations',
@@ -1441,6 +1900,11 @@
             'skills',
             'expertise_categories',
             'portfolio_items',
+            'app_projects',
+            'designs',
+            'tutorials',
+            'books',
+            'journals',
             'testimonials',
             'faqs',
           ];

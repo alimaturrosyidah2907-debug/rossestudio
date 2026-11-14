@@ -5,10 +5,8 @@
  * PANDUAN KONFIGURASI UNTUK DEPLOY GITHUB PAGES:
  * 1. Buka Firebase Console (https://console.firebase.google.com) -> Project Settings.
  * 2. Salin objek `firebaseConfig` Anda jika ingin memindahkan ke project baru.
- * 3. Aktifkan "Authentication -> Sign-in method -> Email/Password" (dan/atau Google).
- * 4. Buat user Admin di menu "Authentication -> Users", lalu verifikasi email
- *    atau tambahkan UID user tersebut ke collection `admins/{uid}` di Firestore.
- * 5. Publish aturan keamanan dari file `firestore.rules` pada tab Firestore Rules.
+ * 3. Login RosseAdmin menggunakan 2 langkah: PIN Keamanan -> Google Sign-In (khusus email admin).
+ * 4. Publish aturan keamanan dari file `firestore.rules` pada tab Firestore Rules.
  * ============================================================================
  */
 
@@ -42,6 +40,7 @@ import {
 
 import {
   ADMIN_EMAIL,
+  MAX_UNIVERSAL_FILE_BYTES,
   THEME_PALETTES,
   COLLECTIONS,
   escapeHtml,
@@ -52,6 +51,10 @@ import {
   normalizeExternalUrl,
   formatWhatsAppUrl,
   formatInstagramUrl,
+  detectSocialPlatform,
+  parseTagList,
+  extractVideoEmbedUrl,
+  classifyMediaPreview,
   parseTriviaItems,
   validateContactMessageInput,
   hasHeroData,
@@ -148,11 +151,26 @@ export function compressImageToBase64(file, maxWidth = 1100, quality = 0.78) {
       resolve('');
       return;
     }
+    if (file.type === 'image/svg+xml') {
+      if (file.size > MAX_UNIVERSAL_FILE_BYTES) {
+        reject(
+          new Error(
+            'Ukuran file SVG melebihi batas 750 KB. Silakan tempel tautan eksternal pada kolom Link Eksternal / URL (Opsional).'
+          )
+        );
+        return;
+      }
+      const svgReader = new FileReader();
+      svgReader.onerror = () => reject(new Error('Gagal membaca file SVG.'));
+      svgReader.onload = () => resolve(String(svgReader.result || ''));
+      svgReader.readAsDataURL(file);
+      return;
+    }
     const reader = new FileReader();
     reader.onerror = () => reject(new Error('Gagal membaca file gambar.'));
     reader.onload = (event) => {
       const img = new Image();
-      img.onerror = () => reject(new Error('Format gambar tidak valid.'));
+      img.onerror = () => reject(new Error('Format gambar tidak dapat dirender sebagai kanvas.'));
       img.onload = () => {
         const scale = img.width > maxWidth ? maxWidth / img.width : 1;
         const width = Math.round(img.width * scale);
@@ -163,12 +181,11 @@ export function compressImageToBase64(file, maxWidth = 1100, quality = 0.78) {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
         const mime = file.type === 'image/png' ? 'image/webp' : 'image/jpeg';
-        const dataUrl = canvas.toDataURL(mime, quality);
+        let dataUrl = canvas.toDataURL(mime, quality);
         if (dataUrl.length > 850000) {
-          resolve(canvas.toDataURL('image/jpeg', 0.6));
-        } else {
-          resolve(dataUrl);
+          dataUrl = canvas.toDataURL('image/jpeg', 0.58);
         }
+        resolve(dataUrl);
       };
       img.src = event.target.result;
     };
@@ -177,27 +194,56 @@ export function compressImageToBase64(file, maxWidth = 1100, quality = 0.78) {
 }
 
 /**
- * Convert small PDF (<= 600KB) to Base64 Data URL for zero-cost Firestore storage.
+ * Read any file (PDF, video, docx, xlsx, zip, apk, etc.) within 750 KB as Base64 Data URL.
+ * Rejects oversized files with an actionable warning to use Google Drive / YouTube Link Eksternal.
  */
-export function readPdfAsDataUrl(file) {
+export function readUniversalFileAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     if (!file) {
       resolve('');
       return;
     }
-    if (file.size > 600 * 1024) {
-      reject(new Error('Ukuran CV PDF maksimal 600 KB untuk penyimpanan langsung di Firestore.'));
+    if (file.size > MAX_UNIVERSAL_FILE_BYTES) {
+      const sizeKb = Math.round(file.size / 1024);
+      reject(
+        new Error(
+          `Ukuran file "${file.name}" (${sizeKb} KB) melebihi batas 750 KB untuk Firestore. Unggah ke Google Drive / YouTube lalu tempel tautannya di kolom "Link Eksternal / URL (Opsional)".`
+        )
+      );
       return;
     }
     const reader = new FileReader();
-    reader.onerror = () => reject(new Error('Gagal membaca file PDF.'));
+    reader.onerror = () => reject(new Error(`Gagal membaca file "${file.name}".`));
     reader.onload = () => resolve(String(reader.result || ''));
     reader.readAsDataURL(file);
   });
 }
 
+/**
+ * Universal upload pipeline for any MIME type:
+ * - Images -> auto-compressed via Canvas
+ * - All other formats (PDF, MP4, DOCX, ZIP, APK, etc.) -> Base64 if <= 750 KB, else friendly link prompt.
+ */
+export async function processUniversalFileUpload(file) {
+  if (!file) {
+    return { dataUrl: '', fileName: '', fileType: '', fileSize: 0, isImage: false };
+  }
+  const isImage = Boolean(file.type && file.type.startsWith('image/'));
+  const dataUrl = isImage
+    ? await compressImageToBase64(file)
+    : await readUniversalFileAsDataUrl(file);
+  return {
+    dataUrl,
+    fileName: file.name || 'lampiran',
+    fileType: file.type || 'application/octet-stream',
+    fileSize: file.size || 0,
+    isImage,
+  };
+}
+
 export {
   ADMIN_EMAIL,
+  MAX_UNIVERSAL_FILE_BYTES,
   THEME_PALETTES,
   COLLECTIONS,
   escapeHtml,
@@ -208,6 +254,10 @@ export {
   normalizeExternalUrl,
   formatWhatsAppUrl,
   formatInstagramUrl,
+  detectSocialPlatform,
+  parseTagList,
+  extractVideoEmbedUrl,
+  classifyMediaPreview,
   parseTriviaItems,
   validateContactMessageInput,
   hasHeroData,

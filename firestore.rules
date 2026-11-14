@@ -58,10 +58,21 @@ service cloud.firestore {
 
     function isValidHeroSetting(data) {
       return data.keys().hasAll(['updatedAt'])
-        && data.keys().hasOnly(['headline', 'sub_headline', 'foto_profil', 'updatedAt'])
+        && data.keys().hasOnly(['headline', 'sub_headline', 'foto_profil', 'foto_profil_nama', 'link_url', 'updatedAt'])
         && isOptionalString(data, 'headline', 300)
         && isOptionalString(data, 'sub_headline', 2000)
-        && isOptionalString(data, 'foto_profil', 900000)
+        && isOptionalString(data, 'foto_profil', 1030000)
+        && isOptionalString(data, 'foto_profil_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidHeroSocial(data) {
+      return data.keys().hasAll(['platform', 'url', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['platform', 'url', 'createdAt', 'updatedAt'])
+        && isRequiredString(data, 'platform', 1, 80)
+        && isRequiredString(data, 'url', 1, 500)
+        && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
 
@@ -110,42 +121,141 @@ service cloud.firestore {
 
     function isValidCertificate(data) {
       return data.keys().hasAll(['judul', 'penerbit', 'tahun', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['judul', 'penerbit', 'tahun', 'gambar_sertifikat', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['judul', 'penerbit', 'tahun', 'gambar_sertifikat', 'gambar_sertifikat_nama', 'link_url', 'createdAt', 'updatedAt'])
         && isRequiredString(data, 'judul', 1, 250)
         && isRequiredString(data, 'penerbit', 1, 200)
         && isRequiredString(data, 'tahun', 1, 30)
-        && isOptionalString(data, 'gambar_sertifikat', 900000)
+        && isOptionalString(data, 'gambar_sertifikat', 1030000)
+        && isOptionalString(data, 'gambar_sertifikat_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
 
     function isValidSkill(data) {
       return data.keys().hasAll(['nama_skill', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['nama_skill', 'logo_icon', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['nama_skill', 'logo_icon', 'logo_icon_nama', 'link_url', 'createdAt', 'updatedAt'])
         && isRequiredString(data, 'nama_skill', 1, 120)
-        && isOptionalString(data, 'logo_icon', 900000)
+        && isOptionalString(data, 'logo_icon', 1030000)
+        && isOptionalString(data, 'logo_icon_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
 
     function isValidExpertiseCategory(data) {
       return data.keys().hasAll(['title', 'tagline', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['title', 'tagline', 'cover_image', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['title', 'tagline', 'cover_image', 'cover_image_nama', 'link_url', 'createdAt', 'updatedAt'])
         && isRequiredString(data, 'title', 1, 150)
         && isRequiredString(data, 'tagline', 1, 300)
-        && isOptionalString(data, 'cover_image', 900000)
+        && isOptionalString(data, 'cover_image', 1030000)
+        && isOptionalString(data, 'cover_image_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
 
     function isValidPortfolioItem(data) {
       return data.keys().hasAll(['category_id', 'title', 'description', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['category_id', 'title', 'description', 'image', 'price_or_tech', 'link_url', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['category_id', 'title', 'description', 'image', 'image_nama', 'price_or_tech', 'link_url', 'createdAt', 'updatedAt'])
         && isValidId(data.category_id)
         && isRequiredString(data, 'title', 1, 200)
         && isRequiredString(data, 'description', 1, 4000)
-        && isOptionalString(data, 'image', 900000)
+        && isOptionalString(data, 'image', 1030000)
+        && isOptionalString(data, 'image_nama', 250)
         && isOptionalString(data, 'price_or_tech', 200)
+        && isOptionalString(data, 'link_url', 500)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidAppProject(data) {
+      return data.keys().hasAll(['kategori_badge', 'judul', 'deskripsi', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'kategori_badge', 'judul', 'subjudul', 'deskripsi', 'tags',
+          'media_visual', 'media_visual_nama', 'video_link',
+          'file_lampiran', 'file_lampiran_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
+        && isRequiredString(data, 'kategori_badge', 1, 80)
+        && isRequiredString(data, 'judul', 1, 200)
+        && isOptionalString(data, 'subjudul', 300)
+        && isRequiredString(data, 'deskripsi', 1, 5000)
+        && isOptionalString(data, 'tags', 500)
+        && isOptionalString(data, 'media_visual', 1030000)
+        && isOptionalString(data, 'media_visual_nama', 250)
+        && isOptionalString(data, 'video_link', 500)
+        && isOptionalString(data, 'file_lampiran', 1030000)
+        && isOptionalString(data, 'file_lampiran_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidDesignWork(data) {
+      return data.keys().hasAll(['kategori_bebas', 'judul', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'kategori_bebas', 'badge_label', 'judul', 'deskripsi',
+          'file_preview', 'file_preview_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
+        && isRequiredString(data, 'kategori_bebas', 1, 120)
+        && isOptionalString(data, 'badge_label', 80)
+        && isRequiredString(data, 'judul', 1, 200)
+        && isOptionalString(data, 'deskripsi', 4000)
+        && isOptionalString(data, 'file_preview', 1030000)
+        && isOptionalString(data, 'file_preview_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidTutorialVideo(data) {
+      return data.keys().hasAll(['kategori_badge', 'judul', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'kategori_badge', 'judul', 'deskripsi',
+          'thumbnail_media', 'thumbnail_media_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
+        && isRequiredString(data, 'kategori_badge', 1, 80)
+        && isRequiredString(data, 'judul', 1, 200)
+        && isOptionalString(data, 'deskripsi', 4000)
+        && isOptionalString(data, 'thumbnail_media', 1030000)
+        && isOptionalString(data, 'thumbnail_media_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidBookPublication(data) {
+      return data.keys().hasAll(['badge_nomor', 'judul', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'badge_nomor', 'judul', 'deskripsi', 'tema', 'lokasi', 'jenis',
+          'cover_file', 'cover_file_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
+        && isRequiredString(data, 'badge_nomor', 1, 60)
+        && isRequiredString(data, 'judul', 1, 250)
+        && isOptionalString(data, 'deskripsi', 4000)
+        && isOptionalString(data, 'tema', 150)
+        && isOptionalString(data, 'lokasi', 150)
+        && isOptionalString(data, 'jenis', 150)
+        && isOptionalString(data, 'cover_file', 1030000)
+        && isOptionalString(data, 'cover_file_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidJournalPaper(data) {
+      return data.keys().hasAll(['label', 'judul', 'status', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'label', 'judul', 'subjudul_instansi', 'status', 'deskripsi',
+          'file_dokumen', 'file_dokumen_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
+        && isRequiredString(data, 'label', 1, 60)
+        && isRequiredString(data, 'judul', 1, 300)
+        && isOptionalString(data, 'subjudul_instansi', 250)
+        && data.status in ['Dalam Proses', 'Terpublikasi']
+        && isOptionalString(data, 'deskripsi', 3000)
+        && isOptionalString(data, 'file_dokumen', 1030000)
+        && isOptionalString(data, 'file_dokumen_nama', 250)
         && isOptionalString(data, 'link_url', 500)
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
@@ -153,11 +263,13 @@ service cloud.firestore {
 
     function isValidTestimonial(data) {
       return data.keys().hasAll(['nama_klien', 'peran', 'isi_review', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['nama_klien', 'peran', 'isi_review', 'foto_profil_opsional', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['nama_klien', 'peran', 'isi_review', 'foto_profil_opsional', 'foto_profil_nama', 'link_url', 'createdAt', 'updatedAt'])
         && isRequiredString(data, 'nama_klien', 1, 150)
         && isRequiredString(data, 'peran', 1, 150)
         && isRequiredString(data, 'isi_review', 1, 2000)
-        && isOptionalString(data, 'foto_profil_opsional', 900000)
+        && isOptionalString(data, 'foto_profil_opsional', 1030000)
+        && isOptionalString(data, 'foto_profil_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
@@ -175,14 +287,16 @@ service cloud.firestore {
       return data.keys().hasAll(['updatedAt'])
         && data.keys().hasOnly([
           'alamat_teks', 'email', 'wa', 'ig', 'linkedin',
-          'cv_file', 'maps_embed_iframe_link', 'teks_copyright_dinamis', 'updatedAt'
+          'cv_file', 'cv_file_nama', 'cv_link_url', 'maps_embed_iframe_link', 'teks_copyright_dinamis', 'updatedAt'
         ])
         && isOptionalString(data, 'alamat_teks', 500)
         && isOptionalString(data, 'email', 254)
         && isOptionalString(data, 'wa', 60)
         && isOptionalString(data, 'ig', 250)
         && isOptionalString(data, 'linkedin', 300)
-        && isOptionalString(data, 'cv_file', 900000)
+        && isOptionalString(data, 'cv_file', 1030000)
+        && isOptionalString(data, 'cv_file_nama', 250)
+        && isOptionalString(data, 'cv_link_url', 500)
         && isOptionalString(data, 'maps_embed_iframe_link', 2000)
         && isOptionalString(data, 'teks_copyright_dinamis', 300)
         && data.updatedAt is timestamp;
@@ -232,8 +346,19 @@ service cloud.firestore {
       allow create: if isValidId(docId) && isAdmin() && isValidHeroSetting(incoming()) && incoming().updatedAt == request.time;
       allow update: if isValidId(docId) && isAdmin() && isValidHeroSetting(incoming())
         && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['headline', 'sub_headline', 'foto_profil', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly(['headline', 'sub_headline', 'foto_profil', 'foto_profil_nama', 'link_url', 'updatedAt']);
       allow delete: if isValidId(docId) && isAdmin();
+    }
+
+    match /hero_socials/{socialId} {
+      allow get: if isValidId(socialId);
+      allow list: if true;
+      allow create: if isValidId(socialId) && isAdmin() && isValidHeroSocial(incoming())
+        && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isValidId(socialId) && isAdmin() && isValidHeroSocial(incoming())
+        && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['platform', 'url', 'updatedAt']);
+      allow delete: if isValidId(socialId) && isAdmin();
     }
 
     match /about_settings/{docId} {
@@ -286,7 +411,7 @@ service cloud.firestore {
         && incoming().createdAt == request.time && incoming().updatedAt == request.time;
       allow update: if isValidId(certId) && isAdmin() && isValidCertificate(incoming())
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['judul', 'penerbit', 'tahun', 'gambar_sertifikat', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly(['judul', 'penerbit', 'tahun', 'gambar_sertifikat', 'gambar_sertifikat_nama', 'link_url', 'updatedAt']);
       allow delete: if isValidId(certId) && isAdmin();
     }
 
@@ -297,7 +422,7 @@ service cloud.firestore {
         && incoming().createdAt == request.time && incoming().updatedAt == request.time;
       allow update: if isValidId(skillId) && isAdmin() && isValidSkill(incoming())
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['nama_skill', 'logo_icon', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly(['nama_skill', 'logo_icon', 'logo_icon_nama', 'link_url', 'updatedAt']);
       allow delete: if isValidId(skillId) && isAdmin();
     }
 
@@ -308,7 +433,7 @@ service cloud.firestore {
         && incoming().createdAt == request.time && incoming().updatedAt == request.time;
       allow update: if isValidId(catId) && isAdmin() && isValidExpertiseCategory(incoming())
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'tagline', 'cover_image', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'tagline', 'cover_image', 'cover_image_nama', 'link_url', 'updatedAt']);
       allow delete: if isValidId(catId) && isAdmin();
     }
 
@@ -321,8 +446,79 @@ service cloud.firestore {
       allow update: if isValidId(itemId) && isAdmin() && isValidPortfolioItem(incoming())
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
         && exists(/databases/$(database)/documents/expertise_categories/$(incoming().category_id))
-        && incoming().diff(existing()).affectedKeys().hasOnly(['category_id', 'title', 'description', 'image', 'price_or_tech', 'link_url', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly(['category_id', 'title', 'description', 'image', 'image_nama', 'price_or_tech', 'link_url', 'updatedAt']);
       allow delete: if isValidId(itemId) && isAdmin();
+    }
+
+    match /app_projects/{projectId} {
+      allow get: if isValidId(projectId);
+      allow list: if true;
+      allow create: if isValidId(projectId) && isAdmin() && isValidAppProject(incoming())
+        && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isValidId(projectId) && isAdmin() && isValidAppProject(incoming())
+        && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'kategori_badge', 'judul', 'subjudul', 'deskripsi', 'tags',
+          'media_visual', 'media_visual_nama', 'video_link',
+          'file_lampiran', 'file_lampiran_nama', 'link_url', 'updatedAt'
+        ]);
+      allow delete: if isValidId(projectId) && isAdmin();
+    }
+
+    match /designs/{designId} {
+      allow get: if isValidId(designId);
+      allow list: if true;
+      allow create: if isValidId(designId) && isAdmin() && isValidDesignWork(incoming())
+        && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isValidId(designId) && isAdmin() && isValidDesignWork(incoming())
+        && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'kategori_bebas', 'badge_label', 'judul', 'deskripsi',
+          'file_preview', 'file_preview_nama', 'link_url', 'updatedAt'
+        ]);
+      allow delete: if isValidId(designId) && isAdmin();
+    }
+
+    match /tutorials/{tutorialId} {
+      allow get: if isValidId(tutorialId);
+      allow list: if true;
+      allow create: if isValidId(tutorialId) && isAdmin() && isValidTutorialVideo(incoming())
+        && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isValidId(tutorialId) && isAdmin() && isValidTutorialVideo(incoming())
+        && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'kategori_badge', 'judul', 'deskripsi',
+          'thumbnail_media', 'thumbnail_media_nama', 'link_url', 'updatedAt'
+        ]);
+      allow delete: if isValidId(tutorialId) && isAdmin();
+    }
+
+    match /books/{bookId} {
+      allow get: if isValidId(bookId);
+      allow list: if true;
+      allow create: if isValidId(bookId) && isAdmin() && isValidBookPublication(incoming())
+        && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isValidId(bookId) && isAdmin() && isValidBookPublication(incoming())
+        && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'badge_nomor', 'judul', 'deskripsi', 'tema', 'lokasi', 'jenis',
+          'cover_file', 'cover_file_nama', 'link_url', 'updatedAt'
+        ]);
+      allow delete: if isValidId(bookId) && isAdmin();
+    }
+
+    match /journals/{journalId} {
+      allow get: if isValidId(journalId);
+      allow list: if true;
+      allow create: if isValidId(journalId) && isAdmin() && isValidJournalPaper(incoming())
+        && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isValidId(journalId) && isAdmin() && isValidJournalPaper(incoming())
+        && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'label', 'judul', 'subjudul_instansi', 'status', 'deskripsi',
+          'file_dokumen', 'file_dokumen_nama', 'link_url', 'updatedAt'
+        ]);
+      allow delete: if isValidId(journalId) && isAdmin();
     }
 
     match /testimonials/{testiId} {
@@ -332,7 +528,7 @@ service cloud.firestore {
         && incoming().createdAt == request.time && incoming().updatedAt == request.time;
       allow update: if isValidId(testiId) && isAdmin() && isValidTestimonial(incoming())
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['nama_klien', 'peran', 'isi_review', 'foto_profil_opsional', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly(['nama_klien', 'peran', 'isi_review', 'foto_profil_opsional', 'foto_profil_nama', 'link_url', 'updatedAt']);
       allow delete: if isValidId(testiId) && isAdmin();
     }
 
@@ -355,7 +551,7 @@ service cloud.firestore {
         && incoming().updatedAt == request.time
         && incoming().diff(existing()).affectedKeys().hasOnly([
           'alamat_teks', 'email', 'wa', 'ig', 'linkedin',
-          'cv_file', 'maps_embed_iframe_link', 'teks_copyright_dinamis', 'updatedAt'
+          'cv_file', 'cv_file_nama', 'cv_link_url', 'maps_embed_iframe_link', 'teks_copyright_dinamis', 'updatedAt'
         ]);
       allow delete: if isValidId(docId) && isAdmin();
     }

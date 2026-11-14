@@ -30,10 +30,24 @@
       "properties": {
         "headline": { "type": "string", "maxLength": 300 },
         "sub_headline": { "type": "string", "maxLength": 2000 },
-        "foto_profil": { "type": "string", "maxLength": 900000 },
+        "foto_profil": { "type": "string", "maxLength": 1030000 },
+        "foto_profil_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["updatedAt"]
+    },
+    "HeroSocial": {
+      "title": "HeroSocial",
+      "description": "Dynamic social media links displayed below the Hero CV button with auto-detected SVG icons.",
+      "type": "object",
+      "properties": {
+        "platform": { "type": "string", "maxLength": 80 },
+        "url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["platform", "url", "createdAt", "updatedAt"]
     },
     "AboutSetting": {
       "title": "AboutSetting",
@@ -92,13 +106,15 @@
     },
     "Certificate": {
       "title": "Certificate",
-      "description": "Professional credential or training certificate.",
+      "description": "Professional credential or training certificate with universal file/link support.",
       "type": "object",
       "properties": {
         "judul": { "type": "string", "maxLength": 250 },
         "penerbit": { "type": "string", "maxLength": 200 },
         "tahun": { "type": "string", "maxLength": 30 },
-        "gambar_sertifikat": { "type": "string", "maxLength": 900000 },
+        "gambar_sertifikat": { "type": "string", "maxLength": 1030000 },
+        "gambar_sertifikat_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
@@ -110,7 +126,9 @@
       "type": "object",
       "properties": {
         "nama_skill": { "type": "string", "maxLength": 120 },
-        "logo_icon": { "type": "string", "maxLength": 900000 },
+        "logo_icon": { "type": "string", "maxLength": 1030000 },
+        "logo_icon_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
@@ -123,7 +141,9 @@
       "properties": {
         "title": { "type": "string", "maxLength": 150 },
         "tagline": { "type": "string", "maxLength": 300 },
-        "cover_image": { "type": "string", "maxLength": 900000 },
+        "cover_image": { "type": "string", "maxLength": 1030000 },
+        "cover_image_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
@@ -137,13 +157,105 @@
         "category_id": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$", "maxLength": 128 },
         "title": { "type": "string", "maxLength": 200 },
         "description": { "type": "string", "maxLength": 4000 },
-        "image": { "type": "string", "maxLength": 900000 },
+        "image": { "type": "string", "maxLength": 1030000 },
+        "image_nama": { "type": "string", "maxLength": 250 },
         "price_or_tech": { "type": "string", "maxLength": 200 },
         "link_url": { "type": "string", "maxLength": 500 },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["category_id", "title", "description", "createdAt", "updatedAt"]
+    },
+    "AppProject": {
+      "title": "AppProject",
+      "description": "Always-visible application and website project showcase.",
+      "type": "object",
+      "properties": {
+        "kategori_badge": { "type": "string", "maxLength": 80 },
+        "judul": { "type": "string", "maxLength": 200 },
+        "subjudul": { "type": "string", "maxLength": 300 },
+        "deskripsi": { "type": "string", "maxLength": 5000 },
+        "tags": { "type": "string", "maxLength": 500 },
+        "media_visual": { "type": "string", "maxLength": 1030000 },
+        "media_visual_nama": { "type": "string", "maxLength": 250 },
+        "video_link": { "type": "string", "maxLength": 500 },
+        "file_lampiran": { "type": "string", "maxLength": 1030000 },
+        "file_lampiran_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["kategori_badge", "judul", "deskripsi", "createdAt", "updatedAt"]
+    },
+    "DesignWork": {
+      "title": "DesignWork",
+      "description": "Design and visual work with free-typed admin category.",
+      "type": "object",
+      "properties": {
+        "kategori_bebas": { "type": "string", "maxLength": 120 },
+        "badge_label": { "type": "string", "maxLength": 80 },
+        "judul": { "type": "string", "maxLength": 200 },
+        "deskripsi": { "type": "string", "maxLength": 4000 },
+        "file_preview": { "type": "string", "maxLength": 1030000 },
+        "file_preview_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["kategori_bebas", "judul", "createdAt", "updatedAt"]
+    },
+    "TutorialVideo": {
+      "title": "TutorialVideo",
+      "description": "Educational tutorial video or guide card.",
+      "type": "object",
+      "properties": {
+        "kategori_badge": { "type": "string", "maxLength": 80 },
+        "judul": { "type": "string", "maxLength": 200 },
+        "deskripsi": { "type": "string", "maxLength": 4000 },
+        "thumbnail_media": { "type": "string", "maxLength": 1030000 },
+        "thumbnail_media_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["kategori_badge", "judul", "createdAt", "updatedAt"]
+    },
+    "BookPublication": {
+      "title": "BookPublication",
+      "description": "Book publication showcase with metadata and optional PDF cover/file.",
+      "type": "object",
+      "properties": {
+        "badge_nomor": { "type": "string", "maxLength": 60 },
+        "judul": { "type": "string", "maxLength": 250 },
+        "deskripsi": { "type": "string", "maxLength": 4000 },
+        "tema": { "type": "string", "maxLength": 150 },
+        "lokasi": { "type": "string", "maxLength": 150 },
+        "jenis": { "type": "string", "maxLength": 150 },
+        "cover_file": { "type": "string", "maxLength": 1030000 },
+        "cover_file_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["badge_nomor", "judul", "createdAt", "updatedAt"]
+    },
+    "JournalPaper": {
+      "title": "JournalPaper",
+      "description": "Academic journal or scientific publication entry with publication status.",
+      "type": "object",
+      "properties": {
+        "label": { "type": "string", "maxLength": 60 },
+        "judul": { "type": "string", "maxLength": 300 },
+        "subjudul_instansi": { "type": "string", "maxLength": 250 },
+        "status": { "type": "string", "enum": ["Dalam Proses", "Terpublikasi"] },
+        "deskripsi": { "type": "string", "maxLength": 3000 },
+        "file_dokumen": { "type": "string", "maxLength": 1030000 },
+        "file_dokumen_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["label", "judul", "status", "createdAt", "updatedAt"]
     },
     "Testimonial": {
       "title": "Testimonial",
@@ -153,7 +265,9 @@
         "nama_klien": { "type": "string", "maxLength": 150 },
         "peran": { "type": "string", "maxLength": 150 },
         "isi_review": { "type": "string", "maxLength": 2000 },
-        "foto_profil_opsional": { "type": "string", "maxLength": 900000 },
+        "foto_profil_opsional": { "type": "string", "maxLength": 1030000 },
+        "foto_profil_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
@@ -173,7 +287,7 @@
     },
     "FooterContact": {
       "title": "FooterContact",
-      "description": "Footer details, social links, CV PDF, Google Maps embed, and dynamic copyright.",
+      "description": "Footer details, social links, CV file/link, Google Maps embed, and dynamic copyright.",
       "type": "object",
       "properties": {
         "alamat_teks": { "type": "string", "maxLength": 500 },
@@ -181,7 +295,9 @@
         "wa": { "type": "string", "maxLength": 60 },
         "ig": { "type": "string", "maxLength": 250 },
         "linkedin": { "type": "string", "maxLength": 300 },
-        "cv_file": { "type": "string", "maxLength": 900000 },
+        "cv_file": { "type": "string", "maxLength": 1030000 },
+        "cv_file_nama": { "type": "string", "maxLength": 250 },
+        "cv_link_url": { "type": "string", "maxLength": 500 },
         "maps_embed_iframe_link": { "type": "string", "maxLength": 2000 },
         "teks_copyright_dinamis": { "type": "string", "maxLength": 300 },
         "updatedAt": { "type": "string", "format": "date-time" }
@@ -195,7 +311,7 @@
       "properties": {
         "active_theme_name": {
           "type": "string",
-          "enum": ["midnight-navy", "burgundy-wine", "espresso-taupe", "eucalyptus-porcelain", "dusty-mauve"]
+          "enum": ["obsidian-crimson", "midnight-navy", "burgundy-wine", "espresso-taupe", "eucalyptus-porcelain", "dusty-mauve"]
         },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
@@ -228,6 +344,10 @@
       "schema": { "$ref": "#/entities/HeroSetting" },
       "description": "Singleton hero settings document (main)."
     },
+    "/hero_socials/{socialId}": {
+      "schema": { "$ref": "#/entities/HeroSocial" },
+      "description": "Hero social media link items with auto-detected SVG icons."
+    },
     "/about_settings/{docId}": {
       "schema": { "$ref": "#/entities/AboutSetting" },
       "description": "Singleton about settings document (main)."
@@ -259,6 +379,26 @@
     "/portfolio_items/{itemId}": {
       "schema": { "$ref": "#/entities/PortfolioItem" },
       "description": "Portfolio works linked by category_id to expertise_categories."
+    },
+    "/app_projects/{projectId}": {
+      "schema": { "$ref": "#/entities/AppProject" },
+      "description": "Always-visible application and website projects showcase."
+    },
+    "/designs/{designId}": {
+      "schema": { "$ref": "#/entities/DesignWork" },
+      "description": "Design and visual works with free-typed category."
+    },
+    "/tutorials/{tutorialId}": {
+      "schema": { "$ref": "#/entities/TutorialVideo" },
+      "description": "Educational tutorial videos and guides."
+    },
+    "/books/{bookId}": {
+      "schema": { "$ref": "#/entities/BookPublication" },
+      "description": "Published books and manuscripts."
+    },
+    "/journals/{journalId}": {
+      "schema": { "$ref": "#/entities/JournalPaper" },
+      "description": "Academic journals and scientific papers."
     },
     "/testimonials/{testiId}": {
       "schema": { "$ref": "#/entities/Testimonial" },

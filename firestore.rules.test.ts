@@ -11,11 +11,12 @@ test('firestore.rules enforces default-deny catch-all and rules_version 2', () =
   assert.match(rulesContent, /match \/\{document=\*\*\} \{\s*allow read, write: if false;/);
 });
 
-test('firestore.rules covers all 15 collections from firebase-blueprint.json', () => {
+test('firestore.rules covers all 22 collections from firebase-blueprint.json', () => {
   const blueprint = JSON.parse(
     fs.readFileSync(path.resolve(process.cwd(), 'firebase-blueprint.json'), 'utf8'),
   );
   const collectionNames = Object.keys(blueprint.firestore).map((p) => p.split('/')[1]);
+  assert.equal(collectionNames.length, 22);
   for (const col of collectionNames) {
     assert.ok(
       rulesContent.includes(`match /${col}/`),
@@ -24,8 +25,10 @@ test('firestore.rules covers all 15 collections from firebase-blueprint.json', (
   }
 });
 
-test('firestore.rules enforces email_verified == true and strict keys().hasOnly() checks', () => {
+test('firestore.rules enforces email_verified == true, journal status enum, and strict keys().hasOnly() checks', () => {
   assert.match(rulesContent, /request\.auth\.token\.email_verified == true/);
+  assert.match(rulesContent, /alimaturrosyidah2907@gmail\.com/);
+  assert.match(rulesContent, /data\.status in \['Dalam Proses', 'Terpublikasi'\]/);
   assert.match(rulesContent, /keys\(\)\.hasOnly\(/);
   assert.match(rulesContent, /affectedKeys\(\)\.hasOnly\(/);
   assert.match(rulesContent, /exists\(\/databases\/\$\(database\)\/documents\/expertise_categories\//);

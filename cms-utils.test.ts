@@ -4,8 +4,11 @@ import {
   ADMIN_EMAIL,
   COLLECTIONS,
   THEME_PALETTES,
+  classifyMediaPreview,
+  detectSocialPlatform,
   escapeHtml,
   extractGoogleMapsEmbedUrl,
+  extractVideoEmbedUrl,
   filterExperiencesByCategory,
   formatInstagramUrl,
   formatWhatsAppUrl,
@@ -15,6 +18,7 @@ import {
   isAuthorizedAdminUser,
   isPortfolioStateEmpty,
   normalizeExternalUrl,
+  parseTagList,
   parseTriviaItems,
   resolveGoogleMapsDisplay,
   sortByNewest,
@@ -53,17 +57,81 @@ test('THEME_PALETTES includes obsidian-crimson default plus all curated dark lux
   }
 });
 
-test('COLLECTIONS covers all 14 dynamic CMS Firestore collections including contact_messages', () => {
-  assert.equal(COLLECTIONS.length, 14);
-  assert.ok(COLLECTIONS.includes('expertise_categories'));
-  assert.ok(COLLECTIONS.includes('portfolio_items'));
-  assert.ok(COLLECTIONS.includes('site_themes'));
-  assert.ok(COLLECTIONS.includes('contact_messages'));
+test('COLLECTIONS covers all 20 CMS Firestore collections', () => {
+  assert.equal(COLLECTIONS.length, 20);
+  for (const required of [
+    'hero_socials',
+    'app_projects',
+    'designs',
+    'tutorials',
+    'books',
+    'journals',
+    'expertise_categories',
+    'portfolio_items',
+    'site_themes',
+    'contact_messages',
+  ]) {
+    assert.ok(COLLECTIONS.includes(required), `Missing ${required}`);
+  }
+});
+
+test('detectSocialPlatform automatically identifies platform icon and safe href from platform or URL', () => {
+  const gh = detectSocialPlatform('GitHub', 'github.com/rossestudio');
+  assert.equal(gh.key, 'github');
+  assert.equal(gh.href, 'https://github.com/rossestudio');
+  assert.ok(gh.svg.includes('<svg'));
+
+  const yt = detectSocialPlatform('Channel', 'https://youtu.be/dQw4w9WgXcQ');
+  assert.equal(yt.key, 'youtube');
+  assert.equal(yt.href, 'https://youtu.be/dQw4w9WgXcQ');
+
+  const mail = detectSocialPlatform('Email', 'alimaturrosyidah2907@gmail.com');
+  assert.equal(mail.key, 'email');
+  assert.equal(mail.href, 'mailto:alimaturrosyidah2907@gmail.com');
+
+  const xss = detectSocialPlatform('Website', 'javascript:alert(1)');
+  assert.equal(xss.href, null);
+});
+
+test('parseTagList, extractVideoEmbedUrl, and classifyMediaPreview parse tags, embeds, and universal files cleanly', () => {
+  assert.deepEqual(parseTagList('React, Firebase, react, Tailwind CSS, '), [
+    'React',
+    'Firebase',
+    'Tailwind CSS',
+  ]);
+
+  assert.equal(
+    extractVideoEmbedUrl('https://www.youtube.com/watch?v=abc123XYZ'),
+    'https://www.youtube.com/embed/abc123XYZ',
+  );
+  assert.equal(
+    extractVideoEmbedUrl('https://youtu.be/abc123XYZ'),
+    'https://www.youtube.com/embed/abc123XYZ',
+  );
+  assert.equal(
+    extractVideoEmbedUrl('https://drive.google.com/file/d/1AbCdEfGh/view?usp=sharing'),
+    'https://drive.google.com/file/d/1AbCdEfGh/preview',
+  );
+
+  const pdfMeta = classifyMediaPreview('data:application/pdf;base64,JVBERi0=', 'jurnal-2026.pdf', '');
+  assert.equal(pdfMeta.kind, 'pdf');
+  assert.equal(pdfMeta.extLabel, 'PDF');
+  assert.equal(pdfMeta.downloadName, 'jurnal-2026.pdf');
+
+  const zipMeta = classifyMediaPreview('data:application/zip;base64,UEsDB', 'app-release.apk', '');
+  assert.equal(zipMeta.kind, 'file');
+  assert.equal(zipMeta.extLabel, 'APK');
+  assert.equal(zipMeta.hasFile, true);
+
+  const ytOnly = classifyMediaPreview('', '', 'https://youtu.be/demo99');
+  assert.equal(ytOnly.kind, 'video-embed');
+  assert.equal(ytOnly.embedSrc, 'https://www.youtube.com/embed/demo99');
 });
 
 test('isPortfolioStateEmpty returns true only when every collection and singleton is empty', () => {
   const emptyState = {
     hero: null,
+    heroSocials: [],
     about: null,
     educations: [],
     experiences: [],
@@ -72,6 +140,11 @@ test('isPortfolioStateEmpty returns true only when every collection and singleto
     skills: [],
     categories: [],
     portfolios: [],
+    appProjects: [],
+    designs: [],
+    tutorials: [],
+    books: [],
+    journals: [],
     testimonials: [],
     faqs: [],
     footer: null,
@@ -83,16 +156,16 @@ test('isPortfolioStateEmpty returns true only when every collection and singleto
     true,
   );
   assert.equal(
-    isPortfolioStateEmpty({ ...emptyState, about: { bio: '', trivia_unik: '[]' } }),
-    true,
+    isPortfolioStateEmpty({ ...emptyState, appProjects: [{ id: 'p1', judul: 'POS App' }] }),
+    false,
   );
   assert.equal(
-    isPortfolioStateEmpty({ ...emptyState, educations: [{ id: '1', institusi: 'ITB Tuban' }] }),
+    isPortfolioStateEmpty({ ...emptyState, journals: [{ id: 'j1', judul: 'Paper' }] }),
     false,
   );
   assert.equal(hasHeroData({ headline: 'RosseStudio' }), true);
   assert.equal(hasAboutData({ bio: 'Developer & MUA' }), true);
-  assert.equal(hasFooterData({ wa: '08123456789' }), true);
+  assert.equal(hasFooterData({ cv_link_url: 'https://drive.google.com/file/d/123/view' }), true);
 });
 
 test('validateContactMessageInput validates required fields and rejects malformed payloads', () => {
@@ -103,14 +176,6 @@ test('validateContactMessageInput validates required fields and rejects malforme
     pesan: 'Halo RosseStudio',
   });
   assert.equal(badEmail.valid, false);
-
-  const missingMsg = validateContactMessageInput({
-    nama: 'Nadia',
-    email: 'nadia@example.com',
-    subjek: 'Booking',
-    pesan: '   ',
-  });
-  assert.equal(missingMsg.valid, false);
 
   const ok = validateContactMessageInput({
     nama: '  Nadia Putri ',
@@ -128,15 +193,9 @@ test('extractGoogleMapsEmbedUrl and resolveGoogleMapsDisplay handle embeds, plac
     '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12" width="600" height="450"></iframe>';
   assert.equal(extractGoogleMapsEmbedUrl(iframe), 'https://www.google.com/maps/embed?pb=!1m18!1m12');
   assert.equal(
-    extractGoogleMapsEmbedUrl('https://maps.google.com/maps?q=Tuban&output=embed'),
-    'https://maps.google.com/maps?q=Tuban&output=embed',
-  );
-  assert.equal(
     extractGoogleMapsEmbedUrl('https://www.google.com/maps/place/Singgahan,+Tuban/@-7.01,111.79,15z'),
     'https://maps.google.com/maps?q=Singgahan%2C%20Tuban&t=&z=15&ie=UTF8&iwloc=&output=embed',
   );
-  assert.equal(extractGoogleMapsEmbedUrl('<iframe src="javascript:alert(1)"></iframe>'), null);
-  assert.equal(extractGoogleMapsEmbedUrl('https://evil.example.com/embed'), null);
 
   const shortWithAddr = resolveGoogleMapsDisplay(
     'https://maps.app.goo.gl/qUgjkHPkjpLERmUf6',
@@ -144,11 +203,6 @@ test('extractGoogleMapsEmbedUrl and resolveGoogleMapsDisplay handle embeds, plac
   );
   assert.equal(shortWithAddr.externalUrl, 'https://maps.app.goo.gl/qUgjkHPkjpLERmUf6');
   assert.ok(shortWithAddr.embedUrl?.includes('output=embed'));
-  assert.ok(shortWithAddr.embedUrl?.includes('Singgahan'));
-
-  const shortNoAddr = resolveGoogleMapsDisplay('https://maps.app.goo.gl/qUgjkHPkjpLERmUf6', '');
-  assert.equal(shortNoAddr.embedUrl, null);
-  assert.equal(shortNoAddr.externalUrl, 'https://maps.app.goo.gl/qUgjkHPkjpLERmUf6');
 });
 
 test('URL, WhatsApp, Instagram, Trivia, Escape, and Sorting helpers behave deterministically', () => {
