@@ -21,4 +21,5 @@
 9. Invalid `kategori_pengalaman: "Hobi"` on `/experiences/{expId}` (outside `['Organisasi', 'Profesional']`).
 10. Invalid `status: "Draft"` on `/journals/{journalId}` (outside `['Dalam Proses', 'Terpublikasi']`).
 11. Unauthenticated `get` or `list` attempt on `/users/{userId}` or `/contact_messages/{msgId}` (PII leak guard).
-12. Over-sized string payload (>1.03MB) in `media_visual`, `file_lampiran`, or `cv_file` fields.
+12. Over-sized string payload (>1.03MB) in `media_visual`, `file_lampiran`, `foto_kegiatan`, `foto_prestasi`, or `cv_file` fields.
+

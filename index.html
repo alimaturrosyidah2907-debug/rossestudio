@@ -61,13 +61,18 @@
         --morph-ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
+      html,
+      body {
+        overflow-x: clip;
+        max-width: 100%;
+      }
+
       body {
         background-color: var(--bg-canvas);
         color: var(--text-primary);
         font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
         letter-spacing: 0.01em;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
       }
 
       .ambient-backdrop {
@@ -220,11 +225,169 @@
         color: #ff4d4d;
       }
 
-      .portrait-halo {
+      /* Hero Editorial Atmospheric Stage & Portrait Framing */
+      .hero-stage {
+        position: relative;
+        overflow: hidden;
+        border-radius: 2rem;
+        background:
+          radial-gradient(ellipse 68% 72% at 78% 36%, rgba(185, 28, 28, 0.28), transparent 68%),
+          radial-gradient(ellipse 55% 60% at 15% 20%, rgba(127, 29, 29, 0.16), transparent 65%),
+          linear-gradient(155deg, rgba(16, 7, 9, 0.88), rgba(8, 4, 5, 0.94));
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .hero-diagonal-beam {
+        position: absolute;
+        inset: auto -10% -18% 36%;
+        height: 220px;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(220, 38, 38, 0.16) 35%,
+          rgba(255, 72, 72, 0.55) 72%,
+          rgba(220, 38, 38, 0.08) 100%
+        );
+        filter: blur(18px);
+        transform: rotate(-19deg);
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .hero-portrait-frame {
+        position: relative;
+        border-radius: 2rem;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: radial-gradient(circle at 50% 30%, rgba(185, 28, 28, 0.34), rgba(10, 4, 5, 0.92));
         box-shadow:
-          0 0 65px rgba(220, 38, 38, 0.42),
-          0 0 22px rgba(255, 51, 51, 0.28),
-          inset 0 0 24px rgba(139, 0, 0, 0.35);
+          0 24px 64px rgba(0, 0, 0, 0.72),
+          0 0 48px rgba(220, 38, 38, 0.26),
+          inset 0 1px 0 rgba(255, 255, 255, 0.16);
+        transition: transform 420ms var(--morph-ease), box-shadow 420ms var(--morph-ease);
+      }
+
+      .hero-portrait-frame:hover {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow:
+          0 30px 76px rgba(0, 0, 0, 0.8),
+          0 0 60px rgba(220, 38, 38, 0.38),
+          inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      }
+
+      .hero-stat-card {
+        background: linear-gradient(155deg, rgba(22, 9, 12, 0.82), rgba(10, 5, 6, 0.92));
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 10px 28px rgba(0, 0, 0, 0.38);
+        border-radius: 1.15rem;
+        transition:
+          transform 320ms var(--morph-ease),
+          border-color 280ms ease,
+          box-shadow 320ms var(--morph-ease);
+      }
+
+      .hero-stat-card:hover {
+        border-color: var(--border-crimson);
+        box-shadow: 0 0 24px rgba(220, 38, 38, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+        transform: translateY(-2px);
+      }
+
+      /* Non-Flat Dimensional Glassmorphic Deck (for text-only awards/skills/books) */
+      .nonflat-deck {
+        position: relative;
+        overflow: hidden;
+        max-width: 100%;
+        background:
+          radial-gradient(circle at 88% 12%, rgba(220, 38, 38, 0.20), transparent 52%),
+          radial-gradient(circle at 12% 90%, rgba(139, 0, 0, 0.18), transparent 55%),
+          linear-gradient(160deg, rgba(22, 9, 12, 0.88), rgba(9, 4, 5, 0.96));
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.6),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-radius: 1.65rem;
+      }
+
+      .nonflat-item {
+        position: relative;
+        background: linear-gradient(145deg, rgba(16, 7, 9, 0.85), rgba(8, 4, 5, 0.94));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 8px 20px rgba(0, 0, 0, 0.35);
+        border-radius: 1.15rem;
+        transition:
+          transform 320ms var(--morph-ease),
+          border-color 260ms ease,
+          box-shadow 320ms var(--morph-ease),
+          background 260ms ease;
+      }
+
+      .nonflat-item:hover {
+        border-color: rgba(220, 38, 38, 0.48);
+        background: linear-gradient(145deg, rgba(36, 11, 15, 0.9), rgba(14, 5, 7, 0.96));
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 22px rgba(220, 38, 38, 0.25);
+        transform: translateX(4px);
+      }
+
+      /* Auto-Sliding Showcase Carousel (2-Second Interval) */
+      .rosse-carousel-viewport {
+        overflow: hidden;
+        position: relative;
+        border-radius: 1.5rem;
+      }
+
+      .rosse-carousel-track {
+        display: flex;
+        will-change: transform;
+        transition: transform 620ms var(--morph-ease);
+      }
+
+      .rosse-carousel-slide {
+        flex: 0 0 100%;
+        min-width: 100%;
+      }
+
+      .rosse-carousel-dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.26);
+        transition: width 320ms var(--morph-ease), background-color 260ms ease, box-shadow 260ms ease;
+      }
+
+      .rosse-carousel-dot.is-active {
+        width: 1.65rem;
+        background: var(--accent-bright);
+        box-shadow: 0 0 12px var(--glow-crimson);
+      }
+
+      /* Galeri Kegiatan Cards (Experiences with photos) */
+      .galeri-card {
+        background: linear-gradient(160deg, rgba(22, 9, 12, 0.85), rgba(10, 5, 6, 0.95));
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        border-radius: 1.35rem;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 36px rgba(0, 0, 0, 0.45);
+        transition:
+          transform 360ms var(--morph-ease),
+          border-color 280ms ease,
+          box-shadow 360ms var(--morph-ease);
+      }
+
+      .galeri-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-crimson);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.6), 0 0 26px var(--glow-crimson);
+      }
+
+      .headline-accent-glow {
+        color: var(--accent-bright);
+        text-shadow: 0 0 34px rgba(220, 38, 38, 0.34);
       }
 
       .btn-crimson {
@@ -326,8 +489,15 @@
         .btn-crimson:hover,
         .btn-outline-morph:hover,
         .social-morph-box:hover,
-        .outline-shell:hover {
+        .outline-shell:hover,
+        .hero-stat-card:hover,
+        .galeri-card:hover,
+        .nonflat-item:hover,
+        .hero-portrait-frame:hover {
           transform: none !important;
+        }
+        .rosse-carousel-track {
+          transition: none !important;
         }
       }
     </style>
@@ -405,7 +575,7 @@
     </header>
 
     <!-- Main Dynamic Canvas -->
-    <main id="top" class="flex-1 relative z-10">
+    <main id="top" class="flex-1 relative z-10 overflow-x-clip">
       <!-- Initial Loading Shimmer (Cleared immediately once snapshot arrives) -->
       <div id="loading-state" class="mx-auto max-w-6xl px-6 py-20 space-y-8" aria-busy="true">
         <div class="bento-card p-8 sm:p-12 animate-pulse">
@@ -469,37 +639,42 @@
 
       <!-- Dynamic Sections Container -->
       <div id="dynamic-sections" class="hidden space-y-16 sm:space-y-24 pb-24">
-        <!-- 1. Hero Section (Always Visible + Auto-Logo Social Boxes) -->
-        <section id="hero" class="hidden mx-auto max-w-6xl px-6 pt-8 sm:pt-12"></section>
+        <!-- 1. Hero Section (Reference Two-Tone Editorial Split + Portrait Stage + Dynamic 4-Stat Strip) -->
+        <section id="hero" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6 pt-6 sm:pt-10"></section>
 
         <!-- 2. Outline-First Profile & Academic Block (Tentang Saya & Riwayat Pendidikan) -->
-        <section id="tentang" class="hidden mx-auto max-w-6xl px-6"></section>
+        <section id="tentang" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
         <!-- 3. Always Visible Showcase #1: Proyek Aplikasi & Website -->
-        <section id="aplikasi" class="hidden mx-auto max-w-6xl px-6"></section>
+        <section id="aplikasi" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
         <!-- 4. Gateway Showcase: Bidang Keahlian & Portofolio -->
-        <section id="keahlian" class="hidden mx-auto max-w-6xl px-6"></section>
+        <section id="keahlian" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
-        <!-- 5. Outline-First Experience, Achievements & Skills -->
-        <section id="pengalaman" class="hidden mx-auto max-w-6xl px-6"></section>
-        <section id="skills" class="hidden mx-auto max-w-6xl px-6"></section>
+        <!-- 5. Galeri Kegiatan & Pengalaman Organisasi / Profesional -->
+        <section id="pengalaman" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
-        <!-- 6. Outline-First Creative Studio: Karya Desain & Video Tutorial -->
-        <section id="karya-kreatif" class="hidden mx-auto max-w-6xl px-6"></section>
+        <!-- 6. Penghargaan & Prestasi (2s Auto-Slider when visual / Non-Flat Glass Deck when text-only) -->
+        <section id="prestasi" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
-        <!-- 7. Outline-First Publications: Buku & Karya Ilmiah / Jurnal -->
-        <section id="publikasi" class="hidden mx-auto max-w-6xl px-6"></section>
+        <!-- 7. Kemampuan & Perangkat (Skills: 2s Auto-Slider when visual / Non-Flat Glass Deck when text-only) -->
+        <section id="skills" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
-        <!-- 8. Always Visible Showcase #2: Sertifikasi & Lisensi -->
-        <section id="sertifikat" class="hidden mx-auto max-w-6xl px-6"></section>
+        <!-- 8. Creative Studio: Karya Desain & Video Tutorial -->
+        <section id="karya-kreatif" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
-        <!-- 9. Outline-First Testimonials & FAQ -->
-        <section id="testimoni" class="hidden mx-auto max-w-6xl px-6"></section>
-        <section id="faq" class="hidden mx-auto max-w-6xl px-6"></section>
+        <!-- 9. Buku & Publikasi (2s Auto-Slider when cover images exist / Non-Flat Glass Deck) + Jurnal -->
+        <section id="publikasi" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
-        <!-- 10. Always Visible Showcase #3: Kontak & Google Maps -->
-        <section id="kontak" class="hidden mx-auto max-w-6xl px-6"></section>
+        <!-- 10. Always Visible Showcase #2: Sertifikasi & Lisensi -->
+        <section id="sertifikat" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
+
+        <!-- 11. Outline-First Testimonials & FAQ -->
+        <section id="testimoni" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
+        <section id="faq" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
+
+        <!-- 12. Always Visible Showcase #3: Kontak & Google Maps -->
+        <section id="kontak" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
       </div>
     </main>
 
@@ -766,6 +941,36 @@
       </div>
     </div>
 
+    <!-- MODAL 6: Full Galeri Kegiatan Explorer (Experience Photos & Stories) -->
+    <div
+      id="modal-galeri-kegiatan"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md transition-opacity duration-300"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-galeri-title"
+    >
+      <div class="modal-surface glass-panel w-full max-w-5xl max-h-[90vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-red-500/30">
+        <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between gap-4">
+          <div class="min-w-0">
+            <div class="text-[11px] font-semibold uppercase tracking-[0.2em] text-red-300">Dokumentasi &amp; Kiprah</div>
+            <h2 id="modal-galeri-title" class="font-display text-xl sm:text-2xl font-semibold text-white truncate">Galeri Kegiatan &amp; Pengalaman</h2>
+          </div>
+          <button
+            type="button"
+            data-close-modal="modal-galeri-kegiatan"
+            aria-label="Tutup galeri kegiatan"
+            class="min-w-[40px] min-h-[40px] rounded-xl border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-red-500/50 transition-colors shrink-0"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div id="modal-galeri-tabs" class="px-6 py-3 border-b border-white/10 flex flex-wrap gap-2 bg-black/30"></div>
+        <div id="modal-galeri-grid" class="p-6 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </div>
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script type="module">
       import {
@@ -788,6 +993,9 @@
         isPortfolioStateEmpty,
         sortByNewest,
         filterExperiencesByCategory,
+        splitTwoToneHeadline,
+        computeHeroSummaryStats,
+        partitionMediaItems,
         collection,
         addDoc,
         onSnapshot,
@@ -825,7 +1033,8 @@
         faqs: [],
         footer: null,
         activeTheme: 'obsidian-crimson',
-        activeExpTab: 'Profesional',
+        activeExpTab: 'Semua',
+        activeGaleriModalFilter: 'Semua',
         expandedOutlines: new Set(),
         activeCategoryModalId: null,
         activePortfolioList: [],
@@ -836,6 +1045,12 @@
 
       const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const modalSourceMap = new Map();
+      let activeCarouselTimers = [];
+
+      function clearCarouselTimers() {
+        activeCarouselTimers.forEach((timerId) => clearInterval(timerId));
+        activeCarouselTimers = [];
+      }
 
       const loadingEl = document.getElementById('loading-state');
       const emptyEl = document.getElementById('empty-state');
@@ -950,6 +1165,7 @@
             'modal-universal-detail',
             'modal-lightbox',
             'modal-contact',
+            'modal-galeri-kegiatan',
           ].some((mid) => !document.getElementById(mid).classList.contains('hidden'));
           if (!anyOpen) document.body.style.overflow = '';
         };
@@ -983,7 +1199,7 @@
         btn.addEventListener('click', () => closeModal(btn.dataset.closeModal));
       });
 
-      ['modal-portfolio', 'modal-portfolio-detail', 'modal-universal-detail', 'modal-lightbox', 'modal-contact'].forEach((id) => {
+      ['modal-portfolio', 'modal-portfolio-detail', 'modal-universal-detail', 'modal-lightbox', 'modal-contact', 'modal-galeri-kegiatan'].forEach((id) => {
         const backdrop = document.getElementById(id);
         backdrop.addEventListener('click', (e) => {
           if (e.target === backdrop) closeModal(id);
@@ -998,6 +1214,8 @@
             closeModal('modal-portfolio-detail');
           } else if (!document.getElementById('modal-lightbox').classList.contains('hidden')) {
             closeModal('modal-lightbox');
+          } else if (!document.getElementById('modal-galeri-kegiatan').classList.contains('hidden')) {
+            closeModal('modal-galeri-kegiatan');
           } else if (!document.getElementById('modal-portfolio').classList.contains('hidden')) {
             closeModal('modal-portfolio');
           } else if (!document.getElementById('modal-contact').classList.contains('hidden')) {
@@ -1379,7 +1597,90 @@
         });
       }
 
-      // 1. Render Hero + Auto-Logo Hero Social Boxes right below "Unduh CV"
+      // Shared Hero Stat Icon SVG helper
+      function getStatIconSvg(iconName) {
+        if (iconName === 'users') {
+          return '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>';
+        }
+        if (iconName === 'trophy') {
+          return '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5-9a5 5 0 0110 0V5H7v7zm0-4H4a2 2 0 000 4h3m10-4h3a2 2 0 010 4h-3"/></svg>';
+        }
+        if (iconName === 'award') {
+          return '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.21 13.89L7 22l5-3 5 3-1.21-8.12"/></svg>';
+        }
+        if (iconName === 'cpu') {
+          return '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>';
+        }
+        if (iconName === 'book') {
+          return '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
+        }
+        return '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>';
+      }
+
+      // Shared 2-Second Auto-Slider Binding Engine
+      function bindAutoCarousel(containerEl, intervalMs = 2000) {
+        const viewport = containerEl.querySelector('[data-carousel-root]');
+        if (!viewport) return;
+        const track = viewport.querySelector('[data-carousel-track]');
+        const slides = viewport.querySelectorAll('[data-carousel-slide]');
+        const dots = containerEl.querySelectorAll('[data-carousel-dot]');
+        const prevBtn = containerEl.querySelector('[data-carousel-prev]');
+        const nextBtn = containerEl.querySelector('[data-carousel-next]');
+        const total = slides.length;
+        if (!track || total <= 1) return;
+
+        let current = 0;
+        let timer = null;
+
+        const goTo = (nextIdx) => {
+          current = ((nextIdx % total) + total) % total;
+          track.style.transform = `translate3d(-${current * 100}%, 0, 0)`;
+          viewport.dataset.activeSlide = String(current);
+          dots.forEach((d, idx) => {
+            d.classList.toggle('is-active', idx === current);
+            d.setAttribute('aria-current', idx === current ? 'true' : 'false');
+          });
+        };
+
+        const startAuto = () => {
+          if (prefersReducedMotion()) return;
+          if (timer) clearInterval(timer);
+          timer = setInterval(() => goTo(current + 1), intervalMs);
+          activeCarouselTimers.push(timer);
+        };
+
+        const stopAuto = () => {
+          if (timer) {
+            clearInterval(timer);
+            timer = null;
+          }
+        };
+
+        prevBtn?.addEventListener('click', () => {
+          goTo(current - 1);
+          startAuto();
+        });
+        nextBtn?.addEventListener('click', () => {
+          goTo(current + 1);
+          startAuto();
+        });
+        dots.forEach((d) => {
+          d.addEventListener('click', () => {
+            goTo(Number(d.dataset.carouselDot || 0));
+            startAuto();
+          });
+        });
+
+        viewport.addEventListener('mouseenter', stopAuto);
+        viewport.addEventListener('mouseleave', startAuto);
+        viewport.addEventListener('focusin', stopAuto);
+        viewport.addEventListener('focusout', startAuto);
+
+        goTo(0);
+        startAuto();
+      }
+
+      // 1. Render Hero (Reference-Matched Editorial Split + Two-Tone Display + Portrait Stage + Dynamic 4-Stat Strip)
       function renderHero() {
         const sec = document.getElementById('hero');
         if (!hasHeroData(state.hero) && state.heroSocials.length === 0) {
@@ -1392,7 +1693,6 @@
         const f = state.footer || {};
         const hasPhoto = Boolean(h.foto_profil && h.foto_profil.trim());
 
-        // Build Hero Socials from dedicated CRUD collection first; fallback gracefully to footer socials if empty
         let socialEntries = state.heroSocials
           .map((item) => detectSocialPlatform(item.platform, item.url))
           .filter((s) => s.href);
@@ -1438,17 +1738,83 @@
           cvOrContactButton = `<a href="${escapeHtml(cvLink)}" target="_blank" rel="noopener noreferrer" class="btn-outline-morph px-5 py-3 text-sm font-semibold text-white whitespace-nowrap shrink-0">Unduh CV</a>`;
         }
 
-        const primaryCtaHref = state.appProjects.length > 0 ? '#aplikasi' : state.categories.length > 0 ? '#keahlian' : '';
+        const primaryCtaHref =
+          state.appProjects.length > 0
+            ? '#aplikasi'
+            : state.experiences.length > 0
+              ? '#pengalaman'
+              : state.categories.length > 0
+                ? '#keahlian'
+                : '#tentang';
+
+        const kickerText = (h.hero_kicker || '').trim() || (h.headline ? 'PORTFOLIO' : '');
+        const headlineParts = splitTwoToneHeadline(h.headline || '');
+        const subLines = String(h.sub_headline || '')
+          .split(/\r?\n/)
+          .map((x) => x.trim())
+          .filter(Boolean);
+
+        const heroStats = computeHeroSummaryStats(state);
+        const statsStripHtml = heroStats.length
+          ? `
+            <div class="mt-8 pt-6 border-t border-white/10 grid grid-cols-2 lg:grid-cols-${Math.min(heroStats.length, 4)} gap-3 sm:gap-3.5 relative z-10">
+              ${heroStats
+                .map(
+                  (st) => `
+                  <a
+                    href="${escapeHtml(st.href)}"
+                    class="hero-stat-card min-w-0 px-3.5 py-3 sm:px-4 sm:py-3.5 flex items-center gap-3 sm:gap-3.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                  >
+                    <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-red-950/60 border border-red-500/35 flex items-center justify-center text-red-300 shrink-0 group-hover:scale-105 transition-transform">
+                      ${getStatIconSvg(st.icon)}
+                    </span>
+                    <div class="min-w-0">
+                      <div class="font-display text-2xl sm:text-3xl font-bold text-white tabular-nums leading-none">${st.count}</div>
+                      <div class="text-[11px] sm:text-xs font-medium mt-1 truncate" style="color: var(--text-muted);">${escapeHtml(st.label)}</div>
+                    </div>
+                  </a>
+                `
+                )
+                .join('')}
+            </div>
+          `
+          : '';
 
         sec.innerHTML = `
-          <div class="bento-card p-8 sm:p-12 lg:p-14 relative overflow-hidden">
-            <div class="grid grid-cols-1 ${hasPhoto ? 'lg:grid-cols-12' : ''} gap-10 lg:gap-12 items-center relative z-10">
-              <div class="${hasPhoto ? 'lg:col-span-7' : 'max-w-3xl'} space-y-6">
-                ${h.headline ? `<h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.12] headline-balance text-white">${escapeHtml(h.headline)}</h1>` : ''}
-                ${h.sub_headline ? `<p class="text-base sm:text-lg leading-relaxed max-w-2xl" style="color: var(--text-muted);">${escapeHtml(h.sub_headline)}</p>` : ''}
-                <div class="pt-2 space-y-3.5">
+          <div class="hero-stage px-5 py-7 sm:px-12 sm:py-12 lg:px-14 lg:py-14">
+            <div class="hero-diagonal-beam" aria-hidden="true"></div>
+            <div class="grid grid-cols-1 ${hasPhoto ? 'lg:grid-cols-12' : ''} gap-8 sm:gap-10 lg:gap-12 items-center relative z-10">
+              <div class="${hasPhoto ? 'lg:col-span-7 min-w-0' : 'max-w-3xl min-w-0'} space-y-5">
+                ${
+                  kickerText
+                    ? `<div class="inline-flex items-center gap-3">
+                         <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-neutral-300">${escapeHtml(kickerText)}</span>
+                         <span class="h-[1px] w-10 bg-gradient-to-r from-red-500/80 to-transparent"></span>
+                       </div>`
+                    : ''
+                }
+                ${
+                  headlineParts.primary
+                    ? `<h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] headline-balance tracking-tight">
+                         <span class="block text-white">${escapeHtml(headlineParts.primary)}</span>
+                         ${headlineParts.accent ? `<span class="block headline-accent-glow mt-0.5">${escapeHtml(headlineParts.accent)}</span>` : ''}
+                       </h1>`
+                    : ''
+                }
+                ${
+                  subLines.length > 0
+                    ? `<div class="space-y-2 max-w-xl">
+                         <p class="text-base sm:text-lg font-medium text-neutral-100 leading-snug">${escapeHtml(subLines[0])}</p>
+                         ${subLines.slice(1).map((line) => `<p class="text-sm leading-relaxed" style="color: var(--text-muted);">${escapeHtml(line)}</p>`).join('')}
+                       </div>`
+                    : ''
+                }
+                <div class="pt-2 space-y-4">
                   <div class="flex flex-wrap items-center gap-3.5">
-                    ${primaryCtaHref ? `<a href="${primaryCtaHref}" class="btn-crimson px-6 py-3 text-sm font-semibold whitespace-nowrap shrink-0">Jelajahi Karya</a>` : ''}
+                    <a href="${primaryCtaHref}" class="btn-crimson px-6 py-3 rounded-full text-sm font-semibold inline-flex items-center gap-2 whitespace-nowrap shrink-0">
+                      <span>Lihat Selengkapnya</span>
+                      <span aria-hidden="true">→</span>
+                    </a>
                     ${cvOrContactButton}
                   </div>
                   ${socialRowHtml}
@@ -1457,20 +1823,22 @@
               ${
                 hasPhoto
                   ? `
-                <div class="lg:col-span-5 flex justify-center lg:justify-end">
-                  <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full p-1.5 border border-red-500/45 portrait-halo bg-black/40">
+                <div class="lg:col-span-5 min-w-0 flex justify-center lg:justify-end">
+                  <div class="hero-portrait-frame w-64 sm:w-72 lg:w-80 max-w-full aspect-[4/5]">
                     <img
                       src="${escapeHtml(h.foto_profil)}"
                       alt="${escapeHtml(h.headline || 'Foto Profil')}"
-                      class="w-full h-full object-cover rounded-full"
+                      class="w-full h-full object-cover object-top"
                       referrerpolicy="no-referrer"
                     />
+                    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#080304] via-[#080304]/45 to-transparent"></div>
                   </div>
                 </div>
               `
                   : ''
               }
             </div>
+            ${statsStripHtml}
           </div>
         `;
 
@@ -1603,13 +1971,13 @@
                       data-aos="fade-up"
                       data-aos-delay="${Math.min(idx * 70, 210)}"
                     >
-                      <div class="lg:col-span-6 ${reverseMedia ? 'lg:order-2' : 'lg:order-1'}">
+                      <div class="lg:col-span-6 min-w-0 ${reverseMedia ? 'lg:order-2' : 'lg:order-1'}">
                         <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/60">
                           ${renderVisualMediaBox(mediaInfo, proj.judul, 'h-60 sm:h-72', true)}
                         </div>
                       </div>
 
-                      <div class="lg:col-span-6 ${reverseMedia ? 'lg:order-1' : 'lg:order-2'} space-y-4">
+                      <div class="lg:col-span-6 min-w-0 ${reverseMedia ? 'lg:order-1' : 'lg:order-2'} space-y-4">
                         <div class="inline-flex items-center px-3 py-1 rounded-lg bg-red-950/60 border border-red-500/35 text-xs font-semibold text-red-200">
                           ${escapeHtml(proj.kategori_badge)}
                         </div>
@@ -1872,12 +2240,129 @@
       document.getElementById('btn-detail-prev').addEventListener('click', () => stepPortfolioDetail(-1));
       document.getElementById('btn-detail-next').addEventListener('click', () => stepPortfolioDetail(1));
 
-      // 5. Render Outline-First: Pengalaman Organisasi/Profesional & Prestasi
-      function renderExperiencesAndAchievements() {
+      // Shared helper to open Experience detail in FLIP Morph Modal
+      function openExperienceModal(exp, sourceEl = null) {
+        if (!exp) return;
+        openUniversalModal(
+          {
+            kicker: `${exp.kategori_pengalaman} · ${exp.institusi_tempat}`,
+            title: exp.posisi,
+            description: exp.deskripsi || '',
+            metaItems: [
+              { label: 'Kategori', value: exp.kategori_pengalaman },
+              { label: 'Tempat / Organisasi', value: exp.institusi_tempat },
+              { label: 'Tanggal / Durasi', value: exp.durasi },
+            ],
+            primaryMedia: classifyMediaPreview(exp.foto_kegiatan, exp.foto_kegiatan_nama, exp.link_url),
+            externalUrl: exp.link_url,
+            externalLabel: 'Lihat Dokumentasi Eksternal',
+          },
+          sourceEl
+        );
+      }
+
+      function buildGaleriCardHtml(exp, originalIdx) {
+        const mediaInfo = classifyMediaPreview(exp.foto_kegiatan, exp.foto_kegiatan_nama, exp.link_url);
+        const hasImg = mediaInfo.kind === 'image' && mediaInfo.src;
+        return `
+          <article class="galeri-card overflow-hidden flex flex-col group" data-aos="fade-up" data-aos-delay="${Math.min(originalIdx * 60, 240)}">
+            <div class="relative h-48 bg-black/60 overflow-hidden">
+              ${
+                hasImg
+                  ? `<img src="${escapeHtml(mediaInfo.src)}" alt="${escapeHtml(exp.posisi)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" referrerpolicy="no-referrer" />`
+                  : `<div class="w-full h-full bg-gradient-to-br from-red-950/60 via-[#120608] to-black flex flex-col items-center justify-center p-5 text-center gap-2">
+                       <span class="w-11 h-11 rounded-2xl border border-red-500/35 bg-red-950/50 flex items-center justify-center text-red-300">
+                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                       </span>
+                       <span class="text-[11px] font-medium text-red-200/80 truncate max-w-full">${escapeHtml(exp.institusi_tempat)}</span>
+                     </div>`
+              }
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/25"></div>
+              <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-medium text-red-100 tabular-nums shadow-lg">
+                <svg class="w-3 h-3 text-red-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <span>${escapeHtml(exp.durasi)}</span>
+              </div>
+              <div class="absolute bottom-2.5 left-3.5 right-3.5 text-[11px] font-medium text-red-200 truncate">
+                ${escapeHtml(exp.kategori_pengalaman)} · ${escapeHtml(exp.institusi_tempat)}
+              </div>
+            </div>
+            <div class="p-5 flex-1 flex flex-col justify-between gap-4">
+              <div class="space-y-2">
+                <h3 class="font-display text-lg font-semibold text-white line-clamp-2 group-hover:text-red-200 transition-colors">${escapeHtml(exp.posisi)}</h3>
+                ${exp.deskripsi ? `<p class="text-xs sm:text-sm leading-relaxed line-clamp-3" style="color: var(--text-muted);">${escapeHtml(exp.deskripsi)}</p>` : ''}
+              </div>
+              <button
+                type="button"
+                data-open-exp="${originalIdx}"
+                class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-300 hover:text-white transition-colors self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 rounded-md"
+              >
+                <span>Baca Selengkapnya</span>
+                <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }
+
+      function openGaleriModal(sourceEl = null) {
+        const tabsEl = document.getElementById('modal-galeri-tabs');
+        const gridEl = document.getElementById('modal-galeri-grid');
+        const counts = {
+          Semua: state.experiences.length,
+          Organisasi: filterExperiencesByCategory(state.experiences, 'Organisasi').length,
+          Profesional: filterExperiencesByCategory(state.experiences, 'Profesional').length,
+        };
+        const filterOpts = ['Semua', 'Organisasi', 'Profesional'];
+        tabsEl.innerHTML = filterOpts
+          .map(
+            (opt) => `
+            <button
+              type="button"
+              data-galeri-filter="${opt}"
+              class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${state.activeGaleriModalFilter === opt ? 'btn-crimson' : 'text-neutral-300 hover:text-white border border-white/10'}"
+            >
+              ${opt} (${counts[opt]})
+            </button>
+          `
+          )
+          .join('');
+
+        const filtered =
+          state.activeGaleriModalFilter === 'Semua'
+            ? state.experiences
+            : filterExperiencesByCategory(state.experiences, state.activeGaleriModalFilter);
+
+        gridEl.innerHTML =
+          filtered.length > 0
+            ? filtered
+                .map((exp) => {
+                  const origIdx = state.experiences.indexOf(exp);
+                  return buildGaleriCardHtml(exp, origIdx);
+                })
+                .join('')
+            : `<div class="col-span-full py-12 text-center text-sm" style="color: var(--text-muted);">Belum ada dokumentasi pada kategori ini.</div>`;
+
+        tabsEl.querySelectorAll('[data-galeri-filter]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.activeGaleriModalFilter = btn.dataset.galeriFilter;
+            openGaleriModal(null);
+          });
+        });
+
+        gridEl.querySelectorAll('[data-open-exp]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const exp = state.experiences[Number(btn.dataset.openExp)];
+            openExperienceModal(exp, btn.closest('article') || e.currentTarget);
+          });
+        });
+
+        openModalWithMorph('modal-galeri-kegiatan', sourceEl);
+      }
+
+      // 5. Render Pengalaman Organisasi & Profesional — Galeri Kegiatan
+      function renderExperiences() {
         const sec = document.getElementById('pengalaman');
-        const hasExp = state.experiences.length > 0;
-        const hasAch = state.achievements.length > 0;
-        if (!hasExp && !hasAch) {
+        if (state.experiences.length === 0) {
           sec.classList.add('hidden');
           sec.innerHTML = '';
           return;
@@ -1886,123 +2371,317 @@
 
         const proItems = filterExperiencesByCategory(state.experiences, 'Profesional');
         const orgItems = filterExperiencesByCategory(state.experiences, 'Organisasi');
-        if (state.activeExpTab === 'Profesional' && proItems.length === 0 && orgItems.length > 0) {
-          state.activeExpTab = 'Organisasi';
-        }
-        const activeList = state.activeExpTab === 'Profesional' ? proItems : orgItems;
+        const filtered =
+          state.activeExpTab === 'Semua'
+            ? state.experiences
+            : filterExperiencesByCategory(state.experiences, state.activeExpTab);
 
-        const blocks = [];
+        const visibleCards = filtered.slice(0, 4);
 
-        if (hasExp) {
-          const expInner = `
-            <div class="pt-4 space-y-8">
-              <div role="tablist" aria-label="Kategori Pengalaman" class="inline-flex items-center gap-1 p-1 rounded-xl bg-black/50 border border-white/10">
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected="${state.activeExpTab === 'Profesional'}"
-                  data-exp-tab="Profesional"
-                  class="px-4 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${state.activeExpTab === 'Profesional' ? 'btn-crimson' : 'text-neutral-300 hover:text-white'}"
-                >
-                  Profesional (${proItems.length})
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected="${state.activeExpTab === 'Organisasi'}"
-                  data-exp-tab="Organisasi"
-                  class="px-4 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${state.activeExpTab === 'Organisasi' ? 'btn-crimson' : 'text-neutral-300 hover:text-white'}"
-                >
-                  Organisasi (${orgItems.length})
-                </button>
+        sec.innerHTML = `
+          <div class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3" data-aos="fade-up">
+              <div class="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.26em] text-red-300">
+                <span class="h-[1px] w-7 bg-red-500/70"></span>
+                <span>Pengalaman Organisasi &amp; Profesional</span>
+                <span class="h-[1px] w-7 bg-red-500/70"></span>
               </div>
-              ${
-                activeList.length > 0
-                  ? `
-                <div class="relative space-y-6 before:content-[''] before:absolute before:left-4 md:before:left-1/2 before:top-2 before:bottom-2 before:w-[1.5px] md:before:-translate-x-1/2 before:bg-gradient-to-b before:from-red-500 before:via-red-900/60 before:to-transparent">
-                  ${activeList
-                    .map((exp, idx) => {
-                      const isLeft = idx % 2 === 0;
-                      return `
-                      <div class="relative md:grid md:grid-cols-2 md:gap-10 items-center">
-                        <span class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-black border border-red-500/60 items-center justify-center text-red-300 shadow-[0_0_16px_rgba(220,38,38,0.5)] z-10">
-                          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </span>
-                        <span class="md:hidden absolute left-4 -translate-x-1/2 top-5 w-3.5 h-3.5 rounded-full bg-red-600 border-2 border-black"></span>
-                        <div class="pl-10 md:pl-0 ${isLeft ? 'md:col-start-1' : 'md:col-start-2'}">
-                          <div class="bento-card p-5 space-y-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-red-300 font-medium">
-                              <span>${escapeHtml(exp.institusi_tempat)}</span>
-                              <span class="tabular-nums">${escapeHtml(exp.durasi)}</span>
-                            </div>
-                            <h3 class="font-display text-lg sm:text-xl font-semibold text-white">${escapeHtml(exp.posisi)}</h3>
-                            ${exp.deskripsi ? `<p class="text-xs sm:text-sm leading-relaxed" style="color: var(--text-muted);">${escapeHtml(exp.deskripsi)}</p>` : ''}
-                          </div>
-                        </div>
-                      </div>
-                    `;
-                    })
-                    .join('')}
-                </div>
-              `
-                  : `<div class="rounded-2xl bg-black/40 border border-white/10 p-6 text-center text-sm" style="color: var(--text-muted);">Belum ada catatan pada kategori ${escapeHtml(state.activeExpTab)}.</div>`
-              }
+              <h2 class="font-display text-3xl sm:text-4xl font-semibold headline-balance text-white">
+                Galeri <span class="headline-accent-glow">Kegiatan</span>
+              </h2>
+              <div class="mx-auto w-12 h-1 rounded-full bg-gradient-to-r from-red-700 to-red-400"></div>
+              <p class="text-sm sm:text-base" style="color: var(--text-muted);">
+                Dokumentasi kiprah profesional, kepemimpinan organisasi, dan momen kolaborasi.
+              </p>
             </div>
-          `;
-          blocks.push(
-            renderOutlineSectionShell({
-              key: 'outline-experiences',
-              title: 'Pengalaman Organisasi & Profesional',
-              subtitle: 'Linimasa peran karir, proyek industri, dan kepemimpinan.',
-              countLabel: `${state.experiences.length} Peran`,
-              innerHtml: expInner,
-              iconSvg:
-                '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>',
-            })
-          );
-        }
 
-        if (hasAch) {
-          const achInner = `
-            <div class="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              ${state.achievements
+            <div class="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label="Filter Galeri Kegiatan">
+              ${[
+                { key: 'Semua', label: `Semua (${state.experiences.length})` },
+                { key: 'Organisasi', label: `Organisasi (${orgItems.length})` },
+                { key: 'Profesional', label: `Profesional (${proItems.length})` },
+              ]
                 .map(
-                  (ach) => `
-                <article class="bento-card p-5 space-y-2">
-                  <div class="text-xs font-medium text-red-300 tabular-nums">${escapeHtml(ach.penyelenggara)} · ${escapeHtml(ach.tahun)}</div>
-                  <h3 class="font-display text-lg font-semibold text-white">${escapeHtml(ach.judul_prestasi)}</h3>
-                  ${ach.deskripsi ? `<p class="text-xs sm:text-sm leading-relaxed" style="color: var(--text-muted);">${escapeHtml(ach.deskripsi)}</p>` : ''}
-                </article>
-              `
+                  (t) => `
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected="${state.activeExpTab === t.key}"
+                    data-exp-tab="${t.key}"
+                    class="px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${
+                      state.activeExpTab === t.key ? 'btn-crimson' : 'border border-white/12 bg-black/40 text-neutral-300 hover:text-white hover:border-red-500/40'
+                    }"
+                  >
+                    ${escapeHtml(t.label)}
+                  </button>
+                `
                 )
                 .join('')}
             </div>
-          `;
-          blocks.push(
-            renderOutlineSectionShell({
-              key: 'outline-achievements',
-              title: 'Penghargaan & Prestasi',
-              subtitle: 'Apresiasi kompetisi, beasiswa, dan pencapaian unggulan.',
-              countLabel: `${state.achievements.length} Prestasi`,
-              innerHtml: achInner,
-              iconSvg:
-                '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5-9a5 5 0 0110 0V5H7v7zm0-4H4a2 2 0 000 4h3m10-4h3a2 2 0 010 4h-3"/></svg>',
-            })
-          );
-        }
 
-        sec.innerHTML = `<div class="space-y-4">${blocks.join('')}</div>`;
-        bindOutlineTriggers(sec);
+            ${
+              visibleCards.length > 0
+                ? `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                     ${visibleCards
+                       .map((exp) => {
+                         const origIdx = state.experiences.indexOf(exp);
+                         return buildGaleriCardHtml(exp, origIdx);
+                       })
+                       .join('')}
+                   </div>`
+                : `<div class="nonflat-deck p-8 text-center text-sm" style="color: var(--text-muted);">
+                     Belum ada catatan pada kategori ${escapeHtml(state.activeExpTab)}.
+                   </div>`
+            }
+
+            <div class="flex justify-center pt-1">
+              <button
+                type="button"
+                id="btn-open-all-galeri"
+                class="btn-crimson px-7 py-3 rounded-full text-xs sm:text-sm font-semibold inline-flex items-center gap-2 shadow-lg"
+              >
+                <span>Lihat Semua Galeri Kegiatan</span>
+                <span class="tabular-nums opacity-85">(${state.experiences.length})</span>
+              </button>
+            </div>
+          </div>
+        `;
 
         sec.querySelectorAll('[data-exp-tab]').forEach((btn) => {
           btn.addEventListener('click', () => {
             state.activeExpTab = btn.dataset.expTab;
-            renderExperiencesAndAchievements();
+            renderExperiences();
           });
+        });
+
+        sec.querySelectorAll('[data-open-exp]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const exp = state.experiences[Number(btn.dataset.openExp)];
+            openExperienceModal(exp, btn.closest('article') || e.currentTarget);
+          });
+        });
+
+        const openAllBtn = document.getElementById('btn-open-all-galeri');
+        if (openAllBtn) {
+          openAllBtn.addEventListener('click', (e) => {
+            state.activeGaleriModalFilter = state.activeExpTab;
+            openGaleriModal(e.currentTarget);
+          });
+        }
+      }
+
+      // Reusable 2-Second Auto-Slider + Non-Flat Asymmetric Showcase Builder
+      function renderAdaptiveShowcase(sec, config) {
+        const { items, inspectMedia, openItemModal, openGalleryAllModal, kicker, titlePrimary, titleAccent, summaryText, ctaLabel, carouselLabel } = config;
+        const { withImage, withoutImage } = partitionMediaItems(items, inspectMedia);
+
+        const buildCarouselHtml = () => {
+          if (withImage.length === 0) return '';
+          return `
+            <div class="relative" data-aos="fade-up">
+              <div class="rosse-carousel-viewport border border-white/10 bg-black/45 p-3 sm:p-4" data-carousel-root data-active-slide="0" aria-label="${escapeHtml(carouselLabel)}">
+                <div class="rosse-carousel-track" data-carousel-track>
+                  ${withImage
+                    .map(({ item, index, media }) => {
+                      const cardData = config.mapItem(item);
+                      return `
+                        <div class="rosse-carousel-slide px-1" data-carousel-slide>
+                          <button
+                            type="button"
+                            data-showcase-open="${index}"
+                            class="w-full text-left bento-card overflow-hidden grid grid-cols-1 sm:grid-cols-12 items-stretch group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                          >
+                            <div class="sm:col-span-6 relative h-56 sm:h-64 bg-black/70 overflow-hidden">
+                              <img src="${escapeHtml(media.src)}" alt="${escapeHtml(cardData.title)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" referrerpolicy="no-referrer" />
+                              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                              ${
+                                cardData.badge
+                                  ? `<div class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-medium text-red-100 tabular-nums">${escapeHtml(cardData.badge)}</div>`
+                                  : ''
+                              }
+                            </div>
+                            <div class="sm:col-span-6 p-5 sm:p-6 flex flex-col justify-between gap-4">
+                              <div class="space-y-2">
+                                ${cardData.meta ? `<div class="text-xs font-medium text-red-300 tabular-nums">${escapeHtml(cardData.meta)}</div>` : ''}
+                                <h3 class="font-display text-xl sm:text-2xl font-semibold text-white line-clamp-2 group-hover:text-red-200 transition-colors">${escapeHtml(cardData.title)}</h3>
+                                ${cardData.desc ? `<p class="text-xs sm:text-sm leading-relaxed line-clamp-3" style="color: var(--text-muted);">${escapeHtml(cardData.desc)}</p>` : ''}
+                              </div>
+                              <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-300 group-hover:text-white transition-colors">
+                                <span>Lihat Detail</span>
+                                <span aria-hidden="true">→</span>
+                              </span>
+                            </div>
+                          </button>
+                        </div>
+                      `;
+                    })
+                    .join('')}
+                </div>
+              </div>
+              ${
+                withImage.length > 1
+                  ? `
+                <div class="mt-4 flex items-center justify-between gap-4 px-1">
+                  <div class="flex items-center gap-2" aria-label="Navigasi indikator slide">
+                    ${withImage
+                      .map(
+                        (_, i) => `
+                        <button type="button" data-carousel-dot="${i}" aria-label="Slide ${i + 1}" class="rosse-carousel-dot ${i === 0 ? 'is-active' : ''}"></button>
+                      `
+                      )
+                      .join('')}
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button type="button" data-carousel-prev aria-label="Slide sebelumnya" class="w-9 h-9 rounded-full glass-panel flex items-center justify-center text-neutral-200 hover:text-white hover:border-red-500/60 transition-colors">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button type="button" data-carousel-next aria-label="Slide berikutnya" class="w-9 h-9 rounded-full glass-panel flex items-center justify-center text-neutral-200 hover:text-white hover:border-red-500/60 transition-colors">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+              `
+                  : ''
+              }
+            </div>
+          `;
+        };
+
+        const buildNonFlatDeckHtml = () => {
+          if (withoutImage.length === 0) return '';
+          return `
+            <div class="nonflat-deck p-4 sm:p-5 space-y-3" data-aos="fade-up">
+              ${withoutImage
+                .map(({ item, index }) => {
+                  const cardData = config.mapItem(item);
+                  return `
+                    <button
+                      type="button"
+                      data-showcase-open="${index}"
+                      class="nonflat-item w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                    >
+                      <div class="flex items-center gap-4 min-w-0">
+                        <span class="w-11 h-11 rounded-xl bg-red-950/65 border border-red-500/35 flex items-center justify-center text-red-200 shrink-0 shadow-[0_0_18px_rgba(220,38,38,0.2)]">
+                          ${cardData.iconSvg || config.defaultIconSvg}
+                        </span>
+                        <div class="min-w-0 space-y-0.5">
+                          ${cardData.meta ? `<div class="text-[11px] sm:text-xs font-medium text-red-300 tabular-nums truncate">${escapeHtml(cardData.meta)}</div>` : ''}
+                          <h3 class="font-display text-base sm:text-lg font-semibold text-white truncate group-hover:text-red-200 transition-colors">${escapeHtml(cardData.title)}</h3>
+                          ${cardData.desc ? `<p class="text-xs line-clamp-1" style="color: var(--text-muted);">${escapeHtml(cardData.desc)}</p>` : ''}
+                        </div>
+                      </div>
+                      <span class="w-9 h-9 rounded-full border border-white/12 bg-black/40 flex items-center justify-center text-neutral-300 group-hover:text-white group-hover:border-red-500/60 group-hover:bg-red-950/50 transition-all shrink-0">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                      </span>
+                    </button>
+                  `;
+                })
+                .join('')}
+            </div>
+          `;
+        };
+
+        sec.innerHTML = `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            <div class="lg:col-span-5 min-w-0 space-y-4" data-aos="fade-up">
+              <div class="inline-flex items-center gap-3">
+                <span class="text-[11px] font-semibold uppercase tracking-[0.26em] text-red-300">${escapeHtml(kicker)}</span>
+                <span class="h-[1px] w-10 bg-gradient-to-r from-red-500/75 to-transparent"></span>
+              </div>
+              <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-[1.12] headline-balance">
+                <span class="text-white">${escapeHtml(titlePrimary)}</span>
+                ${titleAccent ? `<span class="block headline-accent-glow">${escapeHtml(titleAccent)}</span>` : ''}
+              </h2>
+              <p class="text-sm sm:text-base leading-relaxed" style="color: var(--text-muted);">${escapeHtml(summaryText)}</p>
+              <div class="pt-1 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  data-showcase-cta
+                  class="btn-outline-morph px-5 py-2.5 rounded-full text-xs font-semibold text-white inline-flex items-center gap-2"
+                >
+                  <span>${escapeHtml(ctaLabel)}</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+                <span class="text-xs font-medium text-neutral-400 tabular-nums">${items.length} Item Terarsip</span>
+              </div>
+            </div>
+            <div class="lg:col-span-7 min-w-0 space-y-5 overflow-hidden">
+              ${buildCarouselHtml()}
+              ${buildNonFlatDeckHtml()}
+            </div>
+          </div>
+        `;
+
+        if (withImage.length > 1) {
+          bindAutoCarousel(sec, 2000);
+        }
+
+        sec.querySelectorAll('[data-showcase-open]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const idx = Number(btn.dataset.showcaseOpen);
+            if (items[idx]) openItemModal(items[idx], e.currentTarget);
+          });
+        });
+
+        const ctaBtn = sec.querySelector('[data-showcase-cta]');
+        if (ctaBtn) {
+          ctaBtn.addEventListener('click', (e) => {
+            if (openGalleryAllModal) {
+              openGalleryAllModal(e.currentTarget);
+            } else if (items[0]) {
+              openItemModal(items[0], e.currentTarget);
+            }
+          });
+        }
+      }
+
+      // 6. Render Penghargaan & Prestasi (2s Auto-Slider if visual, Non-Flat Glass Deck if text-only)
+      function renderAchievements() {
+        const sec = document.getElementById('prestasi');
+        if (state.achievements.length === 0) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+
+        renderAdaptiveShowcase(sec, {
+          items: state.achievements,
+          kicker: 'Penghargaan & Prestasi',
+          titlePrimary: 'Apresiasi &',
+          titleAccent: 'Pencapaian Terbaik',
+          summaryText: 'Rekam jejak kompetisi akademik, beasiswa, dan pengakuan prestasi sepanjang perjalanan berkarya.',
+          ctaLabel: 'Lihat Detail Prestasi',
+          carouselLabel: 'Slider Penghargaan dan Prestasi',
+          defaultIconSvg:
+            '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5-9a5 5 0 0110 0V5H7v7zm0-4H4a2 2 0 000 4h3m10-4h3a2 2 0 010 4h-3"/></svg>',
+          inspectMedia: (ach) => classifyMediaPreview(ach.foto_prestasi, ach.foto_prestasi_nama, ach.link_url),
+          mapItem: (ach) => ({
+            title: ach.judul_prestasi,
+            meta: `${ach.penyelenggara} · ${ach.tahun}`,
+            badge: ach.tahun,
+            desc: ach.deskripsi || '',
+          }),
+          openItemModal: (ach, srcEl) =>
+            openUniversalModal(
+              {
+                kicker: `Penghargaan · ${ach.tahun}`,
+                title: ach.judul_prestasi,
+                description: ach.deskripsi || `Penghargaan resmi yang diselenggarakan oleh ${ach.penyelenggara}.`,
+                metaItems: [
+                  { label: 'Penyelenggara', value: ach.penyelenggara },
+                  { label: 'Tahun', value: ach.tahun },
+                ],
+                primaryMedia: classifyMediaPreview(ach.foto_prestasi, ach.foto_prestasi_nama, ach.link_url),
+                externalUrl: ach.link_url,
+                externalLabel: 'Lihat Bukti Prestasi',
+              },
+              srcEl
+            ),
         });
       }
 
-      // 6. Render Outline-First: Kemampuan / Skills
+      // 7. Render Kemampuan & Perangkat (Skills: 2s Auto-Slider when icons/images exist / Non-Flat Glass Deck)
       function renderSkills() {
         const sec = document.getElementById('skills');
         if (state.skills.length === 0) {
@@ -2012,35 +2691,36 @@
         }
         sec.classList.remove('hidden');
 
-        const inner = `
-          <div class="pt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
-            ${state.skills
-              .map(
-                (sk) => `
-              <div class="bento-card p-3.5 flex items-center gap-3">
-                ${
-                  sk.logo_icon
-                    ? `<img src="${escapeHtml(sk.logo_icon)}" alt="${escapeHtml(sk.nama_skill)}" class="w-9 h-9 rounded-lg object-contain bg-black/40 p-1 shrink-0" referrerpolicy="no-referrer" />`
-                    : `<div class="w-9 h-9 rounded-lg bg-red-950/60 border border-red-500/30 flex items-center justify-center text-xs font-bold text-red-200 shrink-0">${escapeHtml(sk.nama_skill.slice(0, 2).toUpperCase())}</div>`
-                }
-                <span class="text-sm font-medium text-neutral-100 truncate">${escapeHtml(sk.nama_skill)}</span>
-              </div>
-            `
-              )
-              .join('')}
-          </div>
-        `;
-
-        sec.innerHTML = renderOutlineSectionShell({
-          key: 'outline-skills',
-          title: 'Kemampuan & Perangkat (Skills)',
-          subtitle: 'Teknologi pengembangan perangkat lunak, desain, dan keahlian kreatif.',
-          countLabel: `${state.skills.length} Keahlian`,
-          innerHtml: inner,
-          iconSvg:
+        renderAdaptiveShowcase(sec, {
+          items: state.skills,
+          kicker: 'Kemampuan & Perangkat',
+          titlePrimary: 'Mengasah Keahlian',
+          titleAccent: 'Untuk Masa Depan',
+          summaryText: 'Teknologi pengembangan perangkat lunak, alat desain modern, serta keahlian kreatif profesional.',
+          ctaLabel: 'Detail Kemampuan',
+          carouselLabel: 'Slider Kemampuan dan Perangkat',
+          defaultIconSvg:
             '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>',
+          inspectMedia: (sk) => classifyMediaPreview(sk.logo_icon, sk.logo_icon_nama, sk.link_url),
+          mapItem: (sk) => ({
+            title: sk.nama_skill,
+            meta: 'Keahlian & Perangkat Utama',
+            badge: 'Skill',
+            desc: sk.link_url ? 'Klik untuk membuka detail atau tautan referensi keahlian.' : 'Kompetensi aktif dalam pengerjaan proyek digital & kreatif.',
+          }),
+          openItemModal: (sk, srcEl) =>
+            openUniversalModal(
+              {
+                kicker: 'Kemampuan & Perangkat',
+                title: sk.nama_skill,
+                description: `Perangkat dan kompetensi aktif yang dikuasai dalam portofolio RosseStudio.`,
+                primaryMedia: classifyMediaPreview(sk.logo_icon, sk.logo_icon_nama, sk.link_url),
+                externalUrl: sk.link_url,
+                externalLabel: 'Buka Referensi Skill',
+              },
+              srcEl
+            ),
         });
-        bindOutlineTriggers(sec);
       }
 
       // 7. Render Outline-First: Karya Desain & Video Tutorial
@@ -2185,7 +2865,7 @@
         });
       }
 
-      // 8. Render Outline-First: Buku & Karya Ilmiah / Jurnal
+      // 9. Render Buku & Publikasi (2s Auto-Slider + Non-Flat Glass Deck) & Karya Ilmiah / Jurnal
       function renderPublications() {
         const sec = document.getElementById('publikasi');
         const hasBooks = state.books.length > 0;
@@ -2197,50 +2877,58 @@
         }
         sec.classList.remove('hidden');
 
-        const blocks = [];
+        sec.innerHTML = `
+          <div class="space-y-14">
+            ${hasBooks ? '<div id="books-showcase-slot"></div>' : ''}
+            ${hasJournals ? '<div id="journals-showcase-slot"></div>' : ''}
+          </div>
+        `;
+
+        const openBookModal = (b, srcEl) => {
+          const metaItems = [
+            b.tema ? { label: 'Tema', value: b.tema } : null,
+            b.lokasi ? { label: 'Lokasi', value: b.lokasi } : null,
+            b.jenis ? { label: 'Jenis', value: b.jenis } : null,
+          ].filter(Boolean);
+          openUniversalModal(
+            {
+              kicker: b.badge_nomor,
+              title: b.judul,
+              description: b.deskripsi || '',
+              metaItems,
+              primaryMedia: classifyMediaPreview(b.cover_file, b.cover_file_nama, b.link_url),
+              externalUrl: b.link_url,
+              externalLabel: 'Buka Tautan Buku',
+            },
+            srcEl
+          );
+        };
 
         if (hasBooks) {
-          const booksInner = `
-            <div class="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              ${state.books
-                .map((b, idx) => {
-                  const mediaInfo = classifyMediaPreview(b.cover_file, b.cover_file_nama, b.link_url);
-                  const metaLine = [b.tema, b.lokasi, b.jenis].filter(Boolean).join(' · ');
-                  return `
-                  <button
-                    type="button"
-                    data-open-book="${idx}"
-                    class="bento-card text-left overflow-hidden flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-                  >
-                    <div class="w-full h-52 bg-black/60 overflow-hidden">
-                      ${renderVisualMediaBox(mediaInfo, b.judul, 'h-52', false)}
-                    </div>
-                    <div class="p-5 space-y-2 flex-1">
-                      <div class="text-xs font-semibold text-red-300">${escapeHtml(b.badge_nomor)}</div>
-                      <h3 class="font-display text-lg font-semibold text-white line-clamp-2">${escapeHtml(b.judul)}</h3>
-                      ${metaLine ? `<div class="text-xs text-neutral-300">${escapeHtml(metaLine)}</div>` : ''}
-                      ${b.deskripsi ? `<p class="text-xs line-clamp-2" style="color: var(--text-muted);">${escapeHtml(b.deskripsi)}</p>` : ''}
-                    </div>
-                  </button>
-                `;
-                })
-                .join('')}
-            </div>
-          `;
-          blocks.push(
-            renderOutlineSectionShell({
-              key: 'outline-books',
-              title: 'Buku & Publikasi',
-              subtitle: 'Karya tulis, modul pembelajaran, dan terbitan buku.',
-              countLabel: `${state.books.length} Buku`,
-              innerHtml: booksInner,
-              iconSvg:
-                '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
-            })
-          );
+          const booksSlot = document.getElementById('books-showcase-slot');
+          renderAdaptiveShowcase(booksSlot, {
+            items: state.books,
+            kicker: 'Buku & Publikasi',
+            titlePrimary: 'Karya Tulis &',
+            titleAccent: 'Terbitan Pilihan',
+            summaryText: 'Kumpulan buku, novel, modul pembelajaran, dan terbitan literasi yang telah disusun.',
+            ctaLabel: 'Baca Detail Buku',
+            carouselLabel: 'Slider Buku dan Publikasi',
+            defaultIconSvg:
+              '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
+            inspectMedia: (b) => classifyMediaPreview(b.cover_file, b.cover_file_nama, b.link_url),
+            mapItem: (b) => ({
+              title: b.judul,
+              meta: [b.badge_nomor, b.tema, b.jenis, b.lokasi].filter(Boolean).join(' · '),
+              badge: b.badge_nomor,
+              desc: b.deskripsi || '',
+            }),
+            openItemModal: openBookModal,
+          });
         }
 
         if (hasJournals) {
+          const journalsSlot = document.getElementById('journals-showcase-slot');
           const journalsInner = `
             <div class="pt-4 space-y-3.5">
               ${state.journals
@@ -2253,7 +2941,7 @@
                   <button
                     type="button"
                     data-open-journal="${idx}"
-                    class="w-full bento-card p-5 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                    class="w-full nonflat-item p-5 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                   >
                     <div class="flex items-start gap-4 min-w-0">
                       <div class="w-11 h-11 rounded-xl bg-red-950/60 border border-red-500/35 flex items-center justify-center text-red-200 shrink-0">
@@ -2277,71 +2965,43 @@
                 .join('')}
             </div>
           `;
-          blocks.push(
-            renderOutlineSectionShell({
-              key: 'outline-journals',
-              title: 'Karya Ilmiah & Jurnal',
-              subtitle: 'Artikel penelitian, prosiding, dan naskah akademik.',
-              countLabel: `${state.journals.length} Karya`,
-              innerHtml: journalsInner,
-              iconSvg:
-                '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
-            })
-          );
+          journalsSlot.innerHTML = renderOutlineSectionShell({
+            key: 'outline-journals',
+            title: 'Karya Ilmiah & Jurnal',
+            subtitle: 'Artikel penelitian, prosiding, dan naskah akademik.',
+            countLabel: `${state.journals.length} Karya`,
+            innerHtml: journalsInner,
+            iconSvg:
+              '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
+          });
+          bindOutlineTriggers(journalsSlot);
+
+          journalsSlot.querySelectorAll('[data-open-journal]').forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+              const j = state.journals[Number(btn.dataset.openJournal)];
+              if (!j) return;
+              const isPub = j.status === 'Terpublikasi';
+              const badgesHtml = `<span class="px-3 py-1 rounded-full border text-xs font-semibold ${
+                isPub
+                  ? 'bg-emerald-950/60 border-emerald-500/45 text-emerald-200'
+                  : 'bg-amber-950/60 border-amber-500/45 text-amber-200'
+              }">${escapeHtml(j.status)}</span>`;
+
+              openUniversalModal(
+                {
+                  kicker: j.subjudul_instansi ? `${j.label} · ${j.subjudul_instansi}` : j.label,
+                  title: j.judul,
+                  description: j.deskripsi || '',
+                  badgesHtml,
+                  primaryMedia: classifyMediaPreview(j.file_dokumen, j.file_dokumen_nama, j.link_url),
+                  externalUrl: j.link_url,
+                  externalLabel: 'Buka Jurnal / OJS',
+                },
+                e.currentTarget
+              );
+            });
+          });
         }
-
-        sec.innerHTML = `<div class="space-y-4">${blocks.join('')}</div>`;
-        bindOutlineTriggers(sec);
-
-        sec.querySelectorAll('[data-open-book]').forEach((btn) => {
-          btn.addEventListener('click', (e) => {
-            const b = state.books[Number(btn.dataset.openBook)];
-            if (!b) return;
-            const metaItems = [
-              b.tema ? { label: 'Tema', value: b.tema } : null,
-              b.lokasi ? { label: 'Lokasi', value: b.lokasi } : null,
-              b.jenis ? { label: 'Jenis', value: b.jenis } : null,
-            ].filter(Boolean);
-            openUniversalModal(
-              {
-                kicker: b.badge_nomor,
-                title: b.judul,
-                description: b.deskripsi || '',
-                metaItems,
-                primaryMedia: classifyMediaPreview(b.cover_file, b.cover_file_nama, b.link_url),
-                externalUrl: b.link_url,
-                externalLabel: 'Buka Tautan Buku',
-              },
-              e.currentTarget
-            );
-          });
-        });
-
-        sec.querySelectorAll('[data-open-journal]').forEach((btn) => {
-          btn.addEventListener('click', (e) => {
-            const j = state.journals[Number(btn.dataset.openJournal)];
-            if (!j) return;
-            const isPub = j.status === 'Terpublikasi';
-            const badgesHtml = `<span class="px-3 py-1 rounded-full border text-xs font-semibold ${
-              isPub
-                ? 'bg-emerald-950/60 border-emerald-500/45 text-emerald-200'
-                : 'bg-amber-950/60 border-amber-500/45 text-amber-200'
-            }">${escapeHtml(j.status)}</span>`;
-
-            openUniversalModal(
-              {
-                kicker: j.subjudul_instansi ? `${j.label} · ${j.subjudul_instansi}` : j.label,
-                title: j.judul,
-                description: j.deskripsi || '',
-                badgesHtml,
-                primaryMedia: classifyMediaPreview(j.file_dokumen, j.file_dokumen_nama, j.link_url),
-                externalUrl: j.link_url,
-                externalLabel: 'Buka Jurnal / OJS',
-              },
-              e.currentTarget
-            );
-          });
-        });
       }
 
       // 9. Always Visible Showcase #2: Sertifikasi & Lisensi
@@ -2602,7 +3262,7 @@
               <p class="text-sm mt-1.5" style="color: var(--text-muted);">Sampaikan kebutuhan proyek atau jadwal Anda melalui formulir berikut.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-              <div class="lg:col-span-5 bento-card p-6 sm:p-8 flex flex-col justify-between space-y-6" data-aos="fade-right">
+              <div class="lg:col-span-5 min-w-0 bento-card p-6 sm:p-8 flex flex-col justify-between space-y-6" data-aos="fade-up">
                 <div class="space-y-4">
                   ${
                     f.alamat_teks
@@ -2619,7 +3279,7 @@
                       ? `
                     <div>
                       <div class="text-xs font-medium text-red-300">Email</div>
-                      <a href="mailto:${escapeHtml(f.email)}" class="text-sm text-white hover:text-red-300 transition-colors mt-0.5 inline-block">${escapeHtml(f.email)}</a>
+                      <a href="mailto:${escapeHtml(f.email)}" class="text-sm text-white hover:text-red-300 transition-colors mt-0.5 inline-block break-all">${escapeHtml(f.email)}</a>
                     </div>
                   `
                       : ''
@@ -2669,7 +3329,7 @@
                     : maps.externalUrl
                       ? `
                   <a href="${escapeHtml(maps.externalUrl)}" target="_blank" rel="noopener noreferrer" class="rounded-2xl border border-red-500/30 bg-red-950/20 p-4 flex items-center justify-between gap-3 hover:border-red-500/60 transition-colors">
-                    <div class="space-y-0.5">
+                    <div class="space-y-0.5 min-w-0">
                       <div class="text-xs font-semibold text-white">Peta Lokasi Google Maps</div>
                       <div class="text-xs" style="color: var(--text-muted);">Ketuk untuk membuka pin lokasi langsung</div>
                     </div>
@@ -2680,7 +3340,7 @@
                 }
               </div>
 
-              <div class="lg:col-span-7 bento-card p-6 sm:p-8" data-aos="fade-left">
+              <div class="lg:col-span-7 min-w-0 bento-card p-6 sm:p-8" data-aos="fade-up">
                 <form id="inline-contact-form" class="space-y-4">
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -2734,6 +3394,7 @@
       }
 
       function renderAll() {
+        clearCarouselTimers();
         applyThemePalette(state.activeTheme || 'obsidian-crimson');
         renderNavigation();
 
@@ -2757,7 +3418,8 @@
         renderAboutAndEducations();
         renderAppProjects();
         renderExpertiseCategories();
-        renderExperiencesAndAchievements();
+        renderExperiences();
+        renderAchievements();
         renderSkills();
         renderCreativeStudio();
         renderPublications();

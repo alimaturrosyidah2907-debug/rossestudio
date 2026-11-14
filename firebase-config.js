@@ -63,6 +63,9 @@ import {
   isPortfolioStateEmpty,
   sortByNewest,
   filterExperiencesByCategory,
+  splitTwoToneHeadline,
+  computeHeroSummaryStats,
+  partitionMediaItems,
 } from './cms-utils.js';
 
 export const firebaseConfig = {
@@ -266,6 +269,9 @@ export {
   isPortfolioStateEmpty,
   sortByNewest,
   filterExperiencesByCategory,
+  splitTwoToneHeadline,
+  computeHeroSummaryStats,
+  partitionMediaItems,
   signInWithEmailAndPassword,
   signInWithPopup,
   sendEmailVerification,

@@ -699,3 +699,69 @@ export function sortByNewest(arr, field = 'createdAt') {
 export function filterExperiencesByCategory(items, category) {
   return (items || []).filter((e) => e.kategori_pengalaman === category);
 }
+
+export function splitTwoToneHeadline(headline = '') {
+  const cleaned = String(headline ?? '').trim();
+  if (!cleaned) return { primary: '', accent: '' };
+  const words = cleaned.split(/\s+/);
+  if (words.length === 1) {
+    return { primary: words[0], accent: '' };
+  }
+  const splitIdx = words.length === 2 ? 1 : Math.ceil(words.length / 2);
+  return {
+    primary: words.slice(0, splitIdx).join(' '),
+    accent: words.slice(splitIdx).join(' '),
+  };
+}
+
+export function computeHeroSummaryStats(state = {}) {
+  const expCount = (state.experiences || []).length;
+  const appCount = (state.appProjects || []).length;
+  const catCount = (state.categories || []).length;
+  const worksCount =
+    appCount +
+    (state.portfolios || []).length +
+    (state.designs || []).length +
+    (state.tutorials || []).length +
+    (state.books || []).length +
+    (state.journals || []).length;
+  const certCount = (state.certificates || []).length;
+  const achCount = (state.achievements || []).length;
+  const skillCount = (state.skills || []).length;
+  const eduCount = (state.educations || []).length;
+
+  const worksHref =
+    appCount > 0
+      ? '#aplikasi'
+      : catCount > 0
+        ? '#keahlian'
+        : (state.books || []).length > 0 || (state.journals || []).length > 0
+          ? '#publikasi'
+          : '#karya-kreatif';
+
+  const candidates = [
+    { key: 'experiences', label: 'Organisasi & Karir', count: expCount, href: '#pengalaman', icon: 'users' },
+    { key: 'works', label: 'Karya & Publikasi', count: worksCount, href: worksHref, icon: 'briefcase' },
+    { key: 'certificates', label: 'Sertifikat', count: certCount, href: '#sertifikat', icon: 'award' },
+    { key: 'achievements', label: 'Penghargaan', count: achCount, href: '#prestasi', icon: 'trophy' },
+    { key: 'skills', label: 'Skills & Alat', count: skillCount, href: '#skills', icon: 'cpu' },
+    { key: 'educations', label: 'Pendidikan', count: eduCount, href: '#tentang', icon: 'book' },
+  ];
+
+  return candidates.filter((item) => item.count > 0).slice(0, 4);
+}
+
+export function partitionMediaItems(items = [], inspectFn) {
+  const withImage = [];
+  const withoutImage = [];
+  (items || []).forEach((item, index) => {
+    const media = inspectFn ? inspectFn(item) : classifyMediaPreview(item?.image || '', '', '');
+    if (media && media.kind === 'image' && media.src) {
+      withImage.push({ item, index, media });
+    } else {
+      withoutImage.push({ item, index, media: media || { kind: 'none', src: '', hasFile: false } });
+    }
+  });
+  return { withImage, withoutImage };
+}
+

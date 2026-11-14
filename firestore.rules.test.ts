@@ -32,4 +32,8 @@ test('firestore.rules enforces email_verified == true, journal status enum, and 
   assert.match(rulesContent, /keys\(\)\.hasOnly\(/);
   assert.match(rulesContent, /affectedKeys\(\)\.hasOnly\(/);
   assert.match(rulesContent, /exists\(\/databases\/\$\(database\)\/documents\/expertise_categories\//);
+  assert.match(rulesContent, /foto_kegiatan/);
+  assert.match(rulesContent, /foto_prestasi/);
+  assert.match(rulesContent, /hero_kicker/);
 });
+

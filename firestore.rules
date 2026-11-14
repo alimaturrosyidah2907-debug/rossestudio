@@ -58,7 +58,8 @@ service cloud.firestore {
 
     function isValidHeroSetting(data) {
       return data.keys().hasAll(['updatedAt'])
-        && data.keys().hasOnly(['headline', 'sub_headline', 'foto_profil', 'foto_profil_nama', 'link_url', 'updatedAt'])
+        && data.keys().hasOnly(['hero_kicker', 'headline', 'sub_headline', 'foto_profil', 'foto_profil_nama', 'link_url', 'updatedAt'])
+        && isOptionalString(data, 'hero_kicker', 120)
         && isOptionalString(data, 'headline', 300)
         && isOptionalString(data, 'sub_headline', 2000)
         && isOptionalString(data, 'foto_profil', 1030000)
@@ -98,23 +99,35 @@ service cloud.firestore {
 
     function isValidExperience(data) {
       return data.keys().hasAll(['kategori_pengalaman', 'posisi', 'institusi_tempat', 'durasi', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['kategori_pengalaman', 'posisi', 'institusi_tempat', 'durasi', 'deskripsi', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'kategori_pengalaman', 'posisi', 'institusi_tempat', 'durasi', 'deskripsi',
+          'foto_kegiatan', 'foto_kegiatan_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
         && data.kategori_pengalaman in ['Organisasi', 'Profesional']
         && isRequiredString(data, 'posisi', 1, 200)
         && isRequiredString(data, 'institusi_tempat', 1, 200)
         && isRequiredString(data, 'durasi', 1, 80)
         && isOptionalString(data, 'deskripsi', 2000)
+        && isOptionalString(data, 'foto_kegiatan', 1030000)
+        && isOptionalString(data, 'foto_kegiatan_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
 
     function isValidAchievement(data) {
       return data.keys().hasAll(['judul_prestasi', 'penyelenggara', 'tahun', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['judul_prestasi', 'penyelenggara', 'tahun', 'deskripsi', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'judul_prestasi', 'penyelenggara', 'tahun', 'deskripsi',
+          'foto_prestasi', 'foto_prestasi_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
         && isRequiredString(data, 'judul_prestasi', 1, 250)
         && isRequiredString(data, 'penyelenggara', 1, 200)
         && isRequiredString(data, 'tahun', 1, 30)
         && isOptionalString(data, 'deskripsi', 2000)
+        && isOptionalString(data, 'foto_prestasi', 1030000)
+        && isOptionalString(data, 'foto_prestasi_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
@@ -346,7 +359,7 @@ service cloud.firestore {
       allow create: if isValidId(docId) && isAdmin() && isValidHeroSetting(incoming()) && incoming().updatedAt == request.time;
       allow update: if isValidId(docId) && isAdmin() && isValidHeroSetting(incoming())
         && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['headline', 'sub_headline', 'foto_profil', 'foto_profil_nama', 'link_url', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly(['hero_kicker', 'headline', 'sub_headline', 'foto_profil', 'foto_profil_nama', 'link_url', 'updatedAt']);
       allow delete: if isValidId(docId) && isAdmin();
     }
 
@@ -389,7 +402,10 @@ service cloud.firestore {
         && incoming().createdAt == request.time && incoming().updatedAt == request.time;
       allow update: if isValidId(expId) && isAdmin() && isValidExperience(incoming())
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['kategori_pengalaman', 'posisi', 'institusi_tempat', 'durasi', 'deskripsi', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'kategori_pengalaman', 'posisi', 'institusi_tempat', 'durasi', 'deskripsi',
+          'foto_kegiatan', 'foto_kegiatan_nama', 'link_url', 'updatedAt'
+        ]);
       allow delete: if isValidId(expId) && isAdmin();
     }
 
@@ -400,7 +416,10 @@ service cloud.firestore {
         && incoming().createdAt == request.time && incoming().updatedAt == request.time;
       allow update: if isValidId(achId) && isAdmin() && isValidAchievement(incoming())
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['judul_prestasi', 'penyelenggara', 'tahun', 'deskripsi', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'judul_prestasi', 'penyelenggara', 'tahun', 'deskripsi',
+          'foto_prestasi', 'foto_prestasi_nama', 'link_url', 'updatedAt'
+        ]);
       allow delete: if isValidId(achId) && isAdmin();
     }
 

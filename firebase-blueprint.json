@@ -28,6 +28,7 @@
       "description": "Dynamic Hero headline, sub-headline, and profile portrait.",
       "type": "object",
       "properties": {
+        "hero_kicker": { "type": "string", "maxLength": 120 },
         "headline": { "type": "string", "maxLength": 300 },
         "sub_headline": { "type": "string", "maxLength": 2000 },
         "foto_profil": { "type": "string", "maxLength": 1030000 },
@@ -85,6 +86,9 @@
         "institusi_tempat": { "type": "string", "maxLength": 200 },
         "durasi": { "type": "string", "maxLength": 80 },
         "deskripsi": { "type": "string", "maxLength": 2000 },
+        "foto_kegiatan": { "type": "string", "maxLength": 1030000 },
+        "foto_kegiatan_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
@@ -99,6 +103,9 @@
         "penyelenggara": { "type": "string", "maxLength": 200 },
         "tahun": { "type": "string", "maxLength": 30 },
         "deskripsi": { "type": "string", "maxLength": 2000 },
+        "foto_prestasi": { "type": "string", "maxLength": 1030000 },
+        "foto_prestasi_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },

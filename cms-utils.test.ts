@@ -22,6 +22,9 @@ import {
   parseTriviaItems,
   resolveGoogleMapsDisplay,
   sortByNewest,
+  splitTwoToneHeadline,
+  computeHeroSummaryStats,
+  partitionMediaItems,
   validateContactMessageInput,
   verifyAdminPin,
 } from './cms-utils.js';
@@ -230,3 +233,50 @@ test('URL, WhatsApp, Instagram, Trivia, Escape, and Sorting helpers behave deter
   ];
   assert.equal(filterExperiencesByCategory(exps, 'Organisasi').length, 1);
 });
+
+test('splitTwoToneHeadline, computeHeroSummaryStats, and partitionMediaItems work deterministically', () => {
+  assert.deepEqual(splitTwoToneHeadline('Alimatur Rosyidah'), {
+    primary: 'Alimatur',
+    accent: 'Rosyidah',
+  });
+  assert.deepEqual(splitTwoToneHeadline('RosseStudio'), {
+    primary: 'RosseStudio',
+    accent: '',
+  });
+  assert.deepEqual(splitTwoToneHeadline('Alimatur Nur Rosyidah'), {
+    primary: 'Alimatur Nur',
+    accent: 'Rosyidah',
+  });
+
+  assert.deepEqual(computeHeroSummaryStats({}), []);
+  const stats = computeHeroSummaryStats({
+    experiences: [{ id: '1' }, { id: '2' }],
+    books: [{ id: 'b1' }],
+    achievements: [{ id: 'a1' }],
+    skills: [{ id: 's1' }, { id: 's2' }],
+    certificates: [],
+  });
+  assert.equal(stats.length, 4);
+  assert.deepEqual(
+    stats.map((s) => [s.key, s.count]),
+    [
+      ['experiences', 2],
+      ['works', 1],
+      ['achievements', 1],
+      ['skills', 2],
+    ],
+  );
+
+  const parted = partitionMediaItems(
+    [
+      { id: 'img', foto_kegiatan: 'data:image/png;base64,AAAA' },
+      { id: 'txt', foto_kegiatan: '' },
+    ],
+    (x: { id: string; foto_kegiatan: string }) => classifyMediaPreview(x.foto_kegiatan, '', ''),
+  );
+  assert.equal(parted.withImage.length, 1);
+  assert.equal(parted.withoutImage.length, 1);
+  assert.equal(parted.withImage[0].item.id, 'img');
+  assert.equal(parted.withoutImage[0].item.id, 'txt');
+});
+
