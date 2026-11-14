@@ -41,10 +41,14 @@ import {
 } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
 import {
+  ADMIN_EMAIL,
   THEME_PALETTES,
   COLLECTIONS,
   escapeHtml,
   extractGoogleMapsEmbedUrl,
+  resolveGoogleMapsDisplay,
+  verifyAdminPin,
+  isAuthorizedAdminUser,
   normalizeExternalUrl,
   formatWhatsAppUrl,
   formatInstagramUrl,
@@ -72,6 +76,10 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account',
+  login_hint: ADMIN_EMAIL,
+});
 
 export const OperationType = Object.freeze({
   CREATE: 'create',
@@ -189,10 +197,14 @@ export function readPdfAsDataUrl(file) {
 }
 
 export {
+  ADMIN_EMAIL,
   THEME_PALETTES,
   COLLECTIONS,
   escapeHtml,
   extractGoogleMapsEmbedUrl,
+  resolveGoogleMapsDisplay,
+  verifyAdminPin,
+  isAuthorizedAdminUser,
   normalizeExternalUrl,
   formatWhatsAppUrl,
   formatInstagramUrl,

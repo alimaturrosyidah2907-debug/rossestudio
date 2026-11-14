@@ -201,6 +201,31 @@ export function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+export const ADMIN_EMAIL = 'alimaturrosyidah2907@gmail.com';
+export const ADMIN_PIN_SALT = 'rosse-admin-pin';
+// Default 6-digit PIN: 290726 (SHA-256 of `${ADMIN_PIN_SALT}:290726`)
+export const ADMIN_PIN_HASH = '1c6d85cb296b873690e90c9516fe15d55686050954bad94f718b9e595db2c3d7';
+
+export async function sha256Hex(text) {
+  const bytes = new TextEncoder().encode(String(text ?? ''));
+  const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+export async function verifyAdminPin(pin, expectedHash = ADMIN_PIN_HASH) {
+  const cleaned = String(pin ?? '').trim();
+  if (!cleaned) return false;
+  const computed = await sha256Hex(`${ADMIN_PIN_SALT}:${cleaned}`);
+  return computed === expectedHash;
+}
+
+export function isAuthorizedAdminUser(user) {
+  if (!user || !user.email) return false;
+  return user.email.trim().toLowerCase() === ADMIN_EMAIL && user.emailVerified === true;
+}
+
 export function extractGoogleMapsEmbedUrl(raw) {
   if (!raw || !String(raw).trim()) return null;
   const trimmed = String(raw).trim();
@@ -213,10 +238,80 @@ export function extractGoogleMapsEmbedUrl(raw) {
     if (!allowedHosts.some((host) => parsed.hostname === host || parsed.hostname.endsWith(`.${host}`))) {
       return null;
     }
+    if (
+      parsed.hostname.includes('google.com') &&
+      !parsed.pathname.includes('/maps/embed') &&
+      parsed.searchParams.get('output') !== 'embed'
+    ) {
+      const placeMatch = parsed.pathname.match(/\/maps\/place\/([^/@]+)/i);
+      const coordMatch = parsed.pathname.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      const qParam = parsed.searchParams.get('q') || parsed.searchParams.get('query');
+      if (qParam) {
+        return `https://maps.google.com/maps?q=${encodeURIComponent(qParam)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+      }
+      if (placeMatch?.[1]) {
+        const placeName = decodeURIComponent(placeMatch[1]).replace(/\+/g, ' ');
+        return `https://maps.google.com/maps?q=${encodeURIComponent(placeName)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+      }
+      if (coordMatch) {
+        return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+      }
+      return null;
+    }
     return parsed.toString();
   } catch {
     return null;
   }
+}
+
+export function resolveGoogleMapsDisplay(raw, fallbackAddress = '') {
+  const directEmbed = extractGoogleMapsEmbedUrl(raw);
+  const rawTrimmed = String(raw ?? '').trim();
+  let externalUrl = null;
+
+  if (rawTrimmed) {
+    const iframeMatch = rawTrimmed.match(/<iframe[^>]*\ssrc=["']([^"']+)["']/i);
+    const candidate = iframeMatch ? iframeMatch[1].trim() : rawTrimmed;
+    try {
+      const parsed = new URL(candidate);
+      if (parsed.protocol === 'https:') {
+        const allowedShareHosts = [
+          'maps.app.goo.gl',
+          'goo.gl',
+          'www.google.com',
+          'maps.google.com',
+          'google.com',
+          'www.openstreetmap.org',
+        ];
+        if (allowedShareHosts.some((h) => parsed.hostname === h || parsed.hostname.endsWith(`.${h}`))) {
+          externalUrl = parsed.toString();
+        }
+      }
+    } catch {
+      // Ignore malformed raw string
+    }
+  }
+
+  if (directEmbed) {
+    return { embedUrl: directEmbed, externalUrl: externalUrl || directEmbed };
+  }
+
+  const addr = String(fallbackAddress ?? '').trim();
+  if (externalUrl && addr) {
+    return {
+      embedUrl: `https://maps.google.com/maps?q=${encodeURIComponent(addr)}&t=&z=14&ie=UTF8&iwloc=&output=embed`,
+      externalUrl,
+    };
+  }
+
+  if (!externalUrl && addr) {
+    return {
+      embedUrl: `https://maps.google.com/maps?q=${encodeURIComponent(addr)}&t=&z=14&ie=UTF8&iwloc=&output=embed`,
+      externalUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`,
+    };
+  }
+
+  return { embedUrl: null, externalUrl };
 }
 
 export function normalizeExternalUrl(raw) {

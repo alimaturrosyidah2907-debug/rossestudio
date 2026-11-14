@@ -118,76 +118,101 @@
       class="hidden fixed top-5 right-5 z-[90] max-w-sm rounded-2xl px-4 py-3 text-xs sm:text-sm font-medium shadow-2xl border backdrop-blur-md"
     ></div>
 
-    <!-- SCREEN 1: Login Gate -->
+    <!-- SCREEN 1: 2-Step Login Gate (Step 1: PIN -> Step 2: Google Auth for alimaturrosyidah2907@gmail.com) -->
     <main id="auth-screen" class="flex-1 flex items-center justify-center p-6">
-      <div class="bento-card w-full max-w-md rounded-3xl p-8 sm:p-10 space-y-7 border border-red-500/20 shadow-2xl">
+      <div class="bento-card w-full max-w-md rounded-3xl p-8 sm:p-10 space-y-6 border border-red-500/20 shadow-2xl">
         <div class="text-center space-y-3">
           <div class="flex justify-center">
             <img
-              src="/assets/logo-rossestudio.png"
+              src="./assets/logo-rossestudio.png"
               alt="RosseStudio"
               class="h-12 w-auto object-contain brightness-0 invert"
               referrerpolicy="no-referrer"
+              onerror="this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden');"
             />
+            <span class="hidden font-display text-xl font-bold text-white">RosseStudio</span>
           </div>
           <h1 class="font-display text-2xl sm:text-3xl font-semibold text-white">Masuk ke RosseAdmin</h1>
-          <p class="text-xs sm:text-sm" style="color: var(--text-muted);">
-            Kelola seluruh konten portofolio RosseStudio secara real-time.
+          <p id="auth-subtitle" class="text-xs sm:text-sm" style="color: var(--text-muted);">
+            Langkah 1 dari 2 · Masukkan PIN keamanan administrator.
           </p>
         </div>
 
-        <form id="login-form" class="space-y-4">
-          <div>
-            <label for="login-email" class="block text-xs font-medium mb-1.5 text-neutral-300">Email Admin</label>
-            <input
-              id="login-email"
-              type="email"
-              required
-              autocomplete="email"
-              placeholder="admin@rossestudio.com"
-              class="w-full rounded-xl bg-black/55 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500"
-            />
+        <!-- Step Indicator -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-medium">
+          <div id="step-ind-1" class="rounded-xl px-3 py-2 text-center border border-red-500/50 bg-red-950/40 text-white">
+            1. PIN Keamanan
           </div>
-          <div>
-            <label for="login-password" class="block text-xs font-medium mb-1.5 text-neutral-300">Kata Sandi</label>
-            <input
-              id="login-password"
-              type="password"
-              required
-              autocomplete="current-password"
-              placeholder="Masukkan kata sandi"
-              class="w-full rounded-xl bg-black/55 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-red-500"
-            />
+          <div id="step-ind-2" class="rounded-xl px-3 py-2 text-center border border-white/10 bg-black/30 text-neutral-400">
+            2. Akun Google
           </div>
-          <div id="login-error" class="hidden rounded-xl bg-red-950/70 border border-red-500/40 px-3.5 py-2.5 text-xs text-red-200"></div>
+        </div>
+
+        <!-- STEP 1: PIN Verification Form -->
+        <form id="pin-form" class="space-y-4">
+          <div>
+            <label for="admin-pin-input" class="block text-xs font-medium mb-1.5 text-neutral-300">Kode PIN Admin</label>
+            <div class="relative">
+              <input
+                id="admin-pin-input"
+                type="password"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                required
+                maxlength="12"
+                placeholder="Masukkan 6 digit PIN"
+                class="w-full rounded-xl bg-black/55 border border-white/15 pl-3.5 pr-16 py-3 text-sm tracking-widest text-white placeholder:tracking-normal placeholder:text-neutral-500 focus:outline-none focus:border-red-500"
+              />
+              <button
+                id="btn-toggle-pin"
+                type="button"
+                class="absolute right-2.5 top-1/2 -translate-y-1/2 px-2 py-1 text-[11px] font-medium text-neutral-400 hover:text-white"
+              >
+                Lihat
+              </button>
+            </div>
+          </div>
+          <div id="pin-error" class="hidden rounded-xl bg-red-950/70 border border-red-500/40 px-3.5 py-2.5 text-xs text-red-200"></div>
           <button
-            id="btn-login-submit"
+            id="btn-pin-submit"
             type="submit"
             class="btn-crimson w-full py-3 rounded-xl text-sm font-semibold"
           >
-            Masuk dengan Email
+            Verifikasi PIN &amp; Lanjutkan
           </button>
         </form>
 
-        <div class="relative flex items-center justify-center">
-          <div class="w-full border-t border-white/10"></div>
-          <span class="px-3 text-xs uppercase tracking-wider bg-[#100708] text-neutral-400">atau</span>
-          <div class="w-full border-t border-white/10"></div>
-        </div>
+        <!-- STEP 2: Google Login (Locked strictly to alimaturrosyidah2907@gmail.com) -->
+        <div id="step-google" class="hidden space-y-4">
+          <div class="rounded-2xl bg-black/45 border border-white/10 p-4 space-y-1">
+            <div class="text-xs font-semibold text-red-300">Akun Admin Terotorisasi</div>
+            <div class="text-xs text-neutral-300">alimaturrosyidah2907@gmail.com</div>
+          </div>
 
-        <button
-          id="btn-google-login"
-          type="button"
-          class="w-full py-3 px-4 rounded-xl border border-white/15 bg-black/40 hover:border-red-500/45 hover:bg-red-950/20 transition-all text-sm font-medium text-white flex items-center justify-center gap-2.5"
-        >
-          <svg class="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.24 1.25-.98 2.31-2.08 3.02l3.36 2.61c1.96-1.81 3.09-4.47 3.09-7.63 0-.74-.07-1.45-.19-2.13H12z"/>
-            <path fill="#34A853" d="M12 22c2.81 0 5.17-.93 6.89-2.52l-3.36-2.61c-.93.62-2.12.99-3.53.99-2.71 0-5.01-1.83-5.83-4.29H2.7v2.7C4.41 19.67 7.93 22 12 22z"/>
-            <path fill="#FBBC05" d="M6.17 13.57A5.95 5.95 0 015.86 12c0-.54.09-1.07.31-1.57V7.73H2.7A9.97 9.97 0 002 12c0 1.61.39 3.13 1.07 4.47l3.1-2.9z"/>
-            <path fill="#4285F4" d="M12 6.14c1.53 0 2.9.53 3.98 1.56l2.98-2.98C17.16 3.05 14.8 2 12 2 7.93 2 4.41 4.33 2.7 7.73l3.47 2.7c.82-2.46 3.12-4.29 5.83-4.29z"/>
-          </svg>
-          <span>Masuk dengan Google</span>
-        </button>
+          <div id="google-login-error" class="hidden rounded-xl bg-red-950/70 border border-red-500/40 px-3.5 py-2.5 text-xs text-red-200"></div>
+
+          <button
+            id="btn-google-login"
+            type="button"
+            class="btn-crimson w-full py-3 px-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5"
+          >
+            <svg class="w-4 h-4 bg-white rounded-full p-0.5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.24 1.25-.98 2.31-2.08 3.02l3.36 2.61c1.96-1.81 3.09-4.47 3.09-7.63 0-.74-.07-1.45-.19-2.13H12z"/>
+              <path fill="#34A853" d="M12 22c2.81 0 5.17-.93 6.89-2.52l-3.36-2.61c-.93.62-2.12.99-3.53.99-2.71 0-5.01-1.83-5.83-4.29H2.7v2.7C4.41 19.67 7.93 22 12 22z"/>
+              <path fill="#FBBC05" d="M6.17 13.57A5.95 5.95 0 015.86 12c0-.54.09-1.07.31-1.57V7.73H2.7A9.97 9.97 0 002 12c0 1.61.39 3.13 1.07 4.47l3.1-2.9z"/>
+              <path fill="#4285F4" d="M12 6.14c1.53 0 2.9.53 3.98 1.56l2.98-2.98C17.16 3.05 14.8 2 12 2 7.93 2 4.41 4.33 2.7 7.73l3.47 2.7c.82-2.46 3.12-4.29 5.83-4.29z"/>
+            </svg>
+            <span>Masuk dengan Google</span>
+          </button>
+
+          <button
+            id="btn-back-pin"
+            type="button"
+            class="w-full py-2.5 px-4 rounded-xl border border-white/15 text-xs font-medium text-neutral-300 hover:text-white hover:border-red-500/40 transition-colors"
+          >
+            Kunci Ulang &amp; Masukkan PIN Lain
+          </button>
+        </div>
 
         <div class="pt-2 text-center">
           <a href="index.html" class="text-xs text-neutral-400 hover:text-white transition-colors">Kembali ke Halaman Portofolio</a>
@@ -202,7 +227,8 @@
         <div class="space-y-6">
           <div class="flex items-center justify-between px-2">
             <a href="index.html" class="flex items-center gap-2 focus:outline-none">
-              <img src="/assets/logo-rossestudio.png" alt="RosseAdmin" class="h-8 w-auto object-contain brightness-0 invert" referrerpolicy="no-referrer" />
+              <img src="./assets/logo-rossestudio.png" alt="RosseAdmin" class="h-8 w-auto object-contain brightness-0 invert" referrerpolicy="no-referrer" onerror="this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden');" />
+              <span class="hidden font-display text-lg font-bold text-white">RosseStudio</span>
             </a>
             <span class="text-xs font-medium text-red-300">Admin</span>
           </div>
@@ -236,7 +262,8 @@
       <!-- Mobile Header & Drawer -->
       <header class="lg:hidden sticky top-0 z-30 glass-panel border-x-0 border-t-0 px-4 py-3 flex items-center justify-between gap-4">
         <a href="index.html" class="flex items-center">
-          <img src="/assets/logo-rossestudio.png" alt="RosseAdmin" class="h-7 w-auto object-contain brightness-0 invert" referrerpolicy="no-referrer" />
+          <img src="./assets/logo-rossestudio.png" alt="RosseAdmin" class="h-7 w-auto object-contain brightness-0 invert" referrerpolicy="no-referrer" onerror="this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden');" />
+          <span class="hidden font-display text-base font-bold text-white">RosseStudio</span>
         </a>
         <div class="flex items-center gap-2">
           <a href="index.html" class="px-3 py-2 rounded-xl border border-white/15 text-xs font-medium text-neutral-200">Web</a>
@@ -340,16 +367,18 @@
 
     <script type="module">
       import {
+        ADMIN_EMAIL,
         auth,
         db,
         googleProvider,
         THEME_PALETTES,
         COLLECTIONS,
         escapeHtml,
+        verifyAdminPin,
+        isAuthorizedAdminUser,
         compressImageToBase64,
         readPdfAsDataUrl,
         sortByNewest,
-        signInWithEmailAndPassword,
         signInWithPopup,
         sendEmailVerification,
         signOut,
@@ -421,43 +450,141 @@
         toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 4200);
       }
 
-      // Auth handlers
+      // 2-Step Auth Handlers (Step 1: PIN -> Step 2: Google Auth for alimaturrosyidah2907@gmail.com)
+      const PIN_SESSION_KEY = 'rosse_admin_pin_ok';
       const authScreen = document.getElementById('auth-screen');
       const adminScreen = document.getElementById('admin-screen');
-      const loginErrorEl = document.getElementById('login-error');
+      const authSubtitle = document.getElementById('auth-subtitle');
+      const stepInd1 = document.getElementById('step-ind-1');
+      const stepInd2 = document.getElementById('step-ind-2');
+      const pinForm = document.getElementById('pin-form');
+      const pinInput = document.getElementById('admin-pin-input');
+      const pinErrorEl = document.getElementById('pin-error');
+      const stepGoogleEl = document.getElementById('step-google');
+      const googleErrorEl = document.getElementById('google-login-error');
 
-      document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        loginErrorEl.classList.add('hidden');
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value;
-        const btn = document.getElementById('btn-login-submit');
-        btn.disabled = true;
-        btn.textContent = 'Memproses...';
+      let failedPinAttempts = 0;
+      let pinLockUntil = 0;
+
+      function isPinSessionVerified() {
         try {
-          await signInWithEmailAndPassword(auth, email, password);
-        } catch (err) {
-          loginErrorEl.textContent = 'Email atau kata sandi tidak valid, atau akun belum terdaftar di Firebase Auth.';
-          loginErrorEl.classList.remove('hidden');
+          return sessionStorage.getItem(PIN_SESSION_KEY) === '1';
+        } catch {
+          return false;
+        }
+      }
+
+      function setPinSessionVerified(ok) {
+        try {
+          if (ok) sessionStorage.setItem(PIN_SESSION_KEY, '1');
+          else sessionStorage.removeItem(PIN_SESSION_KEY);
+        } catch {
+          // Ignore storage restrictions
+        }
+      }
+
+      function renderAuthStep() {
+        const pinOk = isPinSessionVerified();
+        if (!pinOk) {
+          pinForm.classList.remove('hidden');
+          stepGoogleEl.classList.add('hidden');
+          authSubtitle.textContent =
+            adminState.user && isAuthorizedAdminUser(adminState.user)
+              ? `Akun Google (${adminState.user.email}) terhubung. Masukkan PIN Keamanan untuk membuka dashboard.`
+              : 'Langkah 1 dari 2 · Masukkan PIN keamanan administrator.';
+          stepInd1.className = 'rounded-xl px-3 py-2 text-center border border-red-500/50 bg-red-950/40 text-white';
+          stepInd2.className = 'rounded-xl px-3 py-2 text-center border border-white/10 bg-black/30 text-neutral-400';
+        } else {
+          pinForm.classList.add('hidden');
+          stepGoogleEl.classList.remove('hidden');
+          authSubtitle.textContent = 'Langkah 2 dari 2 · Masuk dengan akun Google admin resmi.';
+          stepInd1.className = 'rounded-xl px-3 py-2 text-center border border-emerald-500/35 bg-emerald-950/30 text-emerald-200';
+          stepInd2.className = 'rounded-xl px-3 py-2 text-center border border-red-500/50 bg-red-950/40 text-white';
+        }
+      }
+
+      document.getElementById('btn-toggle-pin').addEventListener('click', () => {
+        const isPwd = pinInput.type === 'password';
+        pinInput.type = isPwd ? 'text' : 'password';
+        document.getElementById('btn-toggle-pin').textContent = isPwd ? 'Sembunyi' : 'Lihat';
+      });
+
+      pinForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        pinErrorEl.classList.add('hidden');
+
+        if (Date.now() < pinLockUntil) {
+          const secs = Math.ceil((pinLockUntil - Date.now()) / 1000);
+          pinErrorEl.textContent = `Terlalu banyak percobaan salah. Coba lagi dalam ${secs} detik.`;
+          pinErrorEl.classList.remove('hidden');
+          return;
+        }
+
+        const btn = document.getElementById('btn-pin-submit');
+        btn.disabled = true;
+        btn.textContent = 'Memeriksa PIN...';
+
+        try {
+          const valid = await verifyAdminPin(pinInput.value);
+          if (!valid) {
+            failedPinAttempts += 1;
+            if (failedPinAttempts >= 5) {
+              pinLockUntil = Date.now() + 30000;
+              failedPinAttempts = 0;
+              pinErrorEl.textContent = 'PIN salah 5 kali. Verifikasi dikunci sementara selama 30 detik.';
+            } else {
+              pinErrorEl.textContent = `Kode PIN tidak sesuai. Sisa percobaan: ${5 - failedPinAttempts}.`;
+            }
+            pinErrorEl.classList.remove('hidden');
+            pinInput.value = '';
+            pinInput.focus();
+            return;
+          }
+
+          failedPinAttempts = 0;
+          pinInput.value = '';
+          setPinSessionVerified(true);
+          syncAuthScreenState();
         } finally {
           btn.disabled = false;
-          btn.textContent = 'Masuk dengan Email';
+          btn.textContent = 'Verifikasi PIN & Lanjutkan';
         }
       });
 
+      document.getElementById('btn-back-pin').addEventListener('click', () => {
+        setPinSessionVerified(false);
+        googleErrorEl.classList.add('hidden');
+        renderAuthStep();
+      });
+
       document.getElementById('btn-google-login').addEventListener('click', async () => {
-        loginErrorEl.classList.add('hidden');
+        if (!isPinSessionVerified()) {
+          renderAuthStep();
+          return;
+        }
+        googleErrorEl.classList.add('hidden');
+        const btn = document.getElementById('btn-google-login');
+        btn.disabled = true;
         try {
-          await signInWithPopup(auth, googleProvider);
+          const cred = await signInWithPopup(auth, googleProvider);
+          if (!isAuthorizedAdminUser(cred.user)) {
+            const rejectedEmail = cred.user?.email || 'akun tidak dikenal';
+            await signOut(auth);
+            googleErrorEl.textContent = `Akses ditolak. Akun "${rejectedEmail}" bukan admin resmi. Hanya ${ADMIN_EMAIL} yang diizinkan.`;
+            googleErrorEl.classList.remove('hidden');
+          }
         } catch (err) {
-          loginErrorEl.textContent = 'Login Google dibatalkan atau gagal diproses.';
-          loginErrorEl.classList.remove('hidden');
+          googleErrorEl.textContent = 'Login Google dibatalkan atau gagal diproses.';
+          googleErrorEl.classList.remove('hidden');
+        } finally {
+          btn.disabled = false;
         }
       });
 
       const handleLogout = async () => {
         adminState.unsubscribers.forEach((unsub) => unsub());
         adminState.unsubscribers = [];
+        setPinSessionVerified(false);
         await signOut(auth);
       };
       document.getElementById('btn-logout').addEventListener('click', handleLogout);
@@ -489,13 +616,28 @@
         }
       }
 
-      onAuthStateChanged(auth, async (user) => {
-        adminState.user = user;
-        if (!user) {
-          authScreen.classList.remove('hidden');
+      async function syncAuthScreenState() {
+        const user = adminState.user;
+        if (user && !isAuthorizedAdminUser(user)) {
+          const rejectedEmail = user.email || 'akun tidak dikenal';
+          adminState.unsubscribers.forEach((u) => u());
+          adminState.unsubscribers = [];
+          await signOut(auth);
           adminScreen.classList.add('hidden');
+          authScreen.classList.remove('hidden');
+          renderAuthStep();
+          googleErrorEl.textContent = `Akses ditolak. Hanya akun ${ADMIN_EMAIL} yang diizinkan (terdeteksi: ${rejectedEmail}).`;
+          googleErrorEl.classList.remove('hidden');
           return;
         }
+
+        if (!user || !isPinSessionVerified()) {
+          adminScreen.classList.add('hidden');
+          authScreen.classList.remove('hidden');
+          renderAuthStep();
+          return;
+        }
+
         authScreen.classList.add('hidden');
         adminScreen.classList.remove('hidden');
         document.getElementById('admin-user-email').textContent = user.email || user.uid;
@@ -504,8 +646,7 @@
         renderSidebar();
         renderActiveSection();
 
-        // Ensure bootstrapped admin marker/user profile exists quietly if verified
-        if (user.emailVerified && user.email === 'alimaturrosyidah2907@gmail.com') {
+        if (user.emailVerified && user.email?.toLowerCase() === ADMIN_EMAIL) {
           try {
             const adminRef = doc(db, 'admins', user.uid);
             const snap = await getDoc(adminRef);
@@ -520,7 +661,14 @@
             // Silent fallback if rules or offline state prevent write
           }
         }
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        adminState.user = user;
+        await syncAuthScreenState();
       });
+
+      renderAuthStep();
 
       function subscribeAdminCollections() {
         adminState.unsubscribers.forEach((u) => u());
@@ -850,7 +998,7 @@
             { name: 'wa', label: 'Nomor WhatsApp (cth: 08123456789)' },
             { name: 'ig', label: 'Username / Link Instagram' },
             { name: 'linkedin', label: 'URL LinkedIn' },
-            { name: 'maps_embed_iframe_link', label: 'Kode Embed Google Maps (<iframe> atau URL https://www.google.com/maps/embed...)', type: 'textarea', rows: 3 },
+            { name: 'maps_embed_iframe_link', label: 'Google Maps (Tempel <iframe> Embed atau tautan https://maps.app.goo.gl/...)', type: 'textarea', rows: 3, placeholder: 'Jika memakai maps.app.goo.gl, pastikan kolom Alamat Studio di atas juga diisi agar peta tampil otomatis.' },
             { name: 'cv_file', label: 'File CV (PDF)', type: 'pdf' },
             { name: 'teks_copyright_dinamis', label: 'Teks Hak Cipta Footer', placeholder: '© 2026 RosseStudio. Seluruh hak cipta dilindungi.' },
           ],

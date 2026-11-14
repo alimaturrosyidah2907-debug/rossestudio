@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  ADMIN_EMAIL,
   COLLECTIONS,
   THEME_PALETTES,
   escapeHtml,
@@ -11,12 +12,27 @@ import {
   hasAboutData,
   hasFooterData,
   hasHeroData,
+  isAuthorizedAdminUser,
   isPortfolioStateEmpty,
   normalizeExternalUrl,
   parseTriviaItems,
+  resolveGoogleMapsDisplay,
   sortByNewest,
   validateContactMessageInput,
+  verifyAdminPin,
 } from './cms-utils.js';
+
+test('verifyAdminPin and isAuthorizedAdminUser enforce 2-step PIN and strict Gmail access', async () => {
+  assert.equal(await verifyAdminPin('290726'), true);
+  assert.equal(await verifyAdminPin('000000'), false);
+  assert.equal(await verifyAdminPin(''), false);
+
+  assert.equal(isAuthorizedAdminUser({ email: ADMIN_EMAIL, emailVerified: true }), true);
+  assert.equal(isAuthorizedAdminUser({ email: 'ALIMATURROSYIDAH2907@GMAIL.COM', emailVerified: true }), true);
+  assert.equal(isAuthorizedAdminUser({ email: ADMIN_EMAIL, emailVerified: false }), false);
+  assert.equal(isAuthorizedAdminUser({ email: 'other@gmail.com', emailVerified: true }), false);
+  assert.equal(isAuthorizedAdminUser(null), false);
+});
 
 test('THEME_PALETTES includes obsidian-crimson default plus all curated dark luxury palettes', () => {
   const keys = Object.keys(THEME_PALETTES);
@@ -107,7 +123,7 @@ test('validateContactMessageInput validates required fields and rejects malforme
   assert.equal(ok.payload?.email, 'nadia@example.com');
 });
 
-test('extractGoogleMapsEmbedUrl extracts safe HTTPS embed URLs and rejects unsafe schemes/hosts', () => {
+test('extractGoogleMapsEmbedUrl and resolveGoogleMapsDisplay handle embeds, place links, and maps.app.goo.gl short links', () => {
   const iframe =
     '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12" width="600" height="450"></iframe>';
   assert.equal(extractGoogleMapsEmbedUrl(iframe), 'https://www.google.com/maps/embed?pb=!1m18!1m12');
@@ -115,8 +131,24 @@ test('extractGoogleMapsEmbedUrl extracts safe HTTPS embed URLs and rejects unsaf
     extractGoogleMapsEmbedUrl('https://maps.google.com/maps?q=Tuban&output=embed'),
     'https://maps.google.com/maps?q=Tuban&output=embed',
   );
+  assert.equal(
+    extractGoogleMapsEmbedUrl('https://www.google.com/maps/place/Singgahan,+Tuban/@-7.01,111.79,15z'),
+    'https://maps.google.com/maps?q=Singgahan%2C%20Tuban&t=&z=15&ie=UTF8&iwloc=&output=embed',
+  );
   assert.equal(extractGoogleMapsEmbedUrl('<iframe src="javascript:alert(1)"></iframe>'), null);
   assert.equal(extractGoogleMapsEmbedUrl('https://evil.example.com/embed'), null);
+
+  const shortWithAddr = resolveGoogleMapsDisplay(
+    'https://maps.app.goo.gl/qUgjkHPkjpLERmUf6',
+    'Singgahan, Tuban, Jawa Timur, Indonesia',
+  );
+  assert.equal(shortWithAddr.externalUrl, 'https://maps.app.goo.gl/qUgjkHPkjpLERmUf6');
+  assert.ok(shortWithAddr.embedUrl?.includes('output=embed'));
+  assert.ok(shortWithAddr.embedUrl?.includes('Singgahan'));
+
+  const shortNoAddr = resolveGoogleMapsDisplay('https://maps.app.goo.gl/qUgjkHPkjpLERmUf6', '');
+  assert.equal(shortNoAddr.embedUrl, null);
+  assert.equal(shortNoAddr.externalUrl, 'https://maps.app.goo.gl/qUgjkHPkjpLERmUf6');
 });
 
 test('URL, WhatsApp, Instagram, Trivia, Escape, and Sorting helpers behave deterministically', () => {
