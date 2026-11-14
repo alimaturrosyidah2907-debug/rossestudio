@@ -2261,11 +2261,11 @@
         );
       }
 
-      function buildGaleriCardHtml(exp, originalIdx) {
+      function buildGaleriCardHtml(exp, originalIdx, cardClass = '') {
         const mediaInfo = classifyMediaPreview(exp.foto_kegiatan, exp.foto_kegiatan_nama, exp.link_url);
         const hasImg = mediaInfo.kind === 'image' && mediaInfo.src;
         return `
-          <article class="galeri-card overflow-hidden flex flex-col group" data-aos="fade-up" data-aos-delay="${Math.min(originalIdx * 60, 240)}">
+          <article class="galeri-card overflow-hidden flex flex-col group ${cardClass}" data-aos="fade-up" data-aos-delay="${Math.min(originalIdx * 60, 240)}">
             <div class="relative h-48 bg-black/60 overflow-hidden">
               ${
                 hasImg
@@ -2421,11 +2421,19 @@
 
             ${
               visibleCards.length > 0
-                ? `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                ? `<div class="${
+                    visibleCards.length < 4
+                      ? 'flex flex-wrap justify-center gap-5'
+                      : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'
+                  }">
                      ${visibleCards
                        .map((exp) => {
                          const origIdx = state.experiences.indexOf(exp);
-                         return buildGaleriCardHtml(exp, origIdx);
+                         const cardWidth =
+                           visibleCards.length < 4
+                             ? 'w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(25%-0.9375rem)] max-w-sm lg:max-w-none'
+                             : '';
+                         return buildGaleriCardHtml(exp, origIdx, cardWidth);
                        })
                        .join('')}
                    </div>`

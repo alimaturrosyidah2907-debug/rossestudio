@@ -231,14 +231,18 @@ export async function processUniversalFileUpload(file) {
   if (!file) {
     return { dataUrl: '', fileName: '', fileType: '', fileSize: 0, isImage: false };
   }
-  const isImage = Boolean(file.type && file.type.startsWith('image/'));
+  const mime = String(file.type || '');
+  const fname = String(file.name || '');
+  const isImage =
+    mime.startsWith('image/') ||
+    /\.(png|jpe?g|webp|gif|bmp|jfif)$/i.test(fname);
   const dataUrl = isImage
     ? await compressImageToBase64(file)
     : await readUniversalFileAsDataUrl(file);
   return {
     dataUrl,
-    fileName: file.name || 'lampiran',
-    fileType: file.type || 'application/octet-stream',
+    fileName: fname || 'lampiran',
+    fileType: mime || 'application/octet-stream',
     fileSize: file.size || 0,
     isImage,
   };

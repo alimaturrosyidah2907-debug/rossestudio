@@ -1024,20 +1024,29 @@
         if (field.type === 'universal_file') {
           const nameField = field.fileNameField || '';
           const currentFileName = nameField && existingDoc ? existingDoc[nameField] || '' : '';
+          const isPhotoField = Boolean(field.imagePreferred);
+          const btnLabel = isPhotoField ? 'Upload Gambar / Foto' : 'Pilih File Apa Pun';
+          const acceptAttr = isPhotoField ? 'image/*' : '*/*';
+          const hintLabel = isPhotoField
+            ? 'JPG, PNG, WEBP · Otomatis dikompres'
+            : 'Semua jenis file (*/*) · Maks 750 KB';
           return `
-            <div class="rounded-2xl border border-white/10 bg-black/35 p-4 space-y-2.5">
+            <div class="rounded-2xl border border-red-500/25 bg-black/45 p-4 space-y-2.5">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <label class="block text-xs font-medium text-neutral-200">${escapeHtml(field.label)}</label>
-                <span class="text-[11px] text-neutral-400">Semua jenis file (*/*) · Maks 750 KB</span>
+                <label class="block text-xs font-semibold text-neutral-100">${escapeHtml(field.label)}</label>
+                <span class="text-[11px] text-neutral-400">${hintLabel}</span>
               </div>
               <input type="hidden" id="f-${field.name}" name="${field.name}" value="${val}" />
               ${nameField ? `<input type="hidden" id="f-${nameField}" name="${nameField}" value="${escapeHtml(currentFileName)}" />` : ''}
               <div class="flex flex-wrap items-center gap-2.5">
-                <label class="px-4 py-2 rounded-xl border border-white/15 bg-black/60 hover:border-red-500/50 text-xs font-medium text-neutral-100 cursor-pointer transition-colors">
-                  Pilih File Apa Pun
-                  <input type="file" accept="*/*" data-universal-target="f-${field.name}" data-name-target="${nameField ? `f-${nameField}` : ''}" class="hidden" />
+                <label class="btn-crimson px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer inline-flex items-center gap-2 shadow-sm">
+                  <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>${btnLabel}</span>
+                  <input type="file" accept="${acceptAttr}" data-universal-target="f-${field.name}" data-name-target="${nameField ? `f-${nameField}` : ''}" class="hidden" />
                 </label>
-                <button type="button" data-clear-universal="f-${field.name}" data-name-target="${nameField ? `f-${nameField}` : ''}" class="px-3 py-2 rounded-xl border border-white/10 text-xs text-neutral-400 hover:text-white transition-colors">Hapus File</button>
+                <button type="button" data-clear-universal="f-${field.name}" data-name-target="${nameField ? `f-${nameField}` : ''}" class="px-3 py-2 rounded-xl border border-white/15 text-xs text-neutral-300 hover:text-white hover:border-red-500/40 transition-colors">Hapus</button>
               </div>
               <div id="warn-f-${field.name}" class="hidden rounded-xl border border-amber-500/40 bg-amber-950/50 px-3 py-2 text-xs text-amber-200"></div>
               <div id="preview-f-${field.name}" class="pt-1">
@@ -1062,7 +1071,7 @@
             { name: 'hero_kicker', label: 'Label Atas / Kicker Hero (Opsional)', placeholder: 'Contoh: PORTFOLIO / SOFTWARE DEV & MUA' },
             { name: 'headline', label: 'Headline Utama (Otomatis 2 Warna)', placeholder: 'Contoh: Alimatur Rosyidah' },
             { name: 'sub_headline', label: 'Sub-Headline / Ringkasan', type: 'textarea', rows: 3, placeholder: 'Deskripsi singkat identitas profesional Anda' },
-            { name: 'foto_profil', fileNameField: 'foto_profil_nama', label: 'Foto / Media Profil (Tampil dengan Glow Crimson)', type: 'universal_file' },
+            { name: 'foto_profil', fileNameField: 'foto_profil_nama', label: 'Foto / Media Profil (Tampil dengan Glow Crimson)', type: 'universal_file', imagePreferred: true },
             { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://...' },
           ],
         },
@@ -1125,7 +1134,7 @@
             { name: 'tema', label: 'Tema / Topik (Opsional)', placeholder: 'Contoh: Sistem Informasi & Rekayasa Web' },
             { name: 'lokasi', label: 'Lokasi / Penerbit (Opsional)', placeholder: 'Contoh: Tuban / Penerbit Mandiri' },
             { name: 'jenis', label: 'Jenis Publikasi (Opsional)', placeholder: 'Contoh: Buku Ajar / Referensi / Panduan' },
-            { name: 'cover_file', fileNameField: 'cover_file_nama', label: 'File Cover atau Naskah Buku (Gambar, PDF, DOCX, EPUB, dll)', type: 'universal_file' },
+            { name: 'cover_file', fileNameField: 'cover_file_nama', label: 'Cover Buku / Naskah (Gambar cover otomatis tampil sebagai Slider 2 Detik)', type: 'universal_file' },
             { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://drive.google.com/... atau tautan baca' },
           ],
         },
@@ -1173,11 +1182,11 @@
                 { value: 'Organisasi', label: 'Organisasi' },
               ],
             },
-            { name: 'posisi', label: 'Judul Kegiatan / Posisi / Peran', required: true, placeholder: 'Contoh: Ketua Divisi Acara / Full-Stack Developer' },
+            { name: 'posisi', label: 'Judul Kegiatan / Posisi / Peran', required: true, placeholder: 'Contoh: Sekretaris / Ketua Divisi Acara / Full-Stack Developer' },
             { name: 'institusi_tempat', label: 'Perusahaan / Organisasi / Lokasi', required: true },
-            { name: 'durasi', label: 'Tanggal / Durasi', required: true, placeholder: '07 Mar 2026 atau Jan 2024 – Sekarang' },
+            { name: 'durasi', label: 'Tanggal / Durasi', required: true, placeholder: '07 Mar 2026 atau 1 tahun' },
+            { name: 'foto_kegiatan', fileNameField: 'foto_kegiatan_nama', label: 'Upload Foto / Gambar Kegiatan (Tampil di Galeri Kegiatan)', type: 'universal_file', imagePreferred: true },
             { name: 'deskripsi', label: 'Cerita / Deskripsi Kegiatan (Opsional)', type: 'textarea', rows: 3 },
-            { name: 'foto_kegiatan', fileNameField: 'foto_kegiatan_nama', label: 'Foto Dokumentasi / Galeri Kegiatan (Tampil di Galeri Kegiatan)', type: 'universal_file' },
             { name: 'link_url', label: 'Link Dokumentasi / Postingan Eksternal (Opsional)', placeholder: 'https://...' },
           ],
         },
@@ -1187,8 +1196,8 @@
             { name: 'judul_prestasi', label: 'Judul Prestasi', required: true },
             { name: 'penyelenggara', label: 'Penyelenggara', required: true },
             { name: 'tahun', label: 'Tahun', required: true, placeholder: '2025' },
+            { name: 'foto_prestasi', fileNameField: 'foto_prestasi_nama', label: 'Upload Foto / Piagam Prestasi (Otomatis jadi Slider 2 Detik)', type: 'universal_file', imagePreferred: true },
             { name: 'deskripsi', label: 'Keterangan (Opsional)', type: 'textarea', rows: 3 },
-            { name: 'foto_prestasi', fileNameField: 'foto_prestasi_nama', label: 'Foto / Piagam Prestasi (Otomatis jadi Carousel Slider 2 Detik jika ada gambar)', type: 'universal_file' },
             { name: 'link_url', label: 'Link Eksternal / URL Bukti (Opsional)', placeholder: 'https://...' },
           ],
         },
@@ -1206,7 +1215,7 @@
           title: 'Skill / Perangkat',
           fields: [
             { name: 'nama_skill', label: 'Nama Skill', required: true, placeholder: 'TypeScript / Bridal Airbrush' },
-            { name: 'logo_icon', fileNameField: 'logo_icon_nama', label: 'Ikon / Logo / Dokumen Skill (Opsional)', type: 'universal_file' },
+            { name: 'logo_icon', fileNameField: 'logo_icon_nama', label: 'Upload Ikon / Gambar Skill (Slider 2 Detik jika bergambar)', type: 'universal_file', imagePreferred: true },
             { name: 'link_url', label: 'Link Eksternal / URL (Opsional)', placeholder: 'https://...' },
           ],
         },
@@ -1726,6 +1735,11 @@
             sub: (x) => `${x.kategori_pengalaman} · ${x.institusi_tempat} · ${x.durasi}`,
             body: (x) => x.deskripsi,
             fileThumb: (x) => ({ val: x.foto_kegiatan, name: x.foto_kegiatan_nama, ext: x.link_url }),
+            extraPills: (x) => [
+              x.foto_kegiatan
+                ? { text: 'Foto Galeri Terpasang', cls: 'border-emerald-500/40 bg-emerald-950/50 text-emerald-300' }
+                : { text: 'Belum ada foto — klik Edit untuk upload', cls: 'border-amber-500/40 bg-amber-950/50 text-amber-200' },
+            ],
           },
           achievements: {
             col: 'achievements',
