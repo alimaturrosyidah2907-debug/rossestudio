@@ -1,7 +1,7 @@
 # RosseStudio Firestore Security Specification
 
 ## 1. Data Invariants
-1. Public portfolio collections (`hero_settings`, `hero_socials`, `about_settings`, `educations`, `experiences`, `achievements`, `certificates`, `skills`, `expertise_categories`, `portfolio_items`, `app_projects`, `designs`, `tutorials`, `books`, `journals`, `testimonials`, `faqs`, `footer_contacts`, `site_themes`) are publicly readable (`get`, `list`) for landing page rendering, and writable **strictly** by verified RosseAdmin (`alimaturrosyidah2907@gmail.com`, `email_verified == true`).
+1. Public portfolio collections (`hero_settings`, `hero_socials`, `about_settings`, `educations`, `experiences`, `achievements`, `certificates`, `skills`, `tools_apps`, `expertise_categories`, `portfolio_items`, `app_projects`, `designs`, `tutorials`, `books`, `journals`, `testimonials`, `faqs`, `footer_contacts`, `site_themes`) are publicly readable (`get`, `list`) for landing page rendering, and writable **strictly** by verified RosseAdmin (`alimaturrosyidah2907@gmail.com`, `email_verified == true`).
 2. `users`, `admins`, and `contact_messages` collections contain private/account/visitor inquiry data and MUST NEVER be readable (`get`, `list`) by unauthenticated or non-admin users.
 3. Every `portfolio_items` creation and update MUST reference an existing `expertise_categories` document via `exists()`.
 4. All document IDs (`{docId}`, etc.) MUST satisfy `isValidId(id)` (`^[a-zA-Z0-9_\-]+$`, max 128 chars).

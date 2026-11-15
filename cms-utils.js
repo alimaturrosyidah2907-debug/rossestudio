@@ -186,6 +186,7 @@ export const COLLECTIONS = [
   'achievements',
   'certificates',
   'skills',
+  'tools_apps',
   'expertise_categories',
   'portfolio_items',
   'app_projects',
@@ -675,6 +676,7 @@ export function isPortfolioStateEmpty(state) {
     (!state.achievements || state.achievements.length === 0) &&
     (!state.certificates || state.certificates.length === 0) &&
     (!state.skills || state.skills.length === 0) &&
+    (!state.toolsApps || state.toolsApps.length === 0) &&
     (!state.categories || state.categories.length === 0) &&
     (!state.portfolios || state.portfolios.length === 0) &&
     (!state.appProjects || state.appProjects.length === 0) &&
@@ -686,6 +688,24 @@ export function isPortfolioStateEmpty(state) {
     (!state.faqs || state.faqs.length === 0) &&
     !hasFooterData(state.footer)
   );
+}
+
+export function computeLoadingProgress(loadedCount = 0, totalCount = 20) {
+  const total = Number(totalCount) || 0;
+  if (total <= 0) return 100;
+  const loaded = Math.max(0, Number(loadedCount) || 0);
+  const ratio = Math.min(1, loaded / total);
+  return Math.max(1, Math.min(100, Math.round(1 + ratio * 99)));
+}
+
+export function shouldShowEmptyState(state = {}, totalSubscriptions = 20) {
+  const settled =
+    Boolean(state.initialLoadSettled) ||
+    ((state.loadedCollections && typeof state.loadedCollections.size === 'number'
+      ? state.loadedCollections.size
+      : 0) >= totalSubscriptions);
+  if (!settled) return false;
+  return isPortfolioStateEmpty(state);
 }
 
 export function sortByNewest(arr, field = 'createdAt') {

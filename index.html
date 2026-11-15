@@ -78,12 +78,12 @@
       .ambient-backdrop {
         background-color: var(--bg-canvas);
         background-image:
-          radial-gradient(ellipse 75% 48% at 85% 6%, rgba(139, 0, 0, 0.24), transparent 70%),
-          radial-gradient(ellipse 65% 42% at 12% 38%, rgba(139, 0, 0, 0.12), transparent 70%),
-          radial-gradient(ellipse 70% 50% at 80% 88%, rgba(127, 29, 29, 0.16), transparent 72%);
+          radial-gradient(ellipse 75% 48% at 85% 6%, var(--bg-ambient), transparent 70%),
+          radial-gradient(ellipse 65% 42% at 12% 38%, rgba(255, 255, 255, 0.02), transparent 70%),
+          radial-gradient(ellipse 70% 50% at 80% 88%, var(--bg-ambient), transparent 72%);
       }
 
-      /* Organic Ambient Liquid Morph Orbs */
+      /* Organic Ambient Liquid Morph Orbs & Silk Aurora Wave (Theme-Adaptive) */
       .ambient-orbs-layer {
         position: fixed;
         inset: 0;
@@ -92,19 +92,43 @@
         z-index: 0;
       }
 
+      .ambient-mesh-grid {
+        position: absolute;
+        inset: -10%;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+        background-size: 34px 34px;
+        opacity: 0.48;
+        mask-image: radial-gradient(ellipse 85% 75% at 50% 42%, #000 32%, transparent 100%);
+        -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 42%, #000 32%, transparent 100%);
+        animation: gridDrift 26s linear infinite alternate;
+      }
+
+      .ambient-aurora-wave {
+        position: absolute;
+        inset: -25%;
+        background:
+          radial-gradient(ellipse 54% 26% at 25% 24%, var(--accent-primary), transparent 72%),
+          radial-gradient(ellipse 48% 30% at 75% 65%, var(--accent-deep), transparent 74%),
+          radial-gradient(ellipse 40% 24% at 48% 82%, var(--accent-bright), transparent 74%);
+        opacity: 0.16;
+        filter: blur(88px);
+        will-change: transform;
+        animation: auroraSweep 24s ease-in-out infinite alternate;
+      }
+
       .ambient-orb {
         position: absolute;
-        filter: blur(72px);
-        opacity: 0.42;
+        filter: blur(78px);
+        opacity: 0.36;
         will-change: transform, border-radius;
       }
 
       .ambient-orb-1 {
         top: -8%;
         right: -6%;
-        width: 440px;
-        height: 440px;
-        background: radial-gradient(circle at 35% 35%, rgba(220, 38, 38, 0.42), rgba(139, 0, 0, 0.18) 65%, transparent 100%);
+        width: 460px;
+        height: 460px;
+        background: radial-gradient(circle at 35% 35%, var(--accent-primary), var(--accent-deep) 65%, transparent 100%);
         border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
         animation: morphOrbA 16s ease-in-out infinite alternate;
       }
@@ -112,9 +136,9 @@
       .ambient-orb-2 {
         top: 34%;
         left: -10%;
-        width: 390px;
-        height: 390px;
-        background: radial-gradient(circle at 60% 40%, rgba(185, 28, 28, 0.34), rgba(85, 4, 8, 0.16) 70%, transparent 100%);
+        width: 410px;
+        height: 410px;
+        background: radial-gradient(circle at 60% 40%, var(--accent-bright), var(--accent-deep) 70%, transparent 100%);
         border-radius: 42% 58% 66% 34% / 44% 55% 45% 56%;
         animation: morphOrbB 20s ease-in-out infinite alternate;
       }
@@ -122,11 +146,32 @@
       .ambient-orb-3 {
         bottom: -10%;
         right: 12%;
-        width: 420px;
-        height: 420px;
-        background: radial-gradient(circle at 45% 55%, rgba(255, 51, 51, 0.24), rgba(139, 0, 0, 0.14) 68%, transparent 100%);
+        width: 430px;
+        height: 430px;
+        background: radial-gradient(circle at 45% 55%, var(--accent-primary), var(--accent-deep) 68%, transparent 100%);
         border-radius: 52% 48% 36% 64% / 62% 38% 62% 38%;
         animation: morphOrbA 22s ease-in-out infinite alternate-reverse;
+      }
+
+      @keyframes auroraSweep {
+        0% {
+          transform: translate3d(-4%, -2%, 0) rotate(-3deg) scale(1);
+        }
+        50% {
+          transform: translate3d(4%, 2%, 0) rotate(4deg) scale(1.07);
+        }
+        100% {
+          transform: translate3d(-2%, 4%, 0) rotate(-2deg) scale(0.97);
+        }
+      }
+
+      @keyframes gridDrift {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        100% {
+          transform: translate3d(18px, -18px, 0);
+        }
       }
 
       @keyframes morphOrbA {
@@ -136,11 +181,11 @@
         }
         50% {
           border-radius: 44% 56% 58% 42% / 38% 62% 38% 62%;
-          transform: translate3d(-24px, 28px, 0) scale(1.06) rotate(12deg);
+          transform: translate3d(-28px, 32px, 0) scale(1.08) rotate(12deg);
         }
         100% {
           border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-          transform: translate3d(18px, -18px, 0) scale(0.95) rotate(-8deg);
+          transform: translate3d(20px, -20px, 0) scale(0.95) rotate(-8deg);
         }
       }
 
@@ -151,11 +196,11 @@
         }
         50% {
           border-radius: 66% 34% 45% 55% / 58% 42% 58% 42%;
-          transform: translate3d(32px, -22px, 0) scale(1.08);
+          transform: translate3d(34px, -24px, 0) scale(1.09);
         }
         100% {
           border-radius: 35% 65% 52% 48% / 40% 60% 40% 60%;
-          transform: translate3d(-16px, 24px, 0) scale(0.96);
+          transform: translate3d(-18px, 26px, 0) scale(0.96);
         }
       }
 
@@ -245,14 +290,14 @@
         background: linear-gradient(
           90deg,
           transparent 0%,
-          rgba(220, 38, 38, 0.16) 35%,
-          rgba(255, 72, 72, 0.55) 72%,
-          rgba(220, 38, 38, 0.08) 100%
+          var(--accent-deep) 35%,
+          var(--accent-bright) 72%,
+          transparent 100%
         );
-        filter: blur(18px);
+        filter: blur(22px);
         transform: rotate(-19deg);
         pointer-events: none;
-        opacity: 0.7;
+        opacity: 0.42;
       }
 
       .hero-portrait-frame {
@@ -387,7 +432,7 @@
 
       .headline-accent-glow {
         color: var(--accent-bright);
-        text-shadow: 0 0 34px rgba(220, 38, 38, 0.34);
+        text-shadow: 0 0 34px var(--glow-crimson);
       }
 
       .btn-crimson {
@@ -476,8 +521,24 @@
         text-wrap: balance;
       }
 
+      .preloader-ring {
+        animation: preloaderSpin 7s linear infinite;
+      }
+
+      @keyframes preloaderSpin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       @media (prefers-reduced-motion: reduce) {
-        .ambient-orb {
+        .ambient-orb,
+        .ambient-aurora-wave,
+        .ambient-mesh-grid,
+        .preloader-ring {
           animation: none !important;
         }
         [data-aos] {
@@ -503,8 +564,10 @@
     </style>
   </head>
   <body class="ambient-backdrop min-h-screen flex flex-col selection:bg-red-700 selection:text-white relative">
-    <!-- Organic Liquid Glassmorphism Background Orbs -->
+    <!-- Organic Liquid Glassmorphism Background Orbs & Moving Aurora -->
     <div class="ambient-orbs-layer" aria-hidden="true">
+      <div class="ambient-mesh-grid"></div>
+      <div class="ambient-aurora-wave"></div>
       <div class="ambient-orb ambient-orb-1"></div>
       <div class="ambient-orb ambient-orb-2"></div>
       <div class="ambient-orb ambient-orb-3"></div>
@@ -576,21 +639,43 @@
 
     <!-- Main Dynamic Canvas -->
     <main id="top" class="flex-1 relative z-10 overflow-x-clip">
-      <!-- Initial Loading Shimmer (Cleared immediately once snapshot arrives) -->
-      <div id="loading-state" class="mx-auto max-w-6xl px-6 py-20 space-y-8" aria-busy="true">
-        <div class="bento-card p-8 sm:p-12 animate-pulse">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div class="lg:col-span-7 space-y-4">
-              <div class="h-10 w-3/4 rounded-lg bg-white/10"></div>
-              <div class="h-5 w-full rounded-lg bg-white/5"></div>
-              <div class="h-5 w-5/6 rounded-lg bg-white/5"></div>
-              <div class="pt-4 flex gap-3">
-                <div class="h-10 w-36 rounded-xl bg-red-900/40"></div>
-                <div class="h-10 w-32 rounded-xl bg-white/10"></div>
-              </div>
+      <!-- Luxury 1–100% RosseStudio Logo Preloader (Eliminates premature empty-state flash) -->
+      <div
+        id="loading-state"
+        class="fixed inset-0 z-50 flex items-center justify-center px-6 transition-opacity duration-300"
+        style="background-color: var(--bg-canvas); background-image: radial-gradient(circle at 50% 42%, var(--bg-ambient), var(--bg-canvas) 72%);"
+        aria-busy="true"
+        aria-label="Memuat portofolio RosseStudio"
+      >
+        <div class="w-full max-w-xs text-center space-y-6">
+          <div class="relative mx-auto w-28 h-28 flex items-center justify-center">
+            <div
+              class="preloader-ring absolute inset-0 rounded-full border border-transparent"
+              style="border-top-color: var(--accent-bright); border-right-color: var(--border-crimson); box-shadow: 0 0 32px var(--glow-crimson);"
+            ></div>
+            <div class="w-[88px] h-[88px] rounded-full glass-panel flex items-center justify-center p-4 shadow-2xl">
+              <img
+                src="./assets/logo-rossestudio.png"
+                alt="RosseStudio"
+                class="h-12 w-auto object-contain brightness-0 invert"
+                referrerpolicy="no-referrer"
+                onerror="this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden');"
+              />
+              <span class="hidden font-display text-2xl font-bold text-white">RS</span>
             </div>
-            <div class="lg:col-span-5 flex justify-center">
-              <div class="w-60 h-60 rounded-full bg-white/5 border border-red-900/30"></div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-xs font-medium px-0.5">
+              <span id="preloader-label" style="color: var(--text-muted);">Menyiapkan RosseStudio...</span>
+              <span id="preloader-percent" class="font-display text-base font-bold tabular-nums text-white">1%</span>
+            </div>
+            <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden border border-white/10">
+              <div
+                id="preloader-bar-fill"
+                class="h-full rounded-full transition-[width] duration-200 ease-out"
+                style="width: 1%; background: linear-gradient(90deg, var(--accent-deep), var(--accent-primary), var(--accent-bright)); box-shadow: 0 0 14px var(--glow-crimson);"
+              ></div>
             </div>
           </div>
         </div>
@@ -659,6 +744,9 @@
 
         <!-- 7. Kemampuan & Perangkat (Skills: 2s Auto-Slider when visual / Non-Flat Glass Deck when text-only) -->
         <section id="skills" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
+
+        <!-- 7b. Tools & Aplikasi yang Digunakan (Dynamic Category Filter + Glass Bento Grid) -->
+        <section id="tools" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
 
         <!-- 8. Creative Studio: Karya Desain & Video Tutorial -->
         <section id="karya-kreatif" class="hidden scroll-mt-24 sm:scroll-mt-28 mx-auto max-w-6xl px-4 sm:px-6"></section>
@@ -991,6 +1079,8 @@
         hasAboutData,
         hasFooterData,
         isPortfolioStateEmpty,
+        computeLoadingProgress,
+        shouldShowEmptyState,
         sortByNewest,
         filterExperiencesByCategory,
         splitTwoToneHeadline,
@@ -1012,8 +1102,11 @@
         });
       }
 
+      const TOTAL_SUBSCRIPTIONS = 20;
+
       const state = {
         loadedCollections: new Set(),
+        initialLoadSettled: false,
         hero: null,
         heroSocials: [],
         about: null,
@@ -1022,6 +1115,7 @@
         achievements: [],
         certificates: [],
         skills: [],
+        toolsApps: [],
         categories: [],
         portfolios: [],
         appProjects: [],
@@ -1034,6 +1128,7 @@
         footer: null,
         activeTheme: 'obsidian-crimson',
         activeExpTab: 'Semua',
+        activeToolsCategory: 'Semua',
         activeGaleriModalFilter: 'Semua',
         expandedOutlines: new Set(),
         activeCategoryModalId: null,
@@ -1053,27 +1148,116 @@
       }
 
       const loadingEl = document.getElementById('loading-state');
+      const preloaderPercentEl = document.getElementById('preloader-percent');
+      const preloaderBarEl = document.getElementById('preloader-bar-fill');
+      const preloaderLabelEl = document.getElementById('preloader-label');
       const emptyEl = document.getElementById('empty-state');
       const sectionsWrapperEl = document.getElementById('dynamic-sections');
       const footerBarEl = document.getElementById('site-footer');
       const floatingWaEl = document.getElementById('floating-wa');
 
+      let displayedPercent = 1;
+      let targetPercent = 1;
+      let preloaderRafId = null;
+      let finishRequested = false;
+
+      function updatePreloaderDom(pct) {
+        const clamped = Math.max(1, Math.min(100, Math.round(pct)));
+        if (preloaderPercentEl) preloaderPercentEl.textContent = `${clamped}%`;
+        if (preloaderBarEl) preloaderBarEl.style.width = `${clamped}%`;
+        if (preloaderLabelEl) {
+          if (clamped >= 100) {
+            preloaderLabelEl.textContent = 'Portofolio siap ditampilkan';
+          } else if (clamped >= 60) {
+            preloaderLabelEl.textContent = 'Menyinkronkan karya & galeri...';
+          } else {
+            preloaderLabelEl.textContent = 'Memuat data RosseStudio...';
+          }
+        }
+      }
+
+      function dismissPreloaderNow() {
+        if (loadingEl.classList.contains('hidden')) return;
+        loadingEl.setAttribute('aria-busy', 'false');
+        if (prefersReducedMotion()) {
+          loadingEl.classList.add('hidden');
+          renderAll();
+          return;
+        }
+        loadingEl.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          loadingEl.classList.add('hidden');
+          loadingEl.classList.remove('opacity-0', 'pointer-events-none');
+          renderAll();
+        }, 300);
+      }
+
+      function stepPreloaderAnimation() {
+        if (displayedPercent < targetPercent) {
+          const gap = targetPercent - displayedPercent;
+          displayedPercent += Math.max(1, Math.ceil(gap * 0.24));
+          if (displayedPercent > targetPercent) displayedPercent = targetPercent;
+          updatePreloaderDom(displayedPercent);
+        }
+
+        if (finishRequested && displayedPercent >= 100) {
+          preloaderRafId = null;
+          setTimeout(dismissPreloaderNow, 180);
+          return;
+        }
+
+        if (displayedPercent < targetPercent || finishRequested) {
+          preloaderRafId = requestAnimationFrame(stepPreloaderAnimation);
+        } else {
+          preloaderRafId = null;
+        }
+      }
+
+      function setPreloaderProgress(nextTarget, finalize = false) {
+        targetPercent = Math.max(targetPercent, Math.min(100, nextTarget));
+        if (finalize) {
+          finishRequested = true;
+          targetPercent = 100;
+          setTimeout(() => {
+            if (!loadingEl.classList.contains('hidden')) {
+              displayedPercent = 100;
+              updatePreloaderDom(100);
+              dismissPreloaderNow();
+            }
+          }, 950);
+        }
+        if (prefersReducedMotion()) {
+          displayedPercent = targetPercent;
+          updatePreloaderDom(displayedPercent);
+          if (finalize) dismissPreloaderNow();
+          return;
+        }
+        if (!preloaderRafId) {
+          preloaderRafId = requestAnimationFrame(stepPreloaderAnimation);
+        }
+      }
+
       const markLoaded = (key) => {
         state.loadedCollections.add(key);
-        if (state.loadedCollections.size >= 3) {
-          loadingEl.classList.add('hidden');
-          loadingEl.setAttribute('aria-busy', 'false');
+        const pct = computeLoadingProgress(state.loadedCollections.size, TOTAL_SUBSCRIPTIONS);
+        const allSettled = state.loadedCollections.size >= TOTAL_SUBSCRIPTIONS;
+        if (allSettled) {
+          state.initialLoadSettled = true;
+          setPreloaderProgress(100, true);
+        } else {
+          setPreloaderProgress(pct, false);
         }
-        renderAll();
+        if (loadingEl.classList.contains('hidden')) {
+          renderAll();
+        }
       };
 
       setTimeout(() => {
-        if (!loadingEl.classList.contains('hidden')) {
-          loadingEl.classList.add('hidden');
-          loadingEl.setAttribute('aria-busy', 'false');
-          renderAll();
+        if (!state.initialLoadSettled) {
+          state.initialLoadSettled = true;
+          setPreloaderProgress(100, true);
         }
-      }, 2500);
+      }, 7500);
 
       // Mobile drawer toggle
       const mobileMenuBtn = document.getElementById('btn-mobile-menu');
@@ -1560,7 +1744,7 @@
         handleContactSubmit(e.currentTarget, document.getElementById('popup-contact-status'));
       });
 
-      // Top Bar Navigation (Strictly 4-5 concise single-line links)
+      // Top Bar Navigation (Concise single-line links including Tools)
       function renderNavigation() {
         const items = [];
         if (hasHeroData(state.hero)) items.push({ href: '#hero', label: 'Beranda' });
@@ -1570,13 +1754,14 @@
         if (hasAboutData(state.about) || state.educations.length > 0 || state.experiences.length > 0) {
           items.push({ href: '#tentang', label: 'Profil' });
         }
+        if (state.toolsApps.length > 0) items.push({ href: '#tools', label: 'Tools' });
         if (state.certificates.length > 0) items.push({ href: '#sertifikat', label: 'Sertifikat' });
         if (hasFooterData(state.footer)) items.push({ href: '#kontak', label: 'Kontak' });
 
         const desktopNav = document.getElementById('desktop-nav');
         const mobileNav = document.getElementById('mobile-nav');
         desktopNav.innerHTML = items
-          .slice(0, 5)
+          .slice(0, 6)
           .map(
             (i) =>
               `<a href="${i.href}" class="hover:text-white transition-colors whitespace-nowrap shrink-0 relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[1.5px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-200">${escapeHtml(i.label)}</a>`
@@ -2731,6 +2916,159 @@
         });
       }
 
+      // 7b. Render Tools & Aplikasi yang Digunakan (Category Filter Tabs + Bento Tool Cards + Detail Modal)
+      function renderToolsApps() {
+        const sec = document.getElementById('tools');
+        if (state.toolsApps.length === 0) {
+          sec.classList.add('hidden');
+          sec.innerHTML = '';
+          return;
+        }
+        sec.classList.remove('hidden');
+
+        const catSet = new Set();
+        state.toolsApps.forEach((t) => {
+          const cat = String(t.kategori || '').trim();
+          if (cat) catSet.add(cat);
+        });
+        const categories = ['Semua', ...Array.from(catSet)];
+        if (!categories.includes(state.activeToolsCategory)) {
+          state.activeToolsCategory = 'Semua';
+        }
+
+        const filtered =
+          state.activeToolsCategory === 'Semua'
+            ? state.toolsApps
+            : state.toolsApps.filter((t) => String(t.kategori || '').trim() === state.activeToolsCategory);
+
+        sec.innerHTML = `
+          <div class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3" data-aos="fade-up">
+              <div class="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.26em] text-red-300">
+                <span class="h-[1px] w-7 bg-red-500/70"></span>
+                <span>Ekosistem Kerja &amp; Perangkat Lunak</span>
+                <span class="h-[1px] w-7 bg-red-500/70"></span>
+              </div>
+              <h2 class="font-display text-3xl sm:text-4xl font-semibold headline-balance text-white">
+                Tools &amp; <span class="headline-accent-glow">Aplikasi</span>
+              </h2>
+              <p class="text-sm sm:text-base" style="color: var(--text-muted);">
+                Perangkat lunak, platform kreatif, dan aplikasi andalan dalam berkarya sehari-hari.
+              </p>
+            </div>
+
+            ${
+              categories.length > 2
+                ? `
+              <div class="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label="Filter kategori tools dan aplikasi">
+                ${categories
+                  .map(
+                    (cat) => `
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected="${state.activeToolsCategory === cat}"
+                    data-tool-cat="${escapeHtml(cat)}"
+                    class="px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${
+                      state.activeToolsCategory === cat
+                        ? 'btn-crimson'
+                        : 'border border-white/12 bg-black/40 text-neutral-300 hover:text-white hover:border-red-500/40'
+                    }"
+                  >
+                    ${escapeHtml(cat)}
+                  </button>
+                `
+                  )
+                  .join('')}
+              </div>
+            `
+                : ''
+            }
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              ${filtered
+                .map((tool, idx) => {
+                  const origIdx = state.toolsApps.indexOf(tool);
+                  const iconMedia = classifyMediaPreview(tool.icon_tool, tool.icon_tool_nama, tool.link_url);
+                  const hasIconImg = iconMedia.kind === 'image' && iconMedia.src;
+                  const initials = String(tool.nama_tool || 'TL')
+                    .trim()
+                    .split(/\s+/)
+                    .slice(0, 2)
+                    .map((w) => w[0] || '')
+                    .join('')
+                    .toUpperCase();
+
+                  return `
+                    <button
+                      type="button"
+                      data-open-tool="${origIdx}"
+                      class="bento-card p-5 text-left flex flex-col justify-between gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                      data-aos="fade-up"
+                      data-aos-delay="${Math.min(idx * 55, 220)}"
+                    >
+                      <div class="flex items-start gap-3.5 min-w-0">
+                        <div class="w-12 h-12 rounded-2xl border border-red-500/30 bg-black/60 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_16px_var(--glow-crimson)]">
+                          ${
+                            hasIconImg
+                              ? `<img src="${escapeHtml(iconMedia.src)}" alt="${escapeHtml(tool.nama_tool)}" class="w-full h-full object-cover" referrerpolicy="no-referrer" />`
+                              : `<span class="font-display text-base font-bold text-red-200">${escapeHtml(initials)}</span>`
+                          }
+                        </div>
+                        <div class="min-w-0 flex-1 space-y-1">
+                          <div class="text-[11px] font-semibold text-red-300 truncate">${escapeHtml(tool.kategori)}</div>
+                          <h3 class="font-display text-lg font-semibold text-white truncate group-hover:text-red-200 transition-colors">${escapeHtml(tool.nama_tool)}</h3>
+                        </div>
+                      </div>
+                      ${
+                        tool.peran_singkat || tool.deskripsi
+                          ? `<p class="text-xs leading-relaxed line-clamp-2" style="color: var(--text-muted);">${escapeHtml(tool.peran_singkat || tool.deskripsi)}</p>`
+                          : ''
+                      }
+                      <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-semibold text-red-300 group-hover:text-white transition-colors">
+                        <span>Detail Tools</span>
+                        <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+                      </div>
+                    </button>
+                  `;
+                })
+                .join('')}
+            </div>
+          </div>
+        `;
+
+        sec.querySelectorAll('[data-tool-cat]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.activeToolsCategory = btn.dataset.toolCat;
+            renderToolsApps();
+          });
+        });
+
+        sec.querySelectorAll('[data-open-tool]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const tool = state.toolsApps[Number(btn.dataset.openTool)];
+            if (!tool) return;
+            const metaItems = [
+              { label: 'Kategori', value: tool.kategori },
+              tool.peran_singkat ? { label: 'Kegunaan Utama', value: tool.peran_singkat } : null,
+            ].filter(Boolean);
+
+            openUniversalModal(
+              {
+                kicker: `Tools & Aplikasi · ${tool.kategori}`,
+                title: tool.nama_tool,
+                description: tool.deskripsi || tool.peran_singkat || `Digunakan dalam ekosistem produksi RosseStudio (${tool.kategori}).`,
+                metaItems,
+                primaryMedia: classifyMediaPreview(tool.icon_tool, tool.icon_tool_nama, tool.link_url),
+                externalUrl: tool.link_url,
+                externalLabel: 'Buka Situs / Dokumentasi Tools',
+              },
+              e.currentTarget
+            );
+          });
+        });
+      }
+
       // 7. Render Outline-First: Karya Desain & Video Tutorial
       function renderCreativeStudio() {
         const sec = document.getElementById('karya-kreatif');
@@ -3410,12 +3748,16 @@
           return;
         }
 
-        if (isPortfolioStateEmpty(state)) {
+        if (shouldShowEmptyState(state, TOTAL_SUBSCRIPTIONS)) {
           emptyEl.classList.remove('hidden');
           sectionsWrapperEl.classList.add('hidden');
           footerBarEl.classList.add('hidden');
           floatingWaEl.classList.add('hidden');
           floatingWaEl.classList.remove('inline-flex');
+          return;
+        }
+
+        if (isPortfolioStateEmpty(state)) {
           return;
         }
 
@@ -3429,6 +3771,7 @@
         renderExperiences();
         renderAchievements();
         renderSkills();
+        renderToolsApps();
         renderCreativeStudio();
         renderPublications();
         renderCertificates();
@@ -3448,6 +3791,7 @@
         if (rawFixture) {
           const parsed = JSON.parse(rawFixture);
           Object.assign(state, parsed);
+          state.initialLoadSettled = true;
           testFixtureApplied = true;
           loadingEl.classList.add('hidden');
           loadingEl.setAttribute('aria-busy', 'false');
@@ -3501,6 +3845,7 @@
         subscribeList('achievements', 'achievements');
         subscribeList('certificates', 'certificates');
         subscribeList('skills', 'skills');
+        subscribeList('tools_apps', 'toolsApps');
         subscribeList('expertise_categories', 'categories');
         subscribeList('portfolio_items', 'portfolios');
         subscribeList('app_projects', 'appProjects');

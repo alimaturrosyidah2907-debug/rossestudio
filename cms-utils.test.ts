@@ -17,6 +17,8 @@ import {
   hasHeroData,
   isAuthorizedAdminUser,
   isPortfolioStateEmpty,
+  computeLoadingProgress,
+  shouldShowEmptyState,
   normalizeExternalUrl,
   parseTagList,
   parseTriviaItems,
@@ -60,10 +62,11 @@ test('THEME_PALETTES includes obsidian-crimson default plus all curated dark lux
   }
 });
 
-test('COLLECTIONS covers all 20 CMS Firestore collections', () => {
-  assert.equal(COLLECTIONS.length, 20);
+test('COLLECTIONS covers all 21 CMS Firestore collections', () => {
+  assert.equal(COLLECTIONS.length, 21);
   for (const required of [
     'hero_socials',
+    'tools_apps',
     'app_projects',
     'designs',
     'tutorials',
@@ -141,6 +144,7 @@ test('isPortfolioStateEmpty returns true only when every collection and singleto
     achievements: [],
     certificates: [],
     skills: [],
+    toolsApps: [],
     categories: [],
     portfolios: [],
     appProjects: [],
@@ -159,6 +163,10 @@ test('isPortfolioStateEmpty returns true only when every collection and singleto
     true,
   );
   assert.equal(
+    isPortfolioStateEmpty({ ...emptyState, toolsApps: [{ id: 't1', nama_tool: 'Figma', kategori: 'Desain' }] }),
+    false,
+  );
+  assert.equal(
     isPortfolioStateEmpty({ ...emptyState, appProjects: [{ id: 'p1', judul: 'POS App' }] }),
     false,
   );
@@ -169,6 +177,30 @@ test('isPortfolioStateEmpty returns true only when every collection and singleto
   assert.equal(hasHeroData({ headline: 'RosseStudio' }), true);
   assert.equal(hasAboutData({ bio: 'Developer & MUA' }), true);
   assert.equal(hasFooterData({ cv_link_url: 'https://drive.google.com/file/d/123/view' }), true);
+});
+
+test('computeLoadingProgress and shouldShowEmptyState prevent premature empty-state flashes', () => {
+  assert.equal(computeLoadingProgress(0, 20), 1);
+  assert.equal(computeLoadingProgress(3, 20), 16);
+  assert.equal(computeLoadingProgress(10, 20), 51);
+  assert.equal(computeLoadingProgress(20, 20), 100);
+  assert.equal(computeLoadingProgress(25, 20), 100);
+
+  // Even when loadedCollections has 3 empty docs, shouldShowEmptyState MUST stay false until settled
+  assert.equal(
+    shouldShowEmptyState({ initialLoadSettled: false, loadedCollections: new Set(['a', 'b', 'c']) }, 20),
+    false,
+  );
+  // Once settled and genuinely empty, empty state is allowed
+  assert.equal(
+    shouldShowEmptyState({ initialLoadSettled: true, loadedCollections: new Set(['a']) }, 20),
+    true,
+  );
+  // Once data exists, empty state stays false even when settled
+  assert.equal(
+    shouldShowEmptyState({ initialLoadSettled: true, toolsApps: [{ id: '1' }] }, 20),
+    false,
+  );
 });
 
 test('validateContactMessageInput validates required fields and rejects malformed payloads', () => {

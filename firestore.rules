@@ -156,6 +156,23 @@ service cloud.firestore {
         && data.updatedAt is timestamp;
     }
 
+    function isValidToolApp(data) {
+      return data.keys().hasAll(['nama_tool', 'kategori', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'nama_tool', 'kategori', 'peran_singkat', 'deskripsi',
+          'icon_tool', 'icon_tool_nama', 'link_url', 'createdAt', 'updatedAt'
+        ])
+        && isRequiredString(data, 'nama_tool', 1, 120)
+        && isRequiredString(data, 'kategori', 1, 80)
+        && isOptionalString(data, 'peran_singkat', 160)
+        && isOptionalString(data, 'deskripsi', 1500)
+        && isOptionalString(data, 'icon_tool', 1030000)
+        && isOptionalString(data, 'icon_tool_nama', 250)
+        && isOptionalString(data, 'link_url', 500)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
     function isValidExpertiseCategory(data) {
       return data.keys().hasAll(['title', 'tagline', 'createdAt', 'updatedAt'])
         && data.keys().hasOnly(['title', 'tagline', 'cover_image', 'cover_image_nama', 'link_url', 'createdAt', 'updatedAt'])
@@ -443,6 +460,20 @@ service cloud.firestore {
         && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
         && incoming().diff(existing()).affectedKeys().hasOnly(['nama_skill', 'logo_icon', 'logo_icon_nama', 'link_url', 'updatedAt']);
       allow delete: if isValidId(skillId) && isAdmin();
+    }
+
+    match /tools_apps/{toolId} {
+      allow get: if isValidId(toolId);
+      allow list: if true;
+      allow create: if isValidId(toolId) && isAdmin() && isValidToolApp(incoming())
+        && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isValidId(toolId) && isAdmin() && isValidToolApp(incoming())
+        && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'nama_tool', 'kategori', 'peran_singkat', 'deskripsi',
+          'icon_tool', 'icon_tool_nama', 'link_url', 'updatedAt'
+        ]);
+      allow delete: if isValidId(toolId) && isAdmin();
     }
 
     match /expertise_categories/{catId} {

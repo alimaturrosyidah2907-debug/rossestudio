@@ -141,6 +141,23 @@
       },
       "required": ["nama_skill", "createdAt", "updatedAt"]
     },
+    "ToolApp": {
+      "title": "ToolApp",
+      "description": "Software, design, productivity, or creative tool/application used in workflow.",
+      "type": "object",
+      "properties": {
+        "nama_tool": { "type": "string", "maxLength": 120 },
+        "kategori": { "type": "string", "maxLength": 80 },
+        "peran_singkat": { "type": "string", "maxLength": 160 },
+        "deskripsi": { "type": "string", "maxLength": 1500 },
+        "icon_tool": { "type": "string", "maxLength": 1030000 },
+        "icon_tool_nama": { "type": "string", "maxLength": 250 },
+        "link_url": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nama_tool", "kategori", "createdAt", "updatedAt"]
+    },
     "ExpertiseCategory": {
       "title": "ExpertiseCategory",
       "description": "Primary expertise gateway category (e.g., Web Developer, MUA).",
@@ -378,6 +395,10 @@
     "/skills/{skillId}": {
       "schema": { "$ref": "#/entities/Skill" },
       "description": "Skills and tools collection."
+    },
+    "/tools_apps/{toolId}": {
+      "schema": { "$ref": "#/entities/ToolApp" },
+      "description": "Tools and applications used collection."
     },
     "/expertise_categories/{catId}": {
       "schema": { "$ref": "#/entities/ExpertiseCategory" },
